@@ -57,7 +57,7 @@ Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bil
   <a href="{{ '/projects/' | relative_url }}" style="color: inherit">son projeler</a>
 </h2>
 
-{% include project_list.liquid limit=3 %}
+{% include project_list.liquid limit=3 plain=true %}
 
 <p><a href="{{ '/projects/' | relative_url }}">Tüm projeler →</a></p>
 

@@ -2,6 +2,8 @@
   Lists projects from _data/projects.yml (newest first), using the same markup
   as the publication list so it inherits the theme's look.
   Usage: include project_list.liquid (all projects) or with limit=3 (latest three).
+  With plain=true the year badge is left out and the year closes the funder line,
+  matching the publication entries (used on the home page).
 {% endcomment %}
 {%- assign project_limit = include.limit | default: 1000 -%}
 {%- assign title_key = 'title_' | append: site.active_lang -%}
@@ -13,7 +15,9 @@
       <li>
         <div class="row">
           <div class="col col-sm-2 abbr">
+            {%- unless include.plain %}
             <abbr class="badge rounded w-100">{{ project.year }}</abbr>
+            {%- endunless %}
           </div>
           <div class="col-sm-8">
             <div class="title">{{ project[title_key] | default: project.title_tr }}</div>
@@ -21,6 +25,7 @@
             <div class="periodical">
               <em>{{ project[funder_key] }}</em>
               {%- if project.code %} ({{ project.code }}){% endif %}
+              {%- if include.plain %}, {{ project.year }}{% endif %}
             </div>
           </div>
         </div>

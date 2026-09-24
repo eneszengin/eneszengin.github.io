@@ -57,7 +57,7 @@ My research focuses on engineering geology, rock mechanics and spatial analysis 
   <a href="{{ '/projects/' | relative_url }}" style="color: inherit">latest projects</a>
 </h2>
 
-{% include project_list.liquid limit=3 %}
+{% include project_list.liquid limit=3 plain=true %}
 
 <p><a href="{{ '/projects/' | relative_url }}">All projects →</a></p>
 
