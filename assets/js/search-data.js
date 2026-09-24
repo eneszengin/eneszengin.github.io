@@ -29,7 +29,7 @@ ninja.data = [{
           },
         },{id: "nav-projeler",
           title: "projeler",
-          description: "araştırma projeleri.",
+          description: "yürütücü ve araştırmacı olarak yer aldığım projeler, yeniden eskiye doğru.",
           section: "Gezinme menüsü",
           handler: () => {
             window.location.href = "/projects/";
@@ -434,52 +434,7 @@ ninja.data = [{
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "Duyurular",},{id: "projects-project-1",
-          title: 'project 1',
-          description: "with background image",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
-          description: "a project with a background image and giscus comments",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/2_project/";
-            },},{id: "projects-project-3-with-very-long-name",
-          title: 'project 3 with very long name',
-          description: "a project that redirects to another website",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/3_project/";
-            },},{id: "projects-project-4",
-          title: 'project 4',
-          description: "another without an image",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/4_project/";
-            },},{id: "projects-project-5",
-          title: 'project 5',
-          description: "a project with a background image",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/5_project/";
-            },},{id: "projects-project-6",
-          title: 'project 6',
-          description: "a project with no image",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/6_project/";
-            },},{id: "projects-project-7",
-          title: 'project 7',
-          description: "with background image",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/7_project/";
-            },},{id: "projects-project-8",
-          title: 'project 8',
-          description: "an other project with a background image and giscus comments",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/8_project/";
-            },},{id: "projects-project-9",
-          title: 'project 9',
-          description: "another project with an image 🎉",
-          section: "Projeler",handler: () => {
-              window.location.href = "/projects/9_project/";
-            },},{
+          section: "Duyurular",},{
         id: 'social-email',
         title: 'E-posta gönder',
         section: 'Sosyal bağlantılar',
