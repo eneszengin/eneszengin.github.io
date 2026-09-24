@@ -1,0 +1,164 @@
+archive:
+  prefix: arşiv
+  category_suffix: bu kategoride
+  tag_suffix: bu etiketle
+  year_suffix: bu yıldan
+bibliography:
+  abstract: Özet
+  awarded: Ödül
+  blog: Blog
+  book_prefix: İçinde
+  code: Kod
+  last_author_prefix: ve
+  poster: Poster
+  slides: Sunum
+  supp: Ek
+  video: Video
+  website: Web sitesi
+blog:
+  navigation_title: blog
+categories:
+  fun: eğlence
+  work: çalışma
+citation:
+  bibtex: "veya BibTeX kaydı olarak:"
+  introduction: "Faydalı bulduysanız lütfen şu şekilde atıf yapın:"
+collections:
+  books: kitaplar
+  posts: yazılar
+contact_note: Bana en kolay e-posta ile ulaşabilirsiniz.
+cv:
+  address: Adres
+  area: Alan
+  awarder: Ödülü veren
+  awards: Ödüller
+  basics: Genel bilgiler
+  certificates: Sertifikalar
+  city: Şehir
+  countryCode: Ülke kodu
+  courses: Dersler
+  date: Tarih
+  education: Eğitim
+  email: E-posta
+  endDate: Bitiş tarihi
+  fluency: Yeterlilik
+  highlights: Öne çıkanlar
+  image: Görsel
+  institution: Kurum
+  interests: İlgi alanları
+  issuer: Veren kurum
+  keywords: Anahtar kelimeler
+  label: Unvan
+  language: Dil
+  languages: Diller
+  level: Seviye
+  location: Konum
+  name: Ad
+  network: Ağ
+  organization: Kuruluş
+  phone: Telefon
+  position: Pozisyon
+  postalCode: Posta kodu
+  present: Halen
+  profiles: Profiller
+  projects: Projeler
+  publications: Yayınlar
+  publisher: Yayıncı
+  reference: Referans
+  references: Referanslar
+  region: Bölge
+  releaseDate: Yayın tarihi
+  score: Puan
+  skills: Beceriler
+  startDate: Başlangıç tarihi
+  studyType: Derece
+  summary: Özet
+  table_of_contents: İçindekiler
+  title: Başlık
+  url: Bağlantı
+  username: Kullanıcı adı
+  volunteer: Gönüllü çalışmalar
+  work: İş deneyimi
+footer:
+  copyright: Telif hakkı
+  last_updated: "Son güncelleme:"
+footer_text: > # the ">" symbol means to ignore newlines until "titles:"
+  <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> ve <a href="https://github.com/george-gca/multi-language-al-folio">multi-language-al-folio</a> temasıyla hazırlanmıştır.
+  <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> üzerinde barındırılmaktadır.
+  Fotoğraflar: <a href="https://unsplash.com" target="_blank">Unsplash</a>.
+latest_posts: son yazılar
+months:
+  long:
+    january: Ocak
+    february: Şubat
+    march: Mart
+    april: Nisan
+    may: Mayıs
+    june: Haziran
+    july: Temmuz
+    august: Ağustos
+    september: Eylül
+    october: Ekim
+    november: Kasım
+    december: Aralık
+  short:
+    january: Oca
+    february: Şub
+    march: Mar
+    april: Nis
+    may: May
+    june: Haz
+    july: Tem
+    august: Ağu
+    september: Eyl
+    october: Eki
+    november: Kas
+    december: Ara
+news: duyurular
+newsletter:
+  back: Geri
+  error: "Bir şeyler ters gitti, lütfen tekrar deneyin."
+  subscribe: abone ol
+  subscribed: "Bültene başarıyla abone oldunuz."
+  subscribe_to_receive: "Yeni yazılardan haberdar olmak için abone olun:"
+  too_many_signups: "Çok fazla kayıt denemesi yapıldı, lütfen biraz sonra tekrar deneyin"
+  wait: "Lütfen bekleyin..."
+no_news: Henüz duyuru yok...
+no_posts: "Henüz yazı yok..."
+pagination:
+  page: sayfa
+post:
+  created_in: Oluşturulma
+  created_by: yazan
+  last_updated: son güncelleme
+references: Kaynaklar
+related_posts:
+  description: "Sıradaki okumalar için birkaç öneri:"
+  title: Bu yazıyı beğendiniz mi?
+search:
+  dark_theme:
+    description: Sitenin temasını koyu olarak değiştir
+    title: Koyu temaya geç
+  dropdown: Açılır menü
+  email: E-posta gönder
+  footer:
+    close: kapatmak için
+    navigate: gezinmek için
+    parent: üst öğeye gitmek için
+    select: seçmek için
+  languages: Diller
+  light_theme:
+    description: Sitenin temasını açık olarak değiştir
+    title: Açık temaya geç
+  navigation: Gezinme menüsü
+  news: Duyurular
+  placeholder: Aramak için yazmaya başlayın
+  posts: Yazılar
+  projects: Projeler
+  socials: Sosyal bağlantılar
+  system_theme:
+    description: Sitenin temasını sistem varsayılanına ayarla
+    title: Sistem varsayılan temasını kullan
+  theme: Tema
+selected_publications: seçilmiş yayınlar
+site_description: Doç. Dr. Enes Zengin — İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü akademik web sitesi.

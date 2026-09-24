@@ -1,5 +1,5 @@
 ---
-lang-exclusive: ['en-us']
+lang-exclusive: ['tr']
 permalink: /assets/js/cronitor-analytics-setup.js
 ---
 window.cronitor =

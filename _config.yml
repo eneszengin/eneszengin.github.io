@@ -3,14 +3,14 @@
 # -----------------------------------------------------------------------------
 
 title: blank # the website title (if blank, full name will be used instead)
-first_name: You
-middle_name: R.
-last_name: Name
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
+first_name: Enes
+middle_name:
+last_name: Zengin
+keywords: Enes Zengin, jeoloji, jeoloji mühendisliği, geology, geological engineering, İTÜ, Istanbul Technical University # add your own keywords or leave empty
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: https://george-gca.github.io # the base hostname & protocol for your site
-baseurl: /multi-language-al-folio # the subpath of your site, e.g. /blog/. Leave blank for root
+url: https://eneszengin.github.io # the base hostname & protocol for your site
+baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 back_to_top: true # set to false to disable the back to top button
@@ -182,27 +182,22 @@ include: ["_pages", "_scripts"]
 exclude:
   - bin/
   - CONTRIBUTING.md
-  - CONTRIBUTING.pt-br.md
   - CUSTOMIZE.md
-  - CUSTOMIZE.pt-br.md
   - Dockerfile
   - docker-compose.yml
   - docker-compose-slim.yml
   - FAQ.md
-  - FAQ.pt-br.md
   - Gemfile
   - Gemfile.lock
   - INSTALL.md
-  - INSTALL.pt-br.md
   - LICENSE
   - lighthouse_results/
   - package.json
   - package-lock.json
-  - _pages/en-us/about_einstein.md
-  - _pages/pt-br/about_einstein.md
+  - _pages/en/about_einstein.md
+  - _pages/tr/about_einstein.md
   - purgecss.config.js
   - README.md
-  - README.pt-br.md
   - readme_preview/
   - UPGRADING.md
   - vendor
@@ -283,8 +278,8 @@ display_categories: ["external-services"] # these categories will be displayed o
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Einstein]
-  first_name: [Albert, A.]
+  last_name: [Zengin]
+  first_name: [Enes, E.]
 
   style: apa
   locale: en
@@ -368,8 +363,8 @@ external_links:
 # Jekyll Polyglot
 # -----------------------------------------------------------------------------
 
-languages: ["en-us", "pt-br", "fr-ca"]
-default_lang: "en-us"
+languages: ["tr", "en"]
+default_lang: "tr"
 exclude_from_localization: ["assets"]
 lang_from_path: true
 country_flag: false # set true for allowing flag symbol in language toggle
@@ -660,10 +655,10 @@ third_party_libraries:
 # -----------------------------------------------------------------------------
 
 jekyll_get_json:
-  - data: resume_en-us
-    json: assets/json/resume_en-us.json # it can also be an url
-  - data: resume_pt-br
-    json: assets/json/resume_pt-br.json # it can also be an url
+  - data: resume_tr
+    json: assets/json/resume_tr.json # it can also be an url
+  - data: resume_en
+    json: assets/json/resume_en.json # it can also be an url
 
 jsonresume:
   - basics
