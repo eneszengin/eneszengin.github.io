@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: hakkımda
 permalink: /
-subtitle: Doç. Dr.<br>İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
+subtitle: Doç. Dr.<br>İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a><br><a href='https://akademi.itu.edu.tr/eneszengin/'>akademi.itu.edu.tr/eneszengin</a>
 
 profile:
   align: right
