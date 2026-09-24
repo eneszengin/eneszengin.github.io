@@ -50,7 +50,7 @@ ninja.data = [{
           },
         },{id: "nav-cv",
           title: "cv",
-          description: "This is a description of the page. You can modify it in &#39;_pages/cv.md&#39;. You can also change or remove the top pdf download button.",
+          description: "eğitim, akademik ve idari deneyim.",
           section: "Gezinme menüsü",
           handler: () => {
             window.location.href = "/cv/";
@@ -480,13 +480,6 @@ ninja.data = [{
           section: "Projeler",handler: () => {
               window.location.href = "/projects/9_project/";
             },},{
-        id: 'social-cv',
-        title: 'CV',
-        section: 'Sosyal bağlantılar',
-        handler: () => {
-          window.open("/assets/pdf/tr//assets/pdf/[LANG]/example_pdf.pdf", "_blank");
-        },
-      },{
         id: 'social-email',
         title: 'E-posta gönder',
         section: 'Sosyal bağlantılar',
