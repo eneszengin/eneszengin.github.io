@@ -126,6 +126,10 @@ newsletter:
   wait: "Please wait..."
 no_news: No news so far...
 no_posts: "No posts so far..."
+projects:
+  roles:
+    pi: Principal Investigator
+    researcher: Researcher
 pagination:
   page: page
 post:

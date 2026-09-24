@@ -126,6 +126,10 @@ newsletter:
   wait: "Lütfen bekleyin..."
 no_news: Henüz duyuru yok...
 no_posts: "Henüz yazı yok..."
+projects:
+  roles:
+    pi: Yürütücü
+    researcher: Araştırmacı
 pagination:
   page: sayfa
 post:

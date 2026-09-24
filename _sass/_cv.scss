@@ -55,6 +55,12 @@ table.table-cv:not(.institution) {
     flex-direction: column;
     align-items: center;
   }
+
+  /* every year badge has the same width, sized for "2024 – 2025" */
+  .badge {
+    width: 80px;
+    min-width: 80px !important;
+  }
 }
 
 p.location {

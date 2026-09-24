@@ -16,19 +16,19 @@ nav_order: 1
 
 <div class="publications">
 
-<h2 class="bibliography-type">Makaleler</h2>
+<h2 class="bibliography-type" id="makaleler">Makaleler</h2>
 
 {% bibliography --query @article %}
 
-<h2 class="bibliography-type">Kitap bölümleri</h2>
+<h2 class="bibliography-type" id="kitap-bolumleri">Kitap bölümleri</h2>
 
 {% bibliography --query @incollection %}
 
-<h2 class="bibliography-type">Bildiriler</h2>
+<h2 class="bibliography-type" id="bildiriler">Bildiriler</h2>
 
 {% bibliography --query @inproceedings %}
 
-<h2 class="bibliography-type">Tezler</h2>
+<h2 class="bibliography-type" id="tezler">Tezler</h2>
 
 {% bibliography --query @phdthesis %}
 

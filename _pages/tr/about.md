@@ -7,29 +7,51 @@ subtitle: Doç. Dr. · İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü 
 
 profile:
   align: right
-  image: prof_pic.jpg
+  # image: prof_pic.jpg # fotoğraf assets/img/prof_pic.jpg olarak eklenince açılacak
   image_circular: false # crops the image to make it circular
-  more_info: >
-    <p>İstanbul Teknik Üniversitesi</p>
-    <p>Maden Fakültesi</p>
-    <p>Jeoloji Mühendisliği Bölümü</p>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 
 announcements:
-  enabled: true # includes a list of news items
+  enabled: false # includes a list of news items
   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
   limit: 5 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
-  enabled: true
+  enabled: false
   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+İstanbul Teknik Üniversitesi Maden Fakültesi Jeoloji Mühendisliği Bölümü’nde öğretim üyesi olarak görev yapıyorum.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/publications/) automatically.
+Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bilimlerinde mekânsal analiz konularında yoğunlaşıyor. Mühendislik Jeolojisi-Kaya Mekaniği Çalışma Grubu (MJKM) olarak arazi gözlemleri, laboratuvar deneyleri, sayısal analizler ve mekânsal veri işleme yöntemlerini birlikte kullanarak kaya ve zemin ortamlarının mühendislik davranışını, jeolojik tehlikeleri ve bu tehlikelerin altyapı sistemleri, yerleşim alanları ve kültürel miras yapıları üzerindeki etkileri üzerinde çalışıyoruz.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+<h2>
+  <a href="{{ '/publications/' | relative_url }}" style="color: inherit">son makaleler</a>
+</h2>
+
+<div class="publications">
+{% bibliography --group_by none --max 3 --query @article %}
+</div>
+
+<p><a href="{{ '/publications/' | relative_url }}#makaleler">Tüm makaleler →</a></p>
+
+<h2>
+  <a href="{{ '/publications/' | relative_url }}" style="color: inherit">son bildiriler</a>
+</h2>
+
+<div class="publications">
+{% bibliography --group_by none --max 3 --query @inproceedings %}
+</div>
+
+<p><a href="{{ '/publications/' | relative_url }}#bildiriler">Tüm bildiriler →</a></p>
+
+<h2>
+  <a href="{{ '/projects/' | relative_url }}" style="color: inherit">son projeler</a>
+</h2>
+
+{% include project_list.liquid limit=3 %}
+
+<p><a href="{{ '/projects/' | relative_url }}">Tüm projeler →</a></p>

@@ -16,19 +16,19 @@ nav_order: 1
 
 <div class="publications">
 
-<h2 class="bibliography-type">Journal articles</h2>
+<h2 class="bibliography-type" id="articles">Journal articles</h2>
 
 {% bibliography --query @article %}
 
-<h2 class="bibliography-type">Book chapters</h2>
+<h2 class="bibliography-type" id="book-chapters">Book chapters</h2>
 
 {% bibliography --query @incollection %}
 
-<h2 class="bibliography-type">Conference papers</h2>
+<h2 class="bibliography-type" id="conference-papers">Conference papers</h2>
 
 {% bibliography --query @inproceedings %}
 
-<h2 class="bibliography-type">Theses</h2>
+<h2 class="bibliography-type" id="theses">Theses</h2>
 
 {% bibliography --query @phdthesis %}
 
