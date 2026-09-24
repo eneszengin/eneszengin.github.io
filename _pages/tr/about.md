@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: hakkımda
 permalink: /
-subtitle: Doç. Dr. · İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
+subtitle: Doç. Dr.<br>İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
 
 profile:
   align: right
@@ -30,6 +30,8 @@ Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bil
 
 <!-- son bölümler, temadaki ana sayfa kutuları gibi fotoğrafın altından başlar -->
 <div style="clear: both"></div>
+
+<div class="home-latest">
 
 <h2>
   <a href="{{ '/publications/' | relative_url }}" style="color: inherit">son makaleler</a>
@@ -58,3 +60,5 @@ Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bil
 {% include project_list.liquid limit=3 %}
 
 <p><a href="{{ '/projects/' | relative_url }}">Tüm projeler →</a></p>
+
+</div>

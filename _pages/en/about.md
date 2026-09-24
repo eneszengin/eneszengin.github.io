@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: about
 permalink: /
-subtitle: Assoc. Prof. Dr. · ITU Faculty of Mines, Department of Geological Engineering · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
+subtitle: Assoc. Prof. Dr.<br>ITU Faculty of Mines, Department of Geological Engineering · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
 
 profile:
   align: right
@@ -31,6 +31,8 @@ My research focuses on engineering geology, rock mechanics and spatial analysis 
 <!-- latest sections start below the photo, like the theme's home page boxes -->
 <div style="clear: both"></div>
 
+<div class="home-latest">
+
 <h2>
   <a href="{{ '/publications/' | relative_url }}" style="color: inherit">latest articles</a>
 </h2>
@@ -42,14 +44,14 @@ My research focuses on engineering geology, rock mechanics and spatial analysis 
 <p><a href="{{ '/publications/' | relative_url }}#articles">All articles →</a></p>
 
 <h2>
-  <a href="{{ '/publications/' | relative_url }}" style="color: inherit">latest conference papers</a>
+  <a href="{{ '/publications/' | relative_url }}" style="color: inherit">latest proceedings</a>
 </h2>
 
 <div class="publications">
 {% bibliography --group_by none --max 3 --query @inproceedings %}
 </div>
 
-<p><a href="{{ '/publications/' | relative_url }}#conference-papers">All conference papers →</a></p>
+<p><a href="{{ '/publications/' | relative_url }}#proceedings">All proceedings →</a></p>
 
 <h2>
   <a href="{{ '/projects/' | relative_url }}" style="color: inherit">latest projects</a>
@@ -58,3 +60,5 @@ My research focuses on engineering geology, rock mechanics and spatial analysis 
 {% include project_list.liquid limit=3 %}
 
 <p><a href="{{ '/projects/' | relative_url }}">All projects →</a></p>
+
+</div>

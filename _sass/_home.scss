@@ -1,0 +1,11 @@
+/*****************************
+ * Home page "latest" sections
+ *****************************/
+
+// On the home page the latest articles / proceedings / projects span the
+// full content width (up to the photo's right edge) instead of the theme's
+// col-sm-8 publication column.
+.home-latest .publications .row > .col-sm-8 {
+  flex: 1 0 0%;
+  max-width: 100%;
+}

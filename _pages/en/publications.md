@@ -24,7 +24,7 @@ nav_order: 1
 
 {% bibliography --query @incollection %}
 
-<h2 class="bibliography-type" id="conference-papers">Conference papers</h2>
+<h2 class="bibliography-type" id="proceedings">Proceedings</h2>
 
 {% bibliography --query @inproceedings %}
 
