@@ -2,6 +2,16 @@
 # the commented lines are the default social media links supported by the template
 # the socials will be displayed in the order they are defined here
 
+# --- Enes Zengin: görünen bağlantılar (bu sırayla) ---
+email: eneszengin@itu.edu.tr # your email address
+scholar_userid: DhM4L_kAAAAJ # Google Scholar
+scopus_id: 57189441189 # Scopus
+publons_id: MZS-1743-2025 # Web of Science ResearcherID (publons.com adresi WoS profiline yönlenir)
+research_gate_profile: Enes-Zengin # ResearchGate
+linkedin_username: eneszengin # LinkedIn
+x_username: eneszengin # X
+# --- şablonun desteklediği diğer alanlar ---
+
 # academia_edu:  your organization and your username Ex. https://organization.academia.edu/UserName
 #  organization: princeton # your organization as appears in the subdomain
 #  username:  AlbertEinstein # your username
@@ -12,7 +22,6 @@
 # cv_pdf: /assets/pdf/[LANG]/cv.pdf # path to your CV PDF file
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
-email: eneszengin@itu.edu.tr # your email address
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 # github_username: # your GitHub user name
