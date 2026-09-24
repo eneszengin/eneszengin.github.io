@@ -63,6 +63,48 @@ ninja.data = [{
           window.open("mailto:%65%6E%65%73%7A%65%6E%67%69%6E@%69%74%75.%65%64%75.%74%72", "_blank");
         },
       },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=DhM4L_kAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-scopus',
+        title: 'Scopus',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://www.scopus.com/authid/detail.uri?authorId=57189441189", "_blank");
+        },
+      },{
+        id: 'social-publons',
+        title: 'Publons',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://publons.com/a/MZS-1743-2025/", "_blank");
+        },
+      },{
+        id: 'social-researchgate',
+        title: 'ResearchGate',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://www.researchgate.net/profile/Enes-Zengin/", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/eneszengin", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Sosyal bağlantılar',
+        handler: () => {
+          window.open("https://twitter.com/eneszengin", "_blank");
+        },
+      },{
           id: 'lang-en',
           title: 'en',
           section: 'Diller',
