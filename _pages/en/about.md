@@ -26,7 +26,10 @@ latest_posts:
 
 I am a faculty member at the Department of Geological Engineering, Faculty of Mines, Istanbul Technical University.
 
-My research focuses on engineering geology, rock mechanics and spatial analysis in the earth sciences. As the Engineering Geology–Rock Mechanics Research Group (MJKM), we combine field observations, laboratory experiments, numerical analyses and spatial data processing to study the engineering behaviour of rock and soil, geological hazards, and the impact of these hazards on infrastructure systems, settlements and cultural heritage structures.
+My research focuses on engineering geology, rock mechanics and spatial analysis in the earth sciences. As the Engineering Geology–Rock Mechanics–Hydrogeology Research Group (MJKMH), we combine field observations, laboratory experiments, numerical analyses and spatial data processing to study the engineering behaviour of rock and soil, geological hazards, and the impact of these hazards on infrastructure systems, settlements and cultural heritage structures.
+
+<!-- latest sections start below the photo, like the theme's home page boxes -->
+<div style="clear: both"></div>
 
 <h2>
   <a href="{{ '/publications/' | relative_url }}" style="color: inherit">latest articles</a>

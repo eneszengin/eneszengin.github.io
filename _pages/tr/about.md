@@ -26,7 +26,10 @@ latest_posts:
 
 İstanbul Teknik Üniversitesi Maden Fakültesi Jeoloji Mühendisliği Bölümü’nde öğretim üyesi olarak görev yapıyorum.
 
-Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bilimlerinde mekânsal analiz konularında yoğunlaşıyor. Mühendislik Jeolojisi-Kaya Mekaniği Çalışma Grubu (MJKM) olarak arazi gözlemleri, laboratuvar deneyleri, sayısal analizler ve mekânsal veri işleme yöntemlerini birlikte kullanarak kaya ve zemin ortamlarının mühendislik davranışını, jeolojik tehlikeleri ve bu tehlikelerin altyapı sistemleri, yerleşim alanları ve kültürel miras yapıları üzerindeki etkileri üzerinde çalışıyoruz.
+Araştırmalarım genel olarak mühendislik jeolojisi, kaya mekaniği ve yer bilimlerinde mekânsal analiz konularında yoğunlaşıyor. Mühendislik Jeolojisi-Kaya Mekaniği-Hidrojeoloji Çalışma Grubu (MJKMH) olarak arazi gözlemleri, laboratuvar deneyleri, sayısal analizler ve mekânsal veri işleme yöntemlerini birlikte kullanarak kaya ve zemin ortamlarının mühendislik davranışını, jeolojik tehlikeleri ve bu tehlikelerin altyapı sistemleri, yerleşim alanları ve kültürel miras yapıları üzerindeki etkileri üzerinde çalışıyoruz.
+
+<!-- son bölümler, temadaki ana sayfa kutuları gibi fotoğrafın altından başlar -->
+<div style="clear: both"></div>
 
 <h2>
   <a href="{{ '/publications/' | relative_url }}" style="color: inherit">son makaleler</a>
