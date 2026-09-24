@@ -1,0 +1,13 @@
+/*****************************
+ * Publication lists
+ *****************************/
+
+// Enes Zengin's own name (bold via bib.liquid) in dark red, as on eneszengin.com.
+// The dark theme uses a lighter red so it stays readable on the dark background.
+.publications .author strong {
+  color: #8b0000;
+}
+
+html[data-theme="dark"] .publications .author strong {
+  color: #ff6b6b;
+}
