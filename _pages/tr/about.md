@@ -7,7 +7,7 @@ subtitle: Doç. Dr. · İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü 
 
 profile:
   align: right
-  # image: prof_pic.jpg # fotoğraf assets/img/prof_pic.jpg olarak eklenince açılacak
+  image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
