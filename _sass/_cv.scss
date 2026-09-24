@@ -42,15 +42,24 @@ a.btncv:hover {
  * CV TIME_TABLE styles
  *****************************/
 
-/* year/location column: fill the column so the year badge stays centered
-   no matter how long the location text under it is */
+/* year/location column: keep the table at the column width so the year badge
+   stays centered; long locations wrap instead of widening the table */
 table.table-cv:not(.institution) {
   width: 100%;
+  table-layout: fixed;
+
+  /* flex centering keeps a badge wider than the column (e.g. "2025 – Halen")
+     centered, overflowing equally on both sides */
+  td {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 p.location {
   font-size: 0.7rem;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 i.iconlocation {
