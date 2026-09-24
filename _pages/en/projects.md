@@ -10,4 +10,4 @@ nav_order: 2
 
 <!-- Projeler _data/projects.yml dosyasından gelir -->
 
-{% include project_list.liquid %}
+{% include project_list.liquid by_year=true %}

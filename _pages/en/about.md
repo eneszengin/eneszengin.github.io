@@ -3,7 +3,7 @@ page_id: about
 layout: about
 title: about
 permalink: /
-subtitle: Assoc. Prof. Dr.<br>ITU Faculty of Mines, Department of Geological Engineering · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a>
+subtitle: Assoc. Prof. Dr.<br>ITU Faculty of Mines, Department of Geological Engineering · <a href='mailto:eneszengin@itu.edu.tr'>eneszengin@itu.edu.tr</a><br><a href='https://akademi.itu.edu.tr/eneszengin/'>akademi.itu.edu.tr/eneszengin</a>
 
 profile:
   align: right

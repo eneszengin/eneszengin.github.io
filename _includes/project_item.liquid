@@ -1,0 +1,25 @@
+{% comment %}
+  One project entry, in the same markup as a publication entry.
+  Parameters: project, plain (true: no year badge, year closes the funder line).
+{% endcomment %}
+{%- assign project = include.project -%}
+{%- assign title_key = 'title_' | append: site.active_lang -%}
+{%- assign funder_key = 'funder_' | append: site.active_lang -%}
+<li>
+  <div class="row">
+    <div class="col col-sm-2 abbr">
+      {%- unless include.plain %}
+      <abbr class="badge rounded w-100">{{ project.year }}</abbr>
+      {%- endunless %}
+    </div>
+    <div class="col-sm-8">
+      <div class="title">{{ project[title_key] | default: project.title_tr }}</div>
+      <div class="author">{{ site.data[site.active_lang].strings.projects.roles[project.role] }}</div>
+      <div class="periodical">
+        <em>{{ project[funder_key] }}</em>
+        {%- if project.code %} ({{ project.code }}){% endif %}
+        {%- if include.plain %}, {{ project.year }}{% endif %}
+      </div>
+    </div>
+  </div>
+</li>
