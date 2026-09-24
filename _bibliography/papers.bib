@@ -4,12 +4,14 @@
 % Doç. Dr. Enes Zengin — yayın listesi (tek kaynak)
 %
 % Başlık kuralı:
-%   - Yayın dilindeki (orijinal) başlık `title` alanında durur.
-%   - Türkçe sayfa her zaman orijinal başlığı gösterir; İngilizce yayınlar Türkçeleştirilmez.
-%   - Türkçe yayınların İngilizce başlığı `title_en` alanında durur. İngilizce sayfa
-%     bu başlığı gösterir ve sonuna "(in Turkish)" ekler (_data/en/strings.yml).
-%   - Genel kural: site aktif dile göre title_<dil> alanını, yoksa `title` alanını gösterir.
-%
+%   - Yayın dilindeki (orijinal) başlık `title` alanında durur; Türkçe sayfa her zaman bunu gösterir.
+%   - Türkçe yayınlar `language = {turkish}` ile işaretlenir. Bu işaret yazar bağlacını belirler:
+%     Türkçe yayında Türkçe sayfada "ve", diğer her durumda "and" (ve "İçinde"/"In").
+%   - Türkçe yayının İngilizce başlığı varsa `title_en` alanında durur; İngilizce sayfa bunu gösterir
+%     ve sonuna "(in Turkish)" ekler. `title_en` yoksa İngilizce sayfada da orijinal başlık görünür.
+%   - İngilizce başlıklar yalnızca Enes Zengin'in kendi çevirileridir (eneszengin.com / özgeçmiş);
+%     yeni çeviri eklenmeden önce onayı alınır.
+
 % Kaynaklar: eneszengin.com yayın listesi, Google Scholar, Crossref (DOI kayıtlı yayınlar).
 
 % ============================================================================
@@ -181,6 +183,7 @@
 }
 
 @article{ozok2018hidrolik,
+  language  = {turkish},
   author    = {Özok, İ. H. and Zengin, E. and Karakuş, H. and Erguler, Z. A.},
   title     = {Hidrolik İletkenlik İle İnce Taneli Zeminlerin Fiziksel Özellikleri Arasındaki İlişkinin Araştırılması},
   title_en  = {Investigation of the Relationship Between Hydraulic Conductivity and Physical Properties of Fine-Grained Soils},
@@ -213,6 +216,7 @@
 }
 
 @article{derman2016balast,
+  language  = {turkish},
   author    = {Derman, M. and Adıgüzel, Ö. and Zengin, E. and Erguler, Z. A.},
   title     = {Sabuncupınar-Kütahya Arasındaki Demiryollarında Balast Malzemesi Olarak Kullanılan Volkanik Kayacın Fiziksel, Mineralojik ve Aşınma Özellikleri Üzerinde Bozunma Süreçlerinin Etkisi},
   title_en  = {The Effect of Weathering Processes on the Physical, Mineralogical, and Abrasion Properties of Volcanic Rock Used as Ballast Material in the Railways between Sabuncupınar and Kütahya},
@@ -227,20 +231,22 @@
 % Kitap bölümleri
 % ============================================================================
 
-@incollection{sahbaz2024risk,
+@incollection{sahbaz2025risk,
+  language  = {turkish},
   author    = {Şahbaz, O. and Zengin, E.},
   title     = {Madencilikte Risk Değerlendirmede Klasik ve Yenilikçi Yaklaşımlar},
-  title_en  = {Classical and Innovative Approaches to Risk Assessment in Mining},
+  title_en  = {Classical and Innovative Approaches in Risk Assessment in Mining},
   booktitle = {Madencilik Sektöründeki Yenilikçi Gelişim Eğilimleri},
   publisher = {Nobel Yayınevi},
-  pages     = {234--259},
-  year      = {2024},
+  pages     = {262--280},
+  year      = {2025},
 }
 
 @incollection{erguler2014hoyuktepe,
+  language  = {turkish},
   author    = {Erguler, Z. A. and Zengin, E. and Öngen, A. S.},
   title     = {Höyüktepe ve Attepe arkeolojik yerleşim alanlarının jeolojik, jeomorfolojik ve jeoteknik özellikleri},
-  title_en  = {Geological, geomorphological and geotechnical properties of the Höyüktepe and Attepe archaeological settlements},
+  title_en  = {Geological, Geomorphological, and Geotechnical Features of the Höyüktepe and Attepe Archaeological Sites},
   booktitle = {Kureyşler Barajı Kurtarma Kazıları 2014},
   publisher = {Kütahya Müzesi Müdürlüğü},
   pages     = {11--36},
@@ -348,6 +354,7 @@
 }
 
 @inproceedings{dogan2023atag,
+  language  = {turkish},
   author    = {Doğan, B. and Erkül, F. and Şen, F. and Zengin, E. and Alaçam, S. and Çakıcı Alp, N. and Aydoğan, Ö. and Akçal, A. N.},
   title     = {06/02/2023 Tarihli, M 7.7 ve M 7.6 Kahramanmaraş Depremlerinin Yüzey Kırığı, Yanal Atım, Büyüklük İlişkisi ve 20/02/2023 Tarihli, M 6.3 Hatay Depremi ile Birlikte Aktif Fay–Tektonik Ortam Analizi},
   title_en  = {Analysis of the Surface Rupture, Lateral (Strike-Slip) Displacement and Magnitude Relationship of the 06/02/2023 M 7.7 and M 7.6 Kahramanmaraş Earthquakes, Together with an Active Fault–Tectonic Setting Analysis in Conjunction with the 20/02/2023 M 6.3 Hatay Earthquake},
@@ -365,9 +372,10 @@
 }
 
 @inproceedings{dogan2023kahramanmaras,
+  language  = {turkish},
   author    = {Doğan, B. and Şen, F. and Zengin, E. and Alaçam, S. and Çakıcı Alp, N.},
   title     = {Kahramanmaraş (Türkiye), 06/02/2023 Tarihli, M 7.7 ve M 7.6 Depremlerinin, Yüzey Kırıklarının ve Tektonik Kaynağı Fayların Geometrisi},
-  title_en  = {Tectonic Model of the Surface Ruptures Geometry of M 7.7 and M 7.6 Earthquakes, of Their Source Faults of Kahramanmaraş (Türkiye) on 06/02/2023},
+  title_en  = {Tectonic Model of the Surface Ruptures Geometry of M 7.7 and M 7.6 Earthquakes, of Their Source Faults of Kahramanmaraş (Türkiye) on 06 / 02 / 2023},
   booktitle = {75. Türkiye Jeoloji Kurultayı},
   location  = {Ankara, Türkiye},
   year      = {2023},
@@ -392,33 +400,33 @@
 }
 
 @inproceedings{kibici2017emetfiziko,
+  language  = {turkish},
   author    = {Kibici, Y. and Zengin, E. and Yanık, G. and Özkul, C. and Karakuş, H. and Demirbilek, M. and Aksoy, İ. and Acar, R. U.},
   title     = {Emet (Kütahya) Yöresindeki Travertenlerin Fiziko-Mekanik Özellikleri ve Petrografik Özellikleri ile Karşılaştırılması},
-  title_en  = {Physico-Mechanical Properties of the Travertines in the Emet (Kütahya) Region and Their Comparison with Petrographic Properties},
   booktitle = {Türkiye 9. Uluslararası Mermer ve Doğaltaş Kongresi ve Sergisi (MERSEM 2017)},
   year      = {2017},
 }
 
 @inproceedings{kibici2017yenicekoy,
+  language  = {turkish},
   author    = {Kibici, Y. and Demirbilek, M. and Yanık, G. and Karakuş, H. and Aksoy, İ. and Zengin, E. and Acar, R. U.},
   title     = {Yeniceköy, Sefaköy, Uyuzhamamı ve Hamamköy (Emet-Hisarcık/Kütahya-Türkiye) Yöresindeki Travertenlerin Mineralojik ve Petrografik Özellikleri},
-  title_en  = {Mineralogical and Petrographic Properties of the Travertines in the Yeniceköy, Sefaköy, Uyuzhamamı and Hamamköy (Emet-Hisarcık/Kütahya, Türkiye) Region},
   booktitle = {Türkiye 9. Uluslararası Mermer ve Doğaltaş Kongresi ve Sergisi (MERSEM 2017)},
   year      = {2017},
 }
 
 @inproceedings{kibici2017hidrotermal,
+  language  = {turkish},
   author    = {Kibici, Y. and Karakuş, H. and Yanık, G. and Özkul, C. and Demirbilek, M. and Aksoy, İ. and Zengin, E. and Doğan, N.},
   title     = {Yeniceköy (Emet-Kütahya) Yöresindeki Traverten Sahasında Hidrotermal Alterasyon Oluşumunun Jeokimyasal Özellikleri},
-  title_en  = {Geochemical Characteristics of Hydrothermal Alteration in the Travertine Field of the Yeniceköy (Emet-Kütahya) Region},
   booktitle = {Uluslararası Madencilik ve Çevre Sempozyumu (ISME 2017)},
   year      = {2017},
 }
 
 @inproceedings{kibici2017graben,
+  language  = {turkish},
   author    = {Kibici, Y. and Özkul, C. and Yanık, G. and Demirbilek, M. and Karakuş, H. and Aksoy, İ. and Zengin, E.},
   title     = {Emet-Hisarcık (Kütahya-Türkiye) Grabenindeki Travertenlerin Jeokimyasal Özellikleri},
-  title_en  = {Geochemical Properties of the Travertines in the Emet-Hisarcık (Kütahya, Türkiye) Graben},
   booktitle = {Çukurova Üniversitesi 40. Yıl Jeoloji Sempozyumu},
   year      = {2017},
 }
@@ -459,6 +467,7 @@
 }
 
 @inproceedings{zengin2015vangolu,
+  language  = {turkish},
   author    = {Zengin, E. and Erguler, Z. A. and Karakuş, H.},
   title     = {Hidrolik İletkenlik Değerlerinin Belirlenmesine Yönelik Önerilen Görgül Eşitliklere Genel Bakış ve Uygulanabilirliklerinin Araştırılması},
   title_en  = {An Overview of the Proposed Empirical Equations for Determining Hydraulic Conductivity Values and an Investigation of Their Applicability},
@@ -495,6 +504,7 @@
 }
 
 @inproceedings{zengin2012kurultay,
+  language  = {turkish},
   author    = {Zengin, E. and Erguler, Z. A.},
   title     = {Kütahya Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması},
   title_en  = {Investigation of Physical and Mechanical Properties of Kütahya Soils},
@@ -504,9 +514,10 @@
 }
 
 @inproceedings{ozkul2012agirmetal,
+  language  = {turkish},
   author    = {Özkul, C. and Zengin, E.},
   title     = {Kütahya Yerleşim Alanı Toprak Ağır Metal Derişiminin Belirlenmesi},
-  title_en  = {Determination of Heavy Metal Concentration in the Soils of the Kütahya Settlement Area},
+  title_en  = {Determination of heavy metal concentration in settlement area of Kütahya},
   booktitle = {V. Ulusal Jeokimya Sempozyumu},
   location  = {Denizli, Türkiye},
   year      = {2012},
@@ -517,17 +528,17 @@
 % ============================================================================
 
 @phdthesis{zengin2019phd,
+  language  = {turkish},
   author    = {Zengin, E.},
   title     = {Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması},
-  title_en  = {Investigation of the Strength and Deformation Properties of Porous Rock Materials Using Experimental and Numerical Approaches},
   school    = {Kütahya Dumlupınar Üniversitesi, Fen Bilimleri Enstitüsü},
   year      = {2019},
 }
 
 @mastersthesis{zengin2013msc,
+  language  = {turkish},
   author    = {Zengin, E.},
   title     = {Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması},
-  title_en  = {Investigation of the Physical and Mechanical Properties of the Soils of the Kütahya Settlement Area},
   school    = {Kütahya Dumlupınar Üniversitesi, Fen Bilimleri Enstitüsü},
   year      = {2013},
 }

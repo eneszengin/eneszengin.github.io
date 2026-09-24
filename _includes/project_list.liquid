@@ -16,7 +16,7 @@
             <abbr class="badge rounded w-100">{{ project.year }}</abbr>
           </div>
           <div class="col-sm-8">
-            <div class="title">{{ project[title_key] }}</div>
+            <div class="title">{{ project[title_key] | default: project.title_tr }}</div>
             <div class="author">{{ project_strings.roles[project.role] }}</div>
             <div class="periodical">
               <em>{{ project[funder_key] }}</em>

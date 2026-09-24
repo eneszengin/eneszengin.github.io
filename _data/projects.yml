@@ -2,7 +2,9 @@
 #
 # Yeniden eskiye sıralıdır; ana sayfa ilk 3 kaydı "son projeler" olarak gösterir.
 # role: pi (yürütücü) | researcher (araştırmacı) — etiketler _data/<dil>/strings.yml > projects
-# Başlık ve fon kaynağı her iki dilde tutulur: title_tr / title_en, funder_tr / funder_en.
+# Başlık ve fon kaynağı: title_tr / title_en, funder_tr / funder_en. title_en yoksa İngilizce sayfada
+# Türkçe başlık görünür. İngilizce başlıklar yalnızca Enes Zengin'in kendi çevirileridir; yeni çeviri
+# eklenmeden önce onayı alınır. Yıllar özgeçmişe göredir.
 #
 # Kaynaklar: Türkçe başlıklar eneszengin.com, İngilizce başlıklar Enes Zengin_CV_TR.docx.
 
@@ -10,7 +12,6 @@
   role: pi
   code: FHD-2026-48522
   title_tr: Sedimanter Kaya Malzemelerinde Çatlak Başlangıcı Gerilmesinin Parçacık Tabanlı Sayısal Modellemesinde Bağ Modellerinin Karşılaştırmalı Analizi
-  title_en: Comparative Analysis of Bond Models in the Particle-Based Numerical Modelling of Crack Initiation Stress in Sedimentary Rock Materials
   funder_tr: İstanbul Teknik Üniversitesi BAP
   funder_en: Istanbul Technical University BAP
 
@@ -79,24 +80,24 @@
 
 - year: 2020
   role: researcher
-  title_tr: Türkiye Kömür İşletmeleri Çan Linyitleri İşletme Müdürlüğü Faaliyetleri Sonucu Oluşan Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi
-  title_en: R&D Project on the Determination of Acid Generation Potential and Solution Proposals for Waste Rock Areas Resulting from the Activities of the Çan Lignite Operations Directorate
-  funder_tr: Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü
-  funder_en: General Directorate of Turkish Coal Enterprises
-
-- year: 2019
-  role: researcher
   title_tr: Türkiye Kömür İşletmeleri Ege Linyitleri İşletme Müdürlüğü Manisa İli Soma İlçesi Soma Bölgesi ve Deniş Bölgesi Açık Ocak İşletmelerine Ait Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi
   title_en: R&D Project on the Determination of Acid Generation Potential and Solution Proposals for Waste Rock Areas of the Soma and Deniş Open-Pit Mines of the Aegean Lignite Operations Directorate, Manisa Province
   funder_tr: Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü
-  funder_en: General Directorate of Turkish Coal Enterprises
+  funder_en: Turkish Coal Enterprises
+
+- year: 2019
+  role: researcher
+  title_tr: Türkiye Kömür İşletmeleri Çan Linyitleri İşletme Müdürlüğü Faaliyetleri Sonucu Oluşan Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi
+  title_en: R&D Project on the Determination of Acid Generation Potential and Solution Proposals for Waste Rock Areas Resulting from the Activities of the Çan Lignite Operations Directorate
+  funder_tr: Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü
+  funder_en: Turkish Coal Enterprises
 
 - year: 2018
   role: researcher
   title_tr: Türkiye Kömür İşletmeleri Garp Linyitleri İşletme Müdürlüğü Faaliyetleri Sonucu Oluşan Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi
   title_en: R&D Project on the Determination of Acid Generation Potential and Solution Proposals for Waste Rock Areas Resulting from the Activities of the Western Lignite Operations Directorate
   funder_tr: Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü
-  funder_en: General Directorate of Turkish Coal Enterprises
+  funder_en: Turkish Coal Enterprises
 
 - year: 2016
   role: researcher
@@ -118,7 +119,6 @@
   role: researcher
   code: 2012-10
   title_tr: Emet (Kütahya) Travertenlerinin Mineralojik, Petrografik ve Jeokimyasal Özelliklerinin Araştırılması ve Fizikomekanik Özellikleri İle İlişkisi
-  title_en: Investigation of the Mineralogical, Petrographic and Geochemical Properties of the Emet (Kütahya) Travertines and Their Relationship with Physico-Mechanical Properties
   funder_tr: Kütahya Dumlupınar Üniversitesi BAP
   funder_en: Kütahya Dumlupınar University BAP
 

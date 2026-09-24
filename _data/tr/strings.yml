@@ -86,7 +86,6 @@ footer:
 footer_text: > # the ">" symbol means to ignore newlines until "titles:"
   <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> ve <a href="https://github.com/george-gca/multi-language-al-folio">multi-language-al-folio</a> temasıyla hazırlanmıştır.
   <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> üzerinde barındırılmaktadır.
-  Fotoğraflar: <a href="https://unsplash.com" target="_blank">Unsplash</a>.
 latest_posts: son yazılar
 months:
   long:

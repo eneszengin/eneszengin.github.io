@@ -56,9 +56,9 @@
     {% else %}
       <div class="title">{{ entry.title }}</div>
     {% endif %}
-    <!-- Publication language: entries with title_en are Turkish-language publications;
-         their connector words follow the page language, all others use English -->
-    {% if entry.title_en %}
+    <!-- Publication language: Turkish-language entries (language = {turkish}) use the page
+         language for connector words (ve/İçinde on the tr page); all others use English -->
+    {% if entry.language == 'turkish' %}
       {% assign pub_strings = site.data[site.active_lang].strings.bibliography %}
     {% else %}
       {% assign pub_strings = site.data.en.strings.bibliography %}
