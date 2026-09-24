@@ -1,35 +1,29 @@
 {% comment %}
   Lists projects from _data/projects.yml (newest first), using the same markup
   as the publication list so it inherits the theme's look.
-  Usage: include project_list.liquid (all projects) or with limit=3 (latest three).
-  With plain=true the year badge is left out and the year closes the funder line,
-  matching the publication entries (used on the home page).
+  Parameters:
+    limit=3         only the latest N projects (home page)
+    plain=true      no year badge; the year closes the funder line
+    by_year=true    year headings like the publications page (entries are plain)
 {% endcomment %}
 {%- assign project_limit = include.limit | default: 1000 -%}
-{%- assign title_key = 'title_' | append: site.active_lang -%}
-{%- assign funder_key = 'funder_' | append: site.active_lang -%}
-{%- assign project_strings = site.data[site.active_lang].strings.projects -%}
+{%- assign project_plain = include.plain -%}
 <div class="publications">
-  <ol class="bibliography">
-    {%- for project in site.data.projects limit: project_limit %}
-      <li>
-        <div class="row">
-          <div class="col col-sm-2 abbr">
-            {%- unless include.plain %}
-            <abbr class="badge rounded w-100">{{ project.year }}</abbr>
-            {%- endunless %}
-          </div>
-          <div class="col-sm-8">
-            <div class="title">{{ project[title_key] | default: project.title_tr }}</div>
-            <div class="author">{{ project_strings.roles[project.role] }}</div>
-            <div class="periodical">
-              <em>{{ project[funder_key] }}</em>
-              {%- if project.code %} ({{ project.code }}){% endif %}
-              {%- if include.plain %}, {{ project.year }}{% endif %}
-            </div>
-          </div>
-        </div>
-      </li>
+  {%- if include.by_year %}
+    {%- assign project_years = site.data.projects | group_by: 'year' %}
+    {%- for year_group in project_years %}
+      <h2 class="bibliography">{{ year_group.name }}</h2>
+      <ol class="bibliography">
+        {%- for project in year_group.items %}
+          {% include project_item.liquid project=project plain=true %}
+        {%- endfor %}
+      </ol>
     {%- endfor %}
-  </ol>
+  {%- else %}
+    <ol class="bibliography">
+      {%- for project in site.data.projects limit: project_limit %}
+        {% include project_item.liquid project=project plain=project_plain %}
+      {%- endfor %}
+    </ol>
+  {%- endif %}
 </div>
