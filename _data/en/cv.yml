@@ -1,25 +1,3 @@
-- title: Education
-  type: time_table
-  contents:
-    - title: PhD
-      institution: Kütahya Dumlupınar University
-      department: Geological Engineering
-      year: 2013 – 2019
-      description:
-        - "Thesis: Investigation of the Strength and Deformation Properties of Porous Rock Materials Using Experimental and Numerical Approaches (in Turkish)"
-        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
-    - title: MSc
-      institution: Kütahya Dumlupınar University
-      department: Geological Engineering
-      year: 2010 – 2013
-      description:
-        - "Thesis: Investigation of the Physical and Mechanical Properties of the Soils of the Kütahya Settlement Area (in Turkish)"
-        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
-    - title: BSc
-      institution: Kocaeli University
-      department: Geological Engineering
-      year: 2004 – 2009
-
 - title: Academic Experience
   type: time_table
   contents:
@@ -65,9 +43,35 @@
       description:
         - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
 
+- title: Education
+  type: time_table
+  contents:
+    - title: PhD
+      institution: Kütahya Dumlupınar University
+      department: Geological Engineering
+      year: 2013 – 2019
+      description:
+        - "Thesis: Investigation of the Strength and Deformation Properties of Porous Rock Materials Using Experimental and Numerical Approaches (in Turkish)"
+        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: MSc
+      institution: Kütahya Dumlupınar University
+      department: Geological Engineering
+      year: 2010 – 2013
+      description:
+        - "Thesis: Investigation of the Physical and Mechanical Properties of the Soils of the Kütahya Settlement Area (in Turkish)"
+        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: BSc
+      institution: Kocaeli University
+      department: Geological Engineering
+      year: 2004 – 2009
+
 - title: Administrative Experience
   type: time_table
   contents:
+    - title: Coordinator
+      institution: Istanbul Technical University
+      department: Faculty of Mines, Research and Development
+      year: 2026 – Present
     - title: Member
       institution: Kütahya Dumlupınar University
       department: Quality Commission

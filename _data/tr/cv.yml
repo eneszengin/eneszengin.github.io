@@ -1,25 +1,3 @@
-- title: Eğitim
-  type: time_table
-  contents:
-    - title: Doktora
-      institution: Kütahya Dumlupınar Üniversitesi
-      department: Jeoloji Mühendisliği
-      year: 2013 – 2019
-      description:
-        - "Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması"
-        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
-    - title: Yüksek Lisans
-      institution: Kütahya Dumlupınar Üniversitesi
-      department: Jeoloji Mühendisliği
-      year: 2010 – 2013
-      description:
-        - "Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması"
-        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
-    - title: Lisans
-      institution: Kocaeli Üniversitesi
-      department: Jeoloji Mühendisliği
-      year: 2004 – 2009
-
 - title: Akademik Deneyim
   type: time_table
   contents:
@@ -65,9 +43,35 @@
       description:
         - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
 
+- title: Eğitim
+  type: time_table
+  contents:
+    - title: Doktora
+      institution: Kütahya Dumlupınar Üniversitesi
+      department: Jeoloji Mühendisliği
+      year: 2013 – 2019
+      description:
+        - "Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması"
+        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: Yüksek Lisans
+      institution: Kütahya Dumlupınar Üniversitesi
+      department: Jeoloji Mühendisliği
+      year: 2010 – 2013
+      description:
+        - "Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması"
+        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: Lisans
+      institution: Kocaeli Üniversitesi
+      department: Jeoloji Mühendisliği
+      year: 2004 – 2009
+
 - title: İdari Deneyim
   type: time_table
   contents:
+    - title: Koordinatör
+      institution: İstanbul Teknik Üniversitesi
+      department: Maden Fakültesi, Araştırma-Geliştirme
+      year: 2026 – Halen
     - title: Üye
       institution: Kütahya Dumlupınar Üniversitesi
       department: Kalite Komisyonu

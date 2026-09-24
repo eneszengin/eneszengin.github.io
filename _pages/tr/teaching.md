@@ -8,6 +8,25 @@ nav: true
 nav_order: 3
 ---
 
-For now, this page is assumed to be a static description of your courses. You can convert it to a collection similar to `_projects/` so that you can have a dedicated page for each course.
+İstanbul Teknik Üniversitesi’nde verdiğim dersler, yeniden eskiye doğru.
 
-Organize your courses by years, topics, or universities, however you like!
+### 2026-2027 Güz Dönemi
+
+- **JEO 377E** – Individual Studies
+- **JEO 455** – Mühendislik Tasarımında Bilgisayar Uygulamaları
+- **JEO 459** – Yer Bilimlerinde CAD Uygulamaları
+- **JEO 603** – Mühendislik Jeolojisinde Seçme Konular
+- **CIE 112** – Earth Sciences for Civil Engineers
+
+### 2025-2026 Bahar Dönemi
+
+- **INS 112** – İnşaat Mühendisleri İçin Yer Bilimi
+
+### 2025-2026 Güz Dönemi
+
+- **JEO 455** – Mühendislik Tasarımında Bilgisayar Uygulamaları
+- **JEO 459** – Yer Bilimlerinde CAD Uygulamaları
+
+### 2024-2025 Yaz Dönemi
+
+- **JEO 473** – Mühendislik Jeolojisi
