@@ -3,8 +3,8 @@
 # Yeniden eskiye sıralıdır; ana sayfa ilk 3 kaydı "son projeler" olarak gösterir.
 # role: pi (yürütücü) | researcher (araştırmacı) — etiketler _data/<dil>/strings.yml > projects
 # Başlık ve fon kaynağı: title_tr / title_en, funder_tr / funder_en. title_en yoksa İngilizce sayfada
-# Türkçe başlık görünür. İngilizce başlıklar yalnızca Enes Zengin'in kendi çevirileridir; yeni çeviri
-# eklenmeden önce onayı alınır. Yıllar özgeçmişe göredir.
+# Türkçe başlık görünür. İngilizce başlıklar Enes Zengin'in kendi ya da onayladığı çevirilerdir; yeni
+# çeviri eklenmeden önce tek tek onayı alınır. Yıllar özgeçmişe göredir.
 #
 # Kaynaklar: Türkçe başlıklar eneszengin.com, İngilizce başlıklar Enes Zengin_CV_TR.docx.
 
@@ -12,6 +12,7 @@
   role: pi
   code: FHD-2026-48522
   title_tr: Sedimanter Kaya Malzemelerinde Çatlak Başlangıcı Gerilmesinin Parçacık Tabanlı Sayısal Modellemesinde Bağ Modellerinin Karşılaştırmalı Analizi
+  title_en: Comparative Analysis of Bond Models in the Particle-Based Numerical Modelling of Crack Initiation Stress in Sedimentary Rock Materials
   funder_tr: İstanbul Teknik Üniversitesi BAP
   funder_en: Istanbul Technical University BAP
 
@@ -119,6 +120,7 @@
   role: researcher
   code: 2012-10
   title_tr: Emet (Kütahya) Travertenlerinin Mineralojik, Petrografik ve Jeokimyasal Özelliklerinin Araştırılması ve Fizikomekanik Özellikleri İle İlişkisi
+  title_en: Investigation of the Mineralogical, Petrographic and Geochemical Properties of the Emet (Kütahya) Travertines and Their Relationship with Physico-Mechanical Properties
   funder_tr: Kütahya Dumlupınar Üniversitesi BAP
   funder_en: Kütahya Dumlupınar University BAP
 
