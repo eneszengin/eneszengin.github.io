@@ -22,7 +22,7 @@ ninja.data = [{
     },
   },{id: "nav-yayınlar",
           title: "yayınlar",
-          description: "yayınlar, yeniden eskiye doğru sıralı.",
+          description: "yayınlar türüne göre, yeniden eskiye doğru sıralı.",
           section: "Gezinme menüsü",
           handler: () => {
             window.location.href = "/publications/";
