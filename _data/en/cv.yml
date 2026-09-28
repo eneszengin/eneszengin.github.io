@@ -2,44 +2,37 @@
   type: time_table
   contents:
     - title: Associate Professor
-      institution: Istanbul Technical University
+      institution: Istanbul Technical University (Istanbul, Türkiye)
       department: Faculty of Mines, Department of Geological Engineering
       year: 2025 –
-      location: Istanbul
     - title: Associate Professor
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Architecture, Department of City and Regional Planning
       year: 2024 – 2025
-      location: Kütahya
     - title: Assistant Professor
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Architecture, Department of City and Regional Planning
       year: 2022 – 2024
-      location: Kütahya
     - title: Postdoctoral Researcher
-      institution: The University of British Columbia
+      institution: The University of British Columbia (Vancouver, Canada)
       department: Earth, Ocean and Atmospheric Sciences
       year: 2021 – 2022
-      location: Vancouver, Canada
       description:
-        - "Supervisor: Dr. Erik Eberhardt"
+        - "Supervisor: Prof. Dr. Erik Eberhardt"
     - title: Research Assistant (PhD)
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Engineering, Department of Geological Engineering
       year: 2019 – 2022
-      location: Kütahya
     - title: Visiting PhD Researcher
-      institution: University of Aberdeen
+      institution: University of Aberdeen (Aberdeen, United Kingdom)
       department: Geology and Geophysics
       year: 2017 – 2018
-      location: Aberdeen, United Kingdom
       description:
-        - "Supervisor: Dr. David Healy"
+        - "Supervisor: Prof. Dr. David Healy"
     - title: Research Assistant
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Engineering, Department of Geological Engineering
       year: 2010 – 2019
-      location: Kütahya
       description:
         - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
 
@@ -47,21 +40,21 @@
   type: time_table
   contents:
     - title: PhD
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Geological Engineering
       year: 2013 – 2019
       description:
         - "Thesis: Investigation of the Strength and Deformation Properties of Porous Rock Materials Using Experimental and Numerical Approaches (in Turkish)"
         - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
     - title: MSc
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Geological Engineering
       year: 2010 – 2013
       description:
         - "Thesis: Investigation of the Physical and Mechanical Properties of the Soils of the Kütahya Settlement Area (in Turkish)"
         - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
     - title: BSc
-      institution: Kocaeli University
+      institution: Kocaeli University (Kocaeli, Türkiye)
       department: Geological Engineering
       year: 2004 – 2009
 
@@ -69,23 +62,23 @@
   type: time_table
   contents:
     - title: Coordinator
-      institution: Istanbul Technical University
+      institution: Istanbul Technical University (Istanbul, Türkiye)
       department: Faculty of Mines, Research and Development
       year: 2026 –
     - title: Member
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Quality Commission
       year: 2023 – 2025
     - title: Coordinator
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Scientific Research Projects Coordination Unit
       year: 2023 – 2024
     - title: Deputy Coordinator
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Scientific Research Projects Coordination Unit
       year: 2019 – 2023
     - title: Member
-      institution: Kütahya Dumlupınar University
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Quality Commission, Research and Development Sub-Working Group
       year: 2019 – 2025
 
@@ -93,7 +86,7 @@
   type: time_table
   contents:
     - title: TÜBİTAK 2219 – International Postdoctoral Research Fellowship Program
-      institution: The University of British Columbia
+      institution: The University of British Columbia (Vancouver, Canada)
       department: Faculty of Science, Department of Earth, Ocean and Atmospheric Sciences
       year: 2021 – 2022
 
@@ -101,22 +94,17 @@
   type: time_table
   contents:
     - title: Data Science and Machine Learning Bootcamp
-      institution: Miuul
+      institution: Miuul (Istanbul, Türkiye)
       year: 2022 – 2023
-      location: Istanbul
     - title: "EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials"
-      institution: University of Liège
+      institution: University of Liège (Liège, Belgium)
       year: 2020
-      location: Liège, Belgium
     - title: Erasmus Staff Mobility
-      institution: Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate
+      institution: Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Morocco)
       year: 2019
-      location: Ouarzazate, Morocco
     - title: PFC Introductory Training
-      institution: ITASCA Consulting Group
+      institution: ITASCA Consulting Group (Écully, France)
       year: 2016
-      location: Écully, France
     - title: Erasmus Staff Mobility
-      institution: Comenius University, Faculty of Natural Sciences
+      institution: Comenius University, Faculty of Natural Sciences (Bratislava, Slovakia)
       year: 2014
-      location: Bratislava, Slovakia
