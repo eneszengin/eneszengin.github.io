@@ -27,7 +27,9 @@ citation:
 collections:
   books: kitaplar
   posts: yazılar
-contact_note: Bana en kolay e-posta ile ulaşabilirsiniz.
+contact_note: >
+  Bana en kolay e-posta ile ulaşabilirsiniz.<br>
+  İTÜ Ayazağa Kampüsü Maden Fakültesi Jeoloji Mühendisliği Bölümü, 34469, Maslak/İstanbul/Türkiye
 cv:
   address: Adres
   area: Alan

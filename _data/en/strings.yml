@@ -27,7 +27,9 @@ citation:
 collections:
   books: books
   posts: posts
-contact_note: The best way to reach me is by email.
+contact_note: >
+  The best way to reach me is by email.<br>
+  ITU Ayazağa Campus, Faculty of Mines, Department of Geological Engineering, 34469 Maslak, Istanbul, Türkiye
 cv:
   address: Address
   area: Area
