@@ -75,7 +75,7 @@
   {%- capture alt_prefix -%}{%- if lang != site.default_lang -%}/{{ lang }}{%- endif -%}{%- endcapture %}
 <link rel="alternate" hreflang="{{ lang }}" href="{{ page_path | prepend: alt_prefix | absolute_url }}">
 {%- endfor %}
-<link rel="alternate" hreflang="x-default" href="{{ page_path | absolute_url }}">
+<link rel="alternate" hreflang="x-default" {% static_href %}href="{{ page_path | absolute_url }}"{% endstatic_href %}>
 
 {% if site.enable_darkmode %}
   <!-- Dark Mode -->
