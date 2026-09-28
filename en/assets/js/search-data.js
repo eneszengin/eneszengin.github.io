@@ -41,13 +41,6 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/en/teaching/";
           },
-        },{id: "nav-gallery",
-          title: "gallery",
-          description: "",
-          section: "Navigation menu",
-          handler: () => {
-            window.location.href = "/en/gallery/";
-          },
         },{id: "nav-cv",
           title: "cv",
           description: "education, academic and administrative experience.",

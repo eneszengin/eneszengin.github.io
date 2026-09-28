@@ -41,13 +41,6 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/teaching/";
           },
-        },{id: "nav-galeri",
-          title: "galeri",
-          description: "",
-          section: "Gezinme menüsü",
-          handler: () => {
-            window.location.href = "/gallery/";
-          },
         },{id: "nav-cv",
           title: "cv",
           description: "eğitim, akademik ve idari deneyim.",
