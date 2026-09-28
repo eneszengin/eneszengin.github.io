@@ -67,7 +67,15 @@
   <link rel="shortcut icon" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache}}">
 {% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
-<link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+{% comment %} language-aware canonical and hreflang alternates (polyglot does not rewrite absolute URLs) {% endcomment %}
+{%- assign page_path = page.url | replace: 'index.html', '' -%}
+{%- capture lang_prefix -%}{%- if site.active_lang != site.default_lang -%}/{{ site.active_lang }}{%- endif -%}{%- endcapture -%}
+<link rel="canonical" href="{{ page_path | prepend: lang_prefix | absolute_url }}">
+{%- for lang in site.languages %}
+  {%- capture alt_prefix -%}{%- if lang != site.default_lang -%}/{{ lang }}{%- endif -%}{%- endcapture %}
+<link rel="alternate" hreflang="{{ lang }}" href="{{ page_path | prepend: alt_prefix | absolute_url }}">
+{%- endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ page_path | absolute_url }}">
 
 {% if site.enable_darkmode %}
   <!-- Dark Mode -->
