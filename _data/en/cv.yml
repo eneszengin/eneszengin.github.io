@@ -1,15 +1,15 @@
 - title: Academic Experience
   type: time_table
   contents:
-    - title: Associate Professor
+    - title: Assoc. Prof. Dr.
       institution: Istanbul Technical University (Istanbul, Türkiye)
       department: Faculty of Mines, Department of Geological Engineering
       year: 2025 –
-    - title: Associate Professor
+    - title: Assoc. Prof. Dr.
       institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Architecture, Department of City and Regional Planning
       year: 2024 – 2025
-    - title: Assistant Professor
+    - title: Assist. Prof. Dr.
       institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Architecture, Department of City and Regional Planning
       year: 2022 – 2024
@@ -19,7 +19,7 @@
       year: 2021 – 2022
       description:
         - "Supervisor: Prof. Dr. Erik Eberhardt"
-    - title: Research Assistant (PhD)
+    - title: Res. Assist. Dr.
       institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Engineering, Department of Geological Engineering
       year: 2019 – 2022
@@ -29,7 +29,7 @@
       year: 2017 – 2018
       description:
         - "Supervisor: Prof. Dr. David Healy"
-    - title: Research Assistant
+    - title: Res. Assist.
       institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
       department: Faculty of Engineering, Department of Geological Engineering
       year: 2010 – 2019
