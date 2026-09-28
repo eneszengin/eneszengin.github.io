@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://eneszengin.github.io/sitemap.xml
+Sitemap: https://eneszengin.com/sitemap.xml
