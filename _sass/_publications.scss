@@ -11,3 +11,10 @@
 html[data-theme="dark"] .publications .author strong {
   color: #ff6b6b;
 }
+
+// Publication and project entries have no thumbnail column: the text spans the
+// full content width, left-aligned.
+.publications ol.bibliography li .row > .col-sm-10 {
+  flex: 1 0 0%;
+  max-width: 100%;
+}

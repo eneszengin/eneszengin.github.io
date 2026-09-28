@@ -68,7 +68,19 @@ layout: default
     <!-- Social -->
     {% if page.social %}
       <div class="social">
-        <div class="contact-icons">{% social_links %}</div>
+        {% capture social_icons %}{% social_links %}{% endcapture %}
+        {% comment %} readable tooltips instead of the plugin's key-based titles {% endcomment %}
+        <div class="contact-icons">
+          {{- social_icons
+            | replace: "title='Email'", "title='E-mail'"
+            | replace: "title='Scholar userid'", "title='Google Scholar'"
+            | replace: "title='Scopus id'", "title='Scopus'"
+            | replace: "title='Publons id'", "title='Web of Science'"
+            | replace: "title='Research gate profile'", "title='ResearchGate'"
+            | replace: "title='Linkedin username'", "title='LinkedIn'"
+            | replace: "title='X username'", "title='X'"
+          -}}
+        </div>
 
         <div class="contact-note">{{ site.data[site.active_lang].strings.contact_note }}</div>
       </div>
