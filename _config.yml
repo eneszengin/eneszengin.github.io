@@ -7,7 +7,7 @@ first_name: Enes
 middle_name:
 last_name: Zengin
 keywords: Enes Zengin, jeoloji, jeoloji mühendisliği, geology, geological engineering, İTÜ, Istanbul Technical University # add your own keywords or leave empty
-icon: favicon-ez.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: 🐝 # favicon: MJKMH sitesiyle aynı arı emojisi (eski görsel: favicon-ez.png)
 
 url: https://eneszengin.com # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
