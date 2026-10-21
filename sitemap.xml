@@ -1,0 +1,34 @@
+---
+layout: null
+sitemap: false
+permalink: /sitemap.xml
+---
+{%- comment -%}
+  İki dilli sitemap. jekyll-sitemap, jekyll-polyglot ile birlikte yalnızca varsayılan dilin
+  adreslerini üretiyordu. Her sayfanın Türkçe ve İngilizce sürümü aynı permalink'i taşıdığı için
+  (İngilizce sürüm /en/ önekiyle yayınlanır), her sayfa için iki <url> kaydı ve hreflang
+  karşılıkları üretilir. Bir sayfayı dışarıda bırakmak için ön bilgisine `sitemap: false` ekleyin.
+{%- endcomment -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- assign seen = "" -%}
+{%- assign sorted_pages = site.pages | sort: "url" -%}
+{%- for p in sorted_pages -%}
+  {%- if p.sitemap == false or p.page_id == nil or p.page_id == "not_found" -%}{%- continue -%}{%- endif -%}
+  {%- assign page_path = p.url | replace: "index.html", "" -%}
+  {%- assign key = "|" | append: page_path | append: "|" -%}
+  {%- if seen contains key -%}{%- continue -%}{%- endif -%}
+  {%- assign seen = seen | append: key -%}
+  {%- for lang in site.languages %}
+  {%- capture prefix -%}{%- if lang != site.default_lang -%}/{{ lang }}{%- endif -%}{%- endcapture %}
+  <url>
+    <loc>{{ page_path | prepend: prefix | absolute_url | xml_escape }}</loc>
+    {%- for alt in site.languages -%}
+      {%- capture alt_prefix -%}{%- if alt != site.default_lang -%}/{{ alt }}{%- endif -%}{%- endcapture %}
+    <xhtml:link rel="alternate" hreflang="{{ alt }}" href="{{ page_path | prepend: alt_prefix | absolute_url | xml_escape }}"/>
+    {%- endfor %}
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ page_path | absolute_url | xml_escape }}"/>
+  </url>
+  {%- endfor -%}
+{%- endfor %}
+</urlset>

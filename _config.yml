@@ -209,7 +209,6 @@ plugins:
   - jekyll-polyglot
   - jekyll-regex-replace
   - jekyll/scholar
-  - jekyll-sitemap
   - jekyll-socials
   - jekyll-tabs
   - jekyll-terser

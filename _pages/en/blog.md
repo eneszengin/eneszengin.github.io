@@ -1,5 +1,6 @@
 ---
 page_id: blog
+sitemap: false
 layout: default
 permalink: /blog/
 title: blog
