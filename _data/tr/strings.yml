@@ -83,7 +83,7 @@ cv:
   volunteer: Gönüllü çalışmalar
   work: İş deneyimi
 footer:
-  copyright: Telif hakkı
+  copyright: ""
   last_updated: "Son güncelleme:"
 footer_text: > # the ">" symbol means to ignore newlines until "titles:"
   <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> ve <a href="https://github.com/george-gca/multi-language-al-folio">multi-language-al-folio</a> temasıyla hazırlanmıştır.

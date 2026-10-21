@@ -83,7 +83,7 @@ cv:
   volunteer: Volunteer
   work: Work
 footer:
-  copyright: Copyright
+  copyright: ""
   last_updated: "Last updated:"
 footer_text: > # the ">" symbol means to ignore newlines until "titles:"
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/george-gca/multi-language-al-folio">multi-language-al-folio</a> theme.
