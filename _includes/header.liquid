@@ -133,19 +133,28 @@
               {% else %}
                 {% assign other_language = site.languages.first %}
               {% endif %}
+              {%- comment -%} dil düğmesi için erişilebilir etiket: gidilen dilin kendi adı {%- endcomment -%}
+              {%- assign lang_names = "tr:Türkçe,en:English" | split: "," -%}
+              {%- assign target_lang = other_language -%}
+              {%- if site.active_lang != site.default_lang -%}{%- assign target_lang = site.default_lang -%}{%- endif -%}
+              {%- assign target_label = target_lang | upcase -%}
+              {%- for pair in lang_names -%}
+                {%- assign kv = pair | split: ":" -%}
+                {%- if kv[0] == target_lang -%}{%- assign target_label = kv[1] -%}{%- endif -%}
+              {%- endfor %}
               <li class="nav-item active">
                 {% if site.active_lang == site.default_lang %}
-                  <a class="nav-link" {% static_href -%} href="{{ site.baseurl }}/{{ other_language }}{{ page.url }}" {%- endstatic_href %}>
+                  <a class="nav-link" {% static_href -%} href="{{ site.baseurl }}/{{ other_language }}{{ page.url }}" {%- endstatic_href %} lang="{{ target_lang }}" aria-label="{{ target_label }}" title="{{ target_label }}">
                     {% if site.country_flag %}
-                      <span class="fi fi-{% if other_language == 'en' %}gb{% else %}{{ other_language | split: "-" | last }}{% endif %}"></span>
+                      <span aria-hidden="true" class="fi fi-{% if other_language == 'en' %}gb{% else %}{{ other_language | split: "-" | last }}{% endif %}"></span>
                     {% else %}
                       {{ other_language | upcase }}
                     {%- endif -%}
                   </a>
                 {% else %}
-                  <a class="nav-link" {% static_href -%} href="{{ site.baseurl }}{{ page.url }}" {%- endstatic_href %}>
+                  <a class="nav-link" {% static_href -%} href="{{ site.baseurl }}{{ page.url }}" {%- endstatic_href %} lang="{{ target_lang }}" aria-label="{{ target_label }}" title="{{ target_label }}">
                     {% if site.country_flag %}
-                      <span class="fi fi-{% if site.default_lang == 'en' %}gb{% else %}{{ site.default_lang | split: "-" | last }}{% endif %}"></span>
+                      <span aria-hidden="true" class="fi fi-{% if site.default_lang == 'en' %}gb{% else %}{{ site.default_lang | split: "-" | last }}{% endif %}"></span>
                     {% else %}
                       {{ site.default_lang | upcase }}
                     {%- endif -%}
