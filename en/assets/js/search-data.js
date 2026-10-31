@@ -56,6 +56,13 @@ ninja.data = [{
           window.open("mailto:%65%6E%65%73%7A%65%6E%67%69%6E@%69%74%75.%65%64%75.%74%72", "_blank");
         },
       },{
+        id: 'social-orcid',
+        title: 'ORCID',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://orcid.org/0000-0002-5740-7763", "_blank");
+        },
+      },{
         id: 'social-scholar',
         title: 'Google Scholar',
         section: 'Socials',
