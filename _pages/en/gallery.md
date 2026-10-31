@@ -1,5 +1,6 @@
 ---
 page_id: gallery
+sitemap: false
 layout: page
 permalink: /gallery/
 title: gallery

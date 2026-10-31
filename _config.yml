@@ -7,7 +7,7 @@ first_name: Enes
 middle_name:
 last_name: Zengin
 keywords: Enes Zengin, jeoloji, jeoloji mühendisliği, geology, geological engineering, İTÜ, Istanbul Technical University # add your own keywords or leave empty
-icon: favicon-ez.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: 🐝 # favicon: MJKMH sitesiyle aynı arı emojisi (eski görsel: favicon-ez.png)
 
 url: https://eneszengin.com # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
@@ -38,7 +38,7 @@ external_services:
 # RSS Feed
 # -----------------------------------------------------------------------------
 # will use title and url fields
-# Take a look to https://github.com/jekyll/jekyll-feed for more customization
+# RSS akışı kaldırıldı (jekyll-feed kullanılmıyor).
 
 # -----------------------------------------------------------------------------
 # Layout
@@ -199,7 +199,6 @@ plugins:
   - jekyll-archives-v2
   - jekyll-cache-bust
   - jekyll-email-protect
-  - jekyll-feed
   - jekyll-get-json
   - jekyll-imagemagick
   - jekyll-jupyter-notebook
@@ -209,7 +208,6 @@ plugins:
   - jekyll-polyglot
   - jekyll-regex-replace
   - jekyll/scholar
-  - jekyll-sitemap
   - jekyll-socials
   - jekyll-tabs
   - jekyll-terser
@@ -356,7 +354,7 @@ external_links:
 
 languages: ["tr", "en"]
 default_lang: "tr"
-exclude_from_localization: ["assets"]
+exclude_from_localization: ["assets", "sitemap.xml", "robots.txt"]
 lang_from_path: true
 country_flag: true # set true for allowing flag symbol in language toggle
 parallel_localization: false
