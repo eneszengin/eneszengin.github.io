@@ -79,7 +79,7 @@ openpanel_analytics: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX
 # For Google Search Console, see https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag
 google_site_verification: # your google-site-verification ID (Google Search Console)
 bing_site_verification: 875210B450F40573929542402D7EC947 # Bing Webmaster Tools (msvalidate.01)
-yandex_site_verification: # Yandex Webmaster doğrulama kodu (yandex-verification); boşsa etiket eklenmez
+yandex_site_verification: c2f7455f3cf4cb86 # Yandex Webmaster doğrulama kodu (yandex-verification); boşsa etiket eklenmez
 
 # -----------------------------------------------------------------------------
 # Blog
