@@ -18,7 +18,7 @@ nav_order: 1
 
 <h2 class="bibliography-type" id="degerlendirmede">Değerlendirmedeki makaleler</h2>
 
-{% bibliography --query @unpublished %}
+{% bibliography --group_by none --query @unpublished %}
 
 <h2 class="bibliography-type" id="makaleler">Makaleler</h2>
 
