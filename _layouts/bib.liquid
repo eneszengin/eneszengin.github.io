@@ -164,6 +164,8 @@
     {% assign thesis = 'thesis,mastersthesis,phdthesis' | split: ',' %}
     {% if entry.type == 'article' %}
       {% capture entrytype %}<em>{{ entry.journal }}</em>{% endcapture %}
+    {% elsif entry.type == 'unpublished' %}
+      {% capture entrytype %}<em>{{ entry.journal }}</em> ({{ site.data[site.active_lang].strings.bibliography.under_review }}){% endcapture %}
     {% elsif proceedings contains entry.type %}
       {% capture entrytype %}<em>{{ pub_strings.book_prefix }} {{ entry.booktitle }}</em>{% endcapture %}
     {% elsif thesis contains entry.type %}
@@ -176,7 +178,7 @@
       {% capture entrymonth %}{{ " " }}{{ entry.month | capitalize }}{% endcapture %}
     {% endif %}
     {% assign entryyear = '' %}
-    {% if entry.year %}
+    {% if entry.year and entry.type != 'unpublished' %}
       {% capture entryyear %}{{ " " }}{{ entry.year }}{% endcapture %}
     {% endif %}
     {% if entry.location %}
