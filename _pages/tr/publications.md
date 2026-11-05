@@ -16,6 +16,10 @@ nav_order: 1
 
 <div class="publications">
 
+<h2 class="bibliography-type" id="degerlendirmede">Değerlendirmedeki makaleler</h2>
+
+{% bibliography --query @unpublished %}
+
 <h2 class="bibliography-type" id="makaleler">Makaleler</h2>
 
 {% bibliography --query @article %}
