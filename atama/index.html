@@ -380,6 +380,7 @@
             const info = j["serial-metadata-response"]?.entry?.[0]?.citeScoreYearInfoList?.citeScoreYearInfo || [];
             const byYear = {};
             for (const y of info) {
+              if (y["@status"] !== "Complete") continue;
               const ranks = y.citeScoreInformationList?.[0]?.citeScoreInfo?.[0]?.citeScoreSubjectRank || [];
               const best = Math.max(...ranks.map((x) => parseFloat(x.percentile) || 0));
               if (ranks.length) byYear[y["@year"]] = best;
