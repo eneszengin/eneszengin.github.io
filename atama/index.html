@@ -658,8 +658,10 @@
         ["d9", "09_Uluslararasi_Deneyim", "9. Uluslararası deneyim belgesi (Dr. Öğr. Üyesi için)"],
       ];
       function renderDocs() {
-        $("#docs").innerHTML = DOCS.map(([k, , label]) => `<tr><td>${label}</td><td class="num">${fileBtn("doc:" + k, "PDF")}</td></tr>`).join("")
-          + `<tr><td>6. Yayınlar</td><td class="num note">Yukarıda her yayının satırından yüklenir</td></tr>`;
+        const row = ([k, , label]) => `<tr><td>${label}</td><td class="num">${fileBtn("doc:" + k, "PDF")}</td></tr>`;
+        $("#docs").innerHTML = DOCS.filter(([k]) => k <= "d5").map(row).join("")
+          + `<tr><td>6. Yayınlar</td><td class="num note">Yukarıda her yayının satırından yüklenir</td></tr>`
+          + DOCS.filter(([k]) => k > "d5").map(row).join("");
       }
       const slug = (t) => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").replace(/[^\w]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
       async function buildZip() {
