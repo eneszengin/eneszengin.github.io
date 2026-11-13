@@ -104,6 +104,8 @@
           </div>
         </div>
 
+        <div class="card" id="musts"></div>
+
         <div class="card sticky">
           <div class="summary" id="summary"></div>
         </div>
@@ -396,6 +398,36 @@
         }
         if (data.target === "dou") checks.push(["Yabancı Dil", num("lang"), 65]);
 
+        const ep = (v) => dept === "std" ? v : `${v} (bölümünüz için)`;
+        const MUSTS = {
+          dou: [
+            `Toplam puan en az <b>60</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `En az <b>2 başlıca eser</b>`,
+            `Yabancı dil sınavından en az <b>65 puan</b> (YDS, YÖKDİL, ÜDS, KPDS veya eşdeğeri)`,
+            `İlk atamada <b>uluslararası deneyim</b>: yurt dışında yüksek lisans/doktora, ya da lisansüstü dönemde en az 1 yıl yurt dışı, ya da yurt içinde en az 2 yıl doktora sonrası araştırma`,
+            `R1 niyet mektubu isteğe bağlı (en fazla 1000 kelime)`,
+          ],
+          doc: [
+            `Toplam puan en az <b>250</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `Doktora sonrası en az <b>4 başlıca eser</b>`,
+            `En az <b>1 TR Dizin makalesi</b> (yoksa eser puanı eşiği +3)`,
+            `Doktora sonrası en az <b>1 projede</b> araştırmacı veya yürütücü`,
+            `<b>Tamamlanmış lisansüstü tez</b> danışmanlığı (yoksa +1 başlıca eser)`,
+            `R1 niyet mektubu isteğe bağlı (en fazla 1000 kelime)`,
+          ],
+          prof: [
+            `Toplam puan en az <b>500</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `En az <b>7 başlıca eser</b>, bunların en az <b>3'ü doçentlik sonrası</b>`,
+            `En az <b>2 TR Dizin makalesi</b> (yoksa eser puanı eşiği +6)`,
+            `Doktora sonrası en az <b>2 proje</b> (yürütücü veya uluslararası projede araştırmacı)`,
+            `En az <b>3 tamamlanmış lisansüstü tez</b> danışmanlığı`,
+            `<b>R2 niyet beyanı zorunlu</b> (1500–2000 kelime)`,
+          ],
+        };
+        $("#musts").innerHTML = `<h2 style="text-align:center">${r.name} kadrosu için zorunlu koşullar</h2><ul style="margin:0;padding-left:20px">${MUSTS[data.target].map((x) => `<li>${x}</li>`).join("")}</ul><p class="note" style="margin:8px 0 0">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022), Tablo 2 ve 4.</p>`;
         $("#summary").innerHTML = checks.map(([label, v, req, soft]) => {
           const ok = v >= req;
           const cls = ok ? "ok" : soft ? "warn" : "bad";
