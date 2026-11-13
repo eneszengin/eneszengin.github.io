@@ -329,9 +329,8 @@
         $("#extra").innerHTML = `
           <tr><td>Başlıca eser sayısı <span class="note">— A.1/A.2 yayınlarında "Başlıca eser" kutusunu işaretleyin (tek yazarlı; kendi tezinden/projesinden ilk veya sorumlu yazar; ya da yönettiği tezden)</span></td><td class="num"><b>${baslCount().all}</b></td></tr>
           <tr><td>— bunlardan doçentlik tarihinden sonra yayımlananlar</td><td class="num"><b>${data.docDate ? baslCount().post : "tarih girin"}</b></td></tr>
-          <tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr>
-          <tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>
-          <tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>`;
+          ${data.target === "dou" ? `<tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr><tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>` : ""}
+          ${data.target === "prof" ? `<tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>` : ""}`;
         document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener(el.dataset.k === "docDate" ? "change" : "input", () => { data[el.dataset.k] = el.value; if (el.dataset.k === "docDate") build(); calc(); save(); }));
         bindPubSelects();
         document.querySelectorAll("[data-add]").forEach((b) => b.onclick = () => {
@@ -449,7 +448,7 @@
         showName();
       }
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
-      $("#target").addEventListener("change", () => { calc(); save(); });
+      $("#target").addEventListener("change", () => { data.target = $("#target").value; build(); calc(); save(); });
       $("#dept").addEventListener("change", () => { calc(); save(); });
       $("#docDate").addEventListener("change", (e) => { data.docDate = e.target.value; build(); calc(); save(); });
       $("#logoutBtn").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
