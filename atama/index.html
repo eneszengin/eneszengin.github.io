@@ -367,19 +367,52 @@
         const head = rows.shift().map((h) => h.trim());
         return rows.filter((r) => r.length > 1).map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
       }
-      // CiteScore tablosu (varsa): { "ISSN": { "2023": yüzdelik, ... } }
-      let CS = null;
-      fetch("citescore.json").then((r) => r.ok ? r.json() : null).then((j) => { CS = j; }).catch(() => {});
-      function percentile(issns, year) {
-        if (!CS) return null;
+      // Elsevier Serial Title API: derginin yıllık CiteScore yüzdeliği (tarayıcıdan doğrudan)
+      const ELS_KEY = ""; // ← Elsevier API anahtarı buraya yazılır
+      const qCache = {};
+      async function serialPct(issn) {
+        if (issn in qCache) return qCache[issn];
+        qCache[issn] = (async () => {
+          try {
+            const r = await fetch("https://api.elsevier.com/content/serial/title/issn/" + issn + "?view=CITESCORE", { headers: { "X-ELS-APIKey": ELS_KEY, Accept: "application/json" } });
+            if (!r.ok) return null;
+            const j = await r.json();
+            const info = j["serial-metadata-response"]?.entry?.[0]?.citeScoreYearInfoList?.citeScoreYearInfo || [];
+            const byYear = {};
+            for (const y of info) {
+              const ranks = y.citeScoreInformationList?.[0]?.citeScoreInfo?.[0]?.citeScoreSubjectRank || [];
+              const best = Math.max(...ranks.map((x) => parseFloat(x.percentile) || 0));
+              if (ranks.length) byYear[y["@year"]] = best;
+            }
+            return byYear;
+          } catch { return null; }
+        })();
+        return qCache[issn];
+      }
+      async function lookupPct(issns, year) {
         for (const raw of issns) {
-          const t = CS[raw.replace(/[^\dXx]/g, "").toUpperCase()];
+          const t = await serialPct(raw.replace(/[^\dXx]/g, "").toUpperCase());
           if (!t) continue;
           const ys = Object.keys(t).map(Number);
+          if (!ys.length) continue;
           const y = t[year] != null ? year : (ys.filter((v) => v <= year).sort((a, b) => b - a)[0] ?? ys.sort((a, b) => a - b)[0]);
-          return t[y];
+          return { pct: t[y], y };
         }
         return null;
+      }
+      async function checkQuartiles() {
+        const st = $("#fetchStatus");
+        if (!ELS_KEY) { st.textContent += " · Scopus çeyrek kontrolü kapalı (anahtar tanımlı değil)."; return; }
+        const arts = data.pubs.filter((p) => p.issn && /^(Article|Review)$/.test(p.type) && !p.manual);
+        let done = 0, found = 0;
+        for (const p of arts) {
+          st.textContent = `Çeyrekler Scopus'tan kontrol ediliyor: ${++done}/${arts.length}`;
+          const r = await lookupPct(p.issn.split(/[;,\s]+/).filter(Boolean), p.year);
+          if (r) { p.pct = r.pct; p.pctYear = r.y; p.cls = qFromPct(r.pct); p.guess = false; found++; }
+        }
+        const left = data.pubs.filter((p) => p.guess && !p.manual).length;
+        st.textContent = `${data.pubs.length} yayın · h-indeksi ${data.h} · ${found}/${arts.length} makalenin çeyreği Scopus'tan alındı` + (left ? ` · ${left} sarı satırı kontrol edin` : "");
+        applyPubs(); build(); calc(); save();
       }
       const qFromPct = (p) => p >= 75 ? "A.1" : p >= 50 ? "A.2" : p >= 25 ? "A.3" : "A.4";
       function importCSV(text) {
@@ -397,12 +430,11 @@
           const year = parseInt(r.Year), type = r["Document Type"] || "", src = r["Source title"] || "";
           let cls = "-", pct = null;
           if (/^(Article|Review)$/.test(type) && !/conference|proceedings/i.test(src)) {
-            pct = percentile((r.ISSN || "").split(/[;,\s]+/).filter(Boolean), year);
-            cls = pct == null ? "A.4" : qFromPct(pct);
+            cls = "A.4";
           } else if (/Conference/.test(type)) cls = "B.1";
           else if (/Book chapter/i.test(type)) cls = "C.3";
           const eid = r.EID || r.DOI || r.Title;
-          return { eid, year, title: r.Title, src, type, pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: pct == null && cls === "A.4" };
+          return { eid, year, title: r.Title, src, type, issn: r.ISSN || "", pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: cls === "A.4" };
         }).sort((a, b) => (b.year || 0) - (a.year || 0));
         // h-indeksi (öz atıflar dahil)
         const c = out.map((p) => p.cites).sort((a, b) => b - a);
@@ -413,6 +445,7 @@
         const unk = data.pubs.filter((p) => p.guess && !p.manual).length;
         st.textContent = `${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "");
         showName(); applyPubs(); build(); calc(); save();
+        checkQuartiles();
       }
       function showName() { $("#idLabel").textContent = id + (data.name ? " · " + data.name : ""); }
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
