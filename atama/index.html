@@ -426,7 +426,7 @@
           const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + id + ")"));
           if (m) { data.name = m.replace(/\s*\(\d+\)$/, ""); break; }
         }
-        const mine = recs.filter((r) => !r["Author(s) ID"] || r["Author(s) ID"].includes(id));
+        const mine = recs.filter((r) => r.Title); // profilden alınan dosyadaki tüm kayıtlar kullanılır
         const out = mine.map((r) => {
           const year = parseInt(r.Year), type = r["Document Type"] || "", src = r["Source title"] || "";
           let cls = "-", pct = null;
@@ -444,7 +444,7 @@
         const prev = Object.fromEntries((data.pubs || []).filter((p) => p.manual).map((p) => [p.eid, p]));
         data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, manual: true } : p);
         const unk = data.pubs.filter((p) => p.guess && !p.manual).length;
-        st.textContent = `${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "");
+        st.textContent = `CSV: ${recs.length} satır · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "");
         showName(); applyPubs(); build(); calc(); save();
         checkQuartiles();
       }
