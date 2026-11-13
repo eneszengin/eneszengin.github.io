@@ -392,12 +392,12 @@
         ];
         if (data.target === "prof") {
           checks.push(["Doçentlik Sonrası Başlıca Eser", baslCount().post, 3]);
-          checks.push(["Proje (Yürütücü / Uluslararası)", projLead, r.proj]);
+          checks.push(["Proje", projLead, r.proj]);
           checks.push(["Tamamlanmış Tez", thesis, r.thesis]);
           checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
         }
         if (data.target === "doc") {
-          checks.push(["Proje (Yürütücü / Araştırmacı)", projAny, r.proj]);
+          checks.push(["Proje", projAny, r.proj]);
           checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
         }
         if (data.target === "dou") checks.push(["Yabancı Dil", num("lang"), 65]);
