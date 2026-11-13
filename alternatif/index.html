@@ -415,8 +415,9 @@
   if(!links.length)return;
   var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
   function update(){
-    var y=window.scrollY+110,cur=secs[0];
-    for(var i=0;i<secs.length;i++){if(secs[i].offsetTop<=y)cur=secs[i]}
+    var cur=secs[0];
+    for(var i=0;i<secs.length;i++){if(secs[i].getBoundingClientRect().top<=120)cur=secs[i]}
+    if(window.innerHeight+window.scrollY>=document.body.scrollHeight-2)cur=secs[secs.length-1];
     links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur.id)});
   }
   window.addEventListener('scroll',update,{passive:true});window.addEventListener('load',update);update();
