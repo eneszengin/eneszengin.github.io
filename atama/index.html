@@ -37,7 +37,8 @@
       .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
       .note { font-size: .85rem; color: var(--muted); }
       .hidden { display: none; }
-      details summary { cursor: pointer; font-weight: 600; }
+      details summary { cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+      details summary .note { text-transform: none; letter-spacing: 0; font-weight: 400; }
     </style>
   </head>
   <body>
@@ -135,6 +136,12 @@
           ["A.2", "Scopus Q2 makale", 8, "count", { eser: true }],
           ["A.3", "Scopus Q3 makale", 4, "count", { eser: true }],
           ["A.4", "Scopus Q4 makale", 3, "count"],
+          ["A.5", "AHCI tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.6", "SSCI, ESCI veya SCI-E tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.7", "EBSCO, Proquest, RILM veya MLA tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.8", "ASOS veya Sobiad tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.9", "ÜAK tarafından tanımlanmış ilgili alan indekslerindeki dergilerde makale", 0, "count", { na: true }],
+          ["A.10", "WOS ve Scopus'ta taranan dergilerde forum ve kitap değerlendirmesi", 0, "count", { na: true }],
           ["A.11", "TR Dizin makale", 3, "count"],
         ]},
         { id: "B", title: "B. Bildiriler", items: [
@@ -149,6 +156,7 @@
           ["C.5", "Uluslararası kitap editörlüğü", 30, "count"],
           ["C.6", "Ulusal kitap editörlüğü", 15, "count"],
           ["C.7", "Kitap çevirisi", 10, "count"],
+          ["C.8", "Uluslararası ansiklopedi maddesi", 0, "count", { na: true }],
         ]},
         { id: "D", title: "D. Atıflar", special: "D" },
         { id: "E", title: "E. Patentler (tescilli)", items: [
@@ -172,13 +180,21 @@
           ["G.4", "TÜBA özgün eser ödülü", 20, "count"],
           ["G.5", "Diğer ulusal jürili ödül", 20, "count"],
           ["G.6", "En iyi makale/bildiri ödülü", 10, "count"],
+          ["G.7a", "MF yarışma ödülü – uluslararası derece", 0, "count", { na: true }],
+          ["G.7b", "MF yarışma ödülü – uluslararası mansiyon", 0, "count", { na: true }],
+          ["G.7c", "MF yarışma ödülü – uluslararası satın alma", 0, "count", { na: true }],
+          ["G.7d", "MF yarışma ödülü – ulusal derece", 0, "count", { na: true }],
+          ["G.7e", "MF yarışma ödülü – ulusal mansiyon", 0, "count", { na: true }],
+          ["G.7f", "MF yarışma ödülü – ulusal satın alma", 0, "count", { na: true }],
         ]},
-        { id: "H", title: "H. Dergi editörlüğü ve hakemlik", items: [
+        { id: "H", title: "H. Dergilerde editörlük", items: [
           ["H.1", "Editör", 40, "count"],
           ["H.2", "Yardımcı editör", 30, "count"],
           ["H.3", "Yayın kurulu üyeliği", 20, "count"],
           ["H.4", "Misafir editör", 10, "count"],
-          ["I", "Hakemlik (her biri 2 puan, en fazla 20)", 2, "count", { cap: 20 }],
+        ]},
+        { id: "I", title: "I. Hakemlik (en fazla 20)", items: [
+          ["I", "İndeksli uluslararası dergide hakemlik (her biri)", 2, "count", { cap: 20 }],
         ]},
         { id: "J", title: "J. Tez danışmanlığı (tamamlanmış)", items: [
           ["J.1", "Doktora – danışman", 40, "count", { thesis: true }],
@@ -190,8 +206,39 @@
           ["K.1", "Son 2 yılda verilen ders kredisi toplamı", 1, "raw"],
           ["K.2", "MOOC geliştirme", 10, "count"],
           ["K.3", "Uluslararası yaz okulu vb. program", 10, "count"],
+          ["K.4", "MF: ders ürünlerini İTÜ dışında sergileme/yayımlama", 0, "count", { na: true }],
+          ["K.5", "MF: eğitime yönelik laboratuvar/atölye kurma", 0, "count", { na: true }],
+          ["K.6", "MF: eğitime yönelik atölye/çalıştay düzenleme", 0, "count", { na: true }],
           ["K.7", "İTÜ SEM ile yeni program tasarımı", 1, "count"],
           ["K.8", "Kısa uluslararası ders (ATHENS vb.)", 1, "count"],
+        ]},
+        { id: "L", title: "L. Müzik ve sahne çalışmaları", items: [
+          ["L.1", "Uluslararası yapımlarda solo icracı, besteci, şef, koreograf vb.", 25, "count"],
+          ["L.2", "Ulusal yapımlarda solo icracı, besteci, şef, koreograf vb.", 15, "count"],
+          ["L.3", "Uluslararası yapımlarda aranjör/topluluk içinde icra, ortak eser", 15, "count"],
+          ["L.4", "Ulusal yapımlarda aranjör/topluluk içinde icra, ortak eser", 8, "count"],
+          ["L.5", "Uluslararası etkinliklerde solo icracı, besteci, şef vb.", 10, "count"],
+          ["L.6", "Ulusal etkinliklerde solo icracı, besteci, şef vb.", 5, "count"],
+          ["L.7", "Uluslararası etkinliklerde aranjör/topluluk içinde icra", 8, "count"],
+          ["L.8", "Ulusal etkinliklerde aranjör/topluluk içinde icra", 3, "count"],
+          ["L.9", "Uluslararası görsel-işitsel yayınlarda solo icracı, besteci vb.", 10, "count"],
+          ["L.10", "Ulusal görsel-işitsel yayınlarda solo icracı, besteci vb.", 5, "count"],
+          ["L.11", "Uluslararası görsel-işitsel yayınlarda aranjör/topluluk içinde icra", 8, "count"],
+          ["L.12", "Ulusal görsel-işitsel yayınlarda aranjör/topluluk içinde icra", 3, "count"],
+        ]},
+        { id: "M", title: "M. Moda tasarımı çalışmaları", items: [
+          ["M.1", "Uluslararası kişisel etkinlik (özgün tasarım/eser)", 30, "count"],
+          ["M.2", "Ulusal kişisel etkinlik (özgün tasarım/eser)", 10, "count"],
+          ["M.3", "Uluslararası karma-ortak etkinliğe katılım", 20, "count"],
+          ["M.4", "Ulusal karma-ortak etkinliğe katılım", 8, "count"],
+          ["M.5", "Uluslararası sempozyum/festival/bienal katılımı veya tasarım yarışması derecesi", 15, "count"],
+          ["M.6", "Ulusal sempozyum/festival/bienal katılımı veya tasarım yarışması derecesi", 6, "count"],
+        ]},
+        { id: "N", title: "N. Tasarım/planlama/koruma uygulamaları", items: [
+          ["N.1", "Planlama/mimarlık/tasarım yarışmalarında jüri üyeliği", 3, "count"],
+          ["N.2", "Uygulanmış tasarım/planlama/koruma projesi hakkında yayın", 3, "count"],
+          ["N.3", "MF: yazılım üreticisi veya faydalı model sahibi", 3, "count"],
+          ["N.4", "Döner sermaye/TTO/teknokent üzerinden proje/uygulama yürütme veya danışmanlık", 3, "count"],
         ]},
         { id: "O", title: "O. İdari görevler (yıl; toplam asgari puanın %10'u ile sınırlı)", items: [
           ["O.1a", "Dekan / enstitü-YO müdürü", 10, "year"],
@@ -247,17 +294,17 @@
             html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − Eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
             html += `<tr><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
           } else {
-            for (const [c, label, pts, type] of s.items) {
+            for (const [c, label, pts, type, opt] of s.items) {
               const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
               const isPub = PUB_CODES.includes(c) && data.pubs;
               const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
               const inp = isPub ? `<b>${mine.length}</b> adet` : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
-              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
+              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" || opt?.na ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
               mine.forEach(([p, i], k) => {
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
                   : `<b>${esc(p.title)}</b><br><span class="note">${esc(p.src)} · ${p.year || ""}`;
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}${p.oaUrl && !data.files?.["pub:" + p.eid] ? ` <a class="note" href="${esc(p.oaUrl)}" target="_blank" rel="noopener">açık erişim ↗</a>` : ""}</td></tr>`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}${p.oaUrl && !data.files?.["pub:" + p.eid] ? ` <a class="note" href="${esc(p.oaUrl)}" target="_blank" rel="noopener">açık erişim ↗</a>` : ""}</td></tr>`;
               });
               if (isPub) html += `<tr class="pubrow"><td></td><td colspan="4"><button type="button" class="ghost" style="padding:2px 10px" data-add="${c}">+ ${c} ekle</button></td></tr>`;
             }
