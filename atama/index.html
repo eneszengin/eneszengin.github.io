@@ -412,7 +412,7 @@
           if (r) { p.pct = r.pct; p.pctYear = r.y; p.cls = qFromPct(r.pct); p.guess = false; found++; }
         }
         const left = data.pubs.filter((p) => p.guess && !p.manual).length;
-        st.textContent = `${data.pubs.length} yayın · h-indeksi ${data.h} · ${found}/${arts.length} makalenin çeyreği Scopus'tan alındı` + (left ? ` · ${left} sarı satırı kontrol edin` : "");
+        st.textContent = `${data.pubs.length} yayın · h-indeksi ${data.h} · ${found}/${arts.length} makalenin çeyreği Scopus'tan alındı` + (left ? ` · ${left} sarı satırı kontrol edin` : "") + (data.csvWarn || "");
         applyPubs(); build(); calc(); save();
       }
       const qFromPct = (p) => p >= 75 ? "A.1" : p >= 50 ? "A.2" : p >= 25 ? "A.3" : "A.4";
@@ -426,7 +426,17 @@
           const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + id + ")"));
           if (m) { data.name = m.replace(/\s*\(\d+\)$/, ""); break; }
         }
-        const mine = recs.filter((r) => r.Title); // profilden alınan dosyadaki tüm kayıtlar kullanılır
+        const mine = recs.filter((r) => r.Title && (!r["Author(s) ID"] || r["Author(s) ID"].split(/;\s*/).includes(id)));
+        // Dosya başka bir yazarın profilinden mi indirilmiş? En sık geçen yazar ID'sine bak
+        const freq = {};
+        for (const r of recs) for (const a of (r["Author(s) ID"] || "").split(/;\s*/).filter(Boolean)) freq[a] = (freq[a] || 0) + 1;
+        const [topId, topN] = Object.entries(freq).sort((a, b) => b[1] - a[1])[0] || [];
+        let warn = "";
+        if (topId && topId !== id && topN > mine.length) {
+          let owner = topId;
+          for (const r of recs) { const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + topId + ")")); if (m) { owner = m; break; } }
+          warn = ` · ⚠ Bu dosya büyük olasılıkla başka bir yazarın profilinden indirilmiş (${owner}); yalnızca ${id} ID'sini içeren ${mine.length} kayıt alındı. Kendi Scopus profilinizden indirin.`;
+        }
         const out = mine.map((r) => {
           const year = parseInt(r.Year), type = r["Document Type"] || "", src = r["Source title"] || "";
           let cls = "-", pct = null;
@@ -443,8 +453,9 @@
         data.h = String(h); data.hNote = "CSV'den, öz atıflar dahil";
         const prev = Object.fromEntries((data.pubs || []).filter((p) => p.manual).map((p) => [p.eid, p]));
         data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, manual: true } : p);
+        data.csvWarn = warn;
         const unk = data.pubs.filter((p) => p.guess && !p.manual).length;
-        st.textContent = `CSV: ${recs.length} satır · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "");
+        st.textContent = `CSV: ${recs.length} satır · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "") + warn;
         showName(); applyPubs(); build(); calc(); save();
         checkQuartiles();
       }
