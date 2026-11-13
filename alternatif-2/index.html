@@ -61,11 +61,11 @@
 
   /* zaman çizelgesi */
   .tl{position:relative;margin:4px 0 6px;padding-left:0}
-  .tr{display:grid;grid-template-columns:104px minmax(0,1fr);gap:18px;position:relative;padding:9px 0}
-  .tr::before{content:"";position:absolute;left:104px;top:0;bottom:0;width:1px;background:var(--tl);transform:translateX(9px)}
-  .tr::after{content:"";position:absolute;left:104px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--acc);transform:translateX(6px)}
-  .tr:first-child::before{top:14px}
-  .tr:last-child::before{bottom:calc(100% - 20px)}
+  .tlr{display:grid;grid-template-columns:104px minmax(0,1fr);gap:18px;position:relative;padding:9px 0}
+  .tlr::before{content:"";position:absolute;left:104px;top:0;bottom:0;width:1px;background:var(--tl);transform:translateX(9px)}
+  .tlr::after{content:"";position:absolute;left:104px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--acc);transform:translateX(6px)}
+  .tlr:first-child::before{top:14px}
+  .tlr:last-child::before{bottom:calc(100% - 20px)}
   .ty{font-family:Newsreader,serif;font-size:16px;color:var(--ink2);text-align:right;padding-top:1px;white-space:nowrap}
   .tc{padding-left:22px}
   .tc strong{font-weight:600}
@@ -104,8 +104,8 @@
     .hero h1{font-size:38px}
     .wrap{padding:0 16px;margin-top:18px}
     h2{font-size:25px}
-    .tr{grid-template-columns:72px minmax(0,1fr);gap:12px}
-    .tr::before{left:72px} .tr::after{left:72px}
+    .tlr{grid-template-columns:72px minmax(0,1fr);gap:12px}
+    .tlr::before{left:72px} .tlr::after{left:72px}
     .ty{font-size:14px}
     .tc{padding-left:16px}
     .b{white-space:normal}
@@ -173,32 +173,32 @@
   <main>
 <h2 id="akademik-deneyim">Akademik Deneyim</h2>
   <div class="tl">
-<div class="tr"><div class="ty">2025–</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2024–2025</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2022–2024</div><div class="tc"><strong>Dr. Öğr. Üyesi</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2021–2022</div><div class="tc"><strong>Doktora Sonrası Araştırmacı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
-<div class="tr"><div class="ty">2019–2022</div><div class="tc"><strong>Arş. Gör. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2017–2018</div><div class="tc"><strong>Doktora Sırası Araştırmacı</strong><span class="l">Department of Geology and Geophysics, School of Geosciences, University of Aberdeen (Birleşik Krallık)</span></div></div>
-<div class="tr"><div class="ty">2010–2019</div><div class="tc"><strong>Arş. Gör.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2025–</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2024–2025</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2022–2024</div><div class="tc"><strong>Dr. Öğr. Üyesi</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2021–2022</div><div class="tc"><strong>Doktora Sonrası Araştırmacı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
+<div class="tlr"><div class="ty">2019–2022</div><div class="tc"><strong>Arş. Gör. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2017–2018</div><div class="tc"><strong>Doktora Sırası Araştırmacı</strong><span class="l">Department of Geology and Geophysics, School of Geosciences, University of Aberdeen (Birleşik Krallık)</span></div></div>
+<div class="tlr"><div class="ty">2010–2019</div><div class="tc"><strong>Arş. Gör.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
 </div>
 
   <h2 id="idari-deneyim">İdari Deneyim</h2>
   <div class="tl">
-<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Değerlendirici</strong><span class="l">Yükseköğretim Kalite Kurulu (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Araştırma-Geliştirme Koordinatörü</strong><span class="l">Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Üye</strong><span class="l">Lisansüstü Eğitimde Sürekli Kalite İyileştirme Komisyonu, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2025–</div><div class="tc"><strong>Üye</strong><span class="l">ABET Komisyonu, Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2023–2025</div><div class="tc"><strong>Üye</strong><span class="l">Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2023–2024</div><div class="tc"><strong>Koordinatör</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2019–2023</div><div class="tc"><strong>Koordinatör Yardımcısı</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2019–2025</div><div class="tc"><strong>Üye</strong><span class="l">Araştırma-Geliştirme Alt Çalışma Grubu, Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2026–</div><div class="tc"><strong>Değerlendirici</strong><span class="l">Yükseköğretim Kalite Kurulu (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2026–</div><div class="tc"><strong>Araştırma-Geliştirme Koordinatörü</strong><span class="l">Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2026–</div><div class="tc"><strong>Üye</strong><span class="l">Lisansüstü Eğitimde Sürekli Kalite İyileştirme Komisyonu, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2025–</div><div class="tc"><strong>Üye</strong><span class="l">ABET Komisyonu, Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2023–2025</div><div class="tc"><strong>Üye</strong><span class="l">Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2023–2024</div><div class="tc"><strong>Koordinatör</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2019–2023</div><div class="tc"><strong>Koordinatör Yardımcısı</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2019–2025</div><div class="tc"><strong>Üye</strong><span class="l">Araştırma-Geliştirme Alt Çalışma Grubu, Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
 </div>
 
   <h2 id="egitim">Eğitim</h2>
   <div class="tl">
-<div class="tr"><div class="ty">2013–2019</div><div class="tc"><strong>Doktora</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
-<div class="tr"><div class="ty">2010–2013</div><div class="tc"><strong>Yüksek Lisans</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
-<div class="tr"><div class="ty">2004–2009</div><div class="tc"><strong>Lisans</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kocaeli Üniversitesi (Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2013–2019</div><div class="tc"><strong>Doktora</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
+<div class="tlr"><div class="ty">2010–2013</div><div class="tc"><strong>Yüksek Lisans</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
+<div class="tlr"><div class="ty">2004–2009</div><div class="tc"><strong>Lisans</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kocaeli Üniversitesi (Türkiye)</span></div></div>
 </div>
 
   <h2 id="yayinlar">Yayınlar <span class="n">(22)</span></h2>
@@ -309,7 +309,7 @@
 
   <h2 id="editorluk-ve-hakemlik">Editörlük ve Hakemlik</h2>
   <div class="tl">
-<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Editör</strong><span class="l">DSİ Teknik Bülteni</span></div></div>
+<div class="tlr"><div class="ty">2026–</div><div class="tc"><strong>Editör</strong><span class="l">DSİ Teknik Bülteni</span></div></div>
 </div>
   <h3>Hakemlik Yapılan Dergiler</h3>
   <ul>
@@ -324,12 +324,12 @@
 
   <h2 id="burslar-egitimler-ve-oduller">Burslar, Eğitimler ve Ödüller</h2>
   <div class="tl">
-<div class="tr"><div class="ty">2022–2023</div><div class="tc"><strong>Data Science and Machine Learning Bootcamp</strong><span class="l">Miuul (İstanbul, Türkiye)</span></div></div>
-<div class="tr"><div class="ty">2021–2022</div><div class="tc"><strong>TÜBİTAK 2219 Yurt Dışı Doktora Sonrası Araştırma Burs Programı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
-<div class="tr"><div class="ty">2020</div><div class="tc"><strong>EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials</strong><span class="l">University of Liège (Liège, Belçika)</span></div></div>
-<div class="tr"><div class="ty">2019</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Fas)</span></div></div>
-<div class="tr"><div class="ty">2016</div><div class="tc"><strong>PFC Introductory Training</strong><span class="l">ITASCA Consulting Group (Écully, Fransa)</span></div></div>
-<div class="tr"><div class="ty">2014</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Comenius University, Faculty of Natural Sciences (Bratislava, Slovakya)</span></div></div>
+<div class="tlr"><div class="ty">2022–2023</div><div class="tc"><strong>Data Science and Machine Learning Bootcamp</strong><span class="l">Miuul (İstanbul, Türkiye)</span></div></div>
+<div class="tlr"><div class="ty">2021–2022</div><div class="tc"><strong>TÜBİTAK 2219 Yurt Dışı Doktora Sonrası Araştırma Burs Programı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
+<div class="tlr"><div class="ty">2020</div><div class="tc"><strong>EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials</strong><span class="l">University of Liège (Liège, Belçika)</span></div></div>
+<div class="tlr"><div class="ty">2019</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Fas)</span></div></div>
+<div class="tlr"><div class="ty">2016</div><div class="tc"><strong>PFC Introductory Training</strong><span class="l">ITASCA Consulting Group (Écully, Fransa)</span></div></div>
+<div class="tlr"><div class="ty">2014</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Comenius University, Faculty of Natural Sciences (Bratislava, Slovakya)</span></div></div>
 </div>
 
   <h2 id="tez-danismanliklari">Tez Danışmanlıkları</h2>
