@@ -86,7 +86,6 @@
           <div class="row">
             <label class="ghost" style="cursor:pointer"><button type="button" onclick="document.getElementById('csvFile').click()">Scopus CSV yükle</button>
               <input id="csvFile" type="file" accept=".csv,text/csv" class="hidden" /></label>
-            <button type="button" class="ghost" id="pdfBtn">PDF'leri otomatik getir</button>
             <span id="fetchStatus" class="note"></span>
           </div>
           <div id="progWrap" class="hidden" style="margin-top:10px">
@@ -309,7 +308,7 @@
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <input type="text" data-edit="${i}" data-f="doi" value="${esc(p.doi || "")}" placeholder="DOI" style="width:200px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
                   : `<b>${esc(p.title)}</b><br><span class="note">${esc(p.src)} · ${p.year || ""}`;
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + (p.doi ? ` · DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}${p.oaUrl && !data.files?.["pub:" + p.eid] ? ` <a class="note" href="${esc(p.oaUrl)}" target="_blank" rel="noopener">açık erişim ↗</a>` : ""}</td></tr>`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + (p.doi ? ` · DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
               });
               if (isPub) html += `<tr class="pubrow"><td></td><td colspan="4"><button type="button" class="ghost" style="padding:2px 10px" data-add="${c}">+ ${c} ekle</button></td></tr>`;
             }
@@ -641,53 +640,12 @@
         const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Basvuru_${slug(data.name || id)}.zip`; a.click();
         alertBox(missing.length ? `İndirildi · ${missing.length} belge eksik (EKSIKLER.txt)` : "İndirildi · tüm belgeler tamam");
       }
-      // PDF'leri otomatik getir: Elsevier (VPN/kurum ağında tam metin) → doğrudan kaydet; diğerleri → Unpaywall açık erişim bağlantısı
       function prog(i, n, text) {
         $("#progWrap").classList.toggle("hidden", i == null);
         if (i == null) return;
         $("#progBar").style.width = (n ? Math.round((i / n) * 100) : 0) + "%";
         $("#progText").textContent = `${text} — ${i}/${n}`;
       }
-      async function autoPdfs() {
-        const st = $("#fetchStatus");
-        const todo = (data.pubs || []).filter((p) => p.doi && p.cls !== "-" && !data.files?.["pub:" + p.eid]);
-        if (!todo.length) { st.textContent = "PDF'i eksik ve DOI'si olan yayın yok."; return; }
-        let got = 0, links = 0, n = 0;
-        for (const p of todo) {
-          prog(++n, todo.length, "PDF'ler aranıyor");
-          if (/^10\.1016\//.test(p.doi) && ELS_KEY) {
-            try {
-              const r = await fetch("https://api.elsevier.com/content/article/doi/" + p.doi, { headers: { "X-ELS-APIKey": ELS_KEY, Accept: "application/pdf" } });
-              const b = r.ok ? await r.blob() : null;
-              if (b && b.size > 50000 && (await b.slice(0, 5).text()) === "%PDF-") {
-                const f = new File([b], slug(p.title) + ".pdf", { type: "application/pdf" });
-                await filePut("pub:" + p.eid, f); (data.files ||= {})["pub:" + p.eid] = f.name + " (Elsevier)"; got++; continue;
-              }
-            } catch {}
-          }
-          try {
-            const j = await fetch("https://api.unpaywall.org/v2/" + encodeURIComponent(p.doi) + "?email=atama@eneszengin.com").then((r) => r.json());
-            const locs = [j.best_oa_location, ...(j.oa_locations || [])].filter(Boolean);
-            let saved = false;
-            for (const l of locs) {
-              if (!l.url_for_pdf) continue;
-              try {
-                const r = await fetch(l.url_for_pdf); const b = r.ok ? await r.blob() : null;
-                if (b && b.size > 20000 && (await b.slice(0, 5).text()) === "%PDF-") {
-                  const f = new File([b], slug(p.title) + ".pdf", { type: "application/pdf" });
-                  await filePut("pub:" + p.eid, f); (data.files ||= {})["pub:" + p.eid] = f.name + " (açık erişim)"; got++; saved = true; break;
-                }
-              } catch {}
-            }
-            if (saved) continue;
-            const u = j.best_oa_location?.url_for_pdf || j.best_oa_location?.url;
-            if (u) { p.oaUrl = u; links++; }
-          } catch {}
-        }
-        prog(null); save(); build(); calc();
-        st.textContent = `${got} PDF otomatik yüklendi` + (links ? ` · ${links} yayın için "açık erişim ↗" bağlantısı eklendi (indirip yükleyin)` : "") + (got + links < todo.length ? ` · ${todo.length - got - links} yayını elle yükleyin` : "");
-      }
-      $("#pdfBtn").addEventListener("click", () => autoPdfs());
       $("#zipBtn").addEventListener("click", () => buildZip().catch((e) => alertBox("Hata: " + e.message)));
 
       // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
