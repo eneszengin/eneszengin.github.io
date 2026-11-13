@@ -427,7 +427,7 @@
             `<b>R2 niyet beyanı zorunlu</b> (1500–2000 kelime)`,
           ],
         };
-        $("#musts").innerHTML = `<h2 style="text-align:center">${r.name} kadrosu için zorunlu koşullar</h2><ul style="margin:0;padding-left:20px">${MUSTS[data.target].map((x) => `<li>${x}</li>`).join("")}</ul><p class="note" style="margin:8px 0 0">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022), Tablo 2 ve 4.</p>`;
+        $("#musts").innerHTML = `<h2 style="text-align:center">${r.name} Kadrosu İçin Zorunlu Koşullar</h2><ul style="margin:0;padding-left:20px">${MUSTS[data.target].map((x) => `<li>${x}</li>`).join("")}</ul><p class="note" style="margin:8px 0 0">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022), Tablo 2 ve 4.</p>`;
         $("#summary").innerHTML = checks.map(([label, v, req, soft]) => {
           const ok = v >= req;
           const cls = ok ? "ok" : soft ? "warn" : "bad";
