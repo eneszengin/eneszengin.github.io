@@ -94,6 +94,18 @@
   ul.ders strong{display:inline-block;min-width:86px;color:var(--navy)}
   table.contact td:first-child{width:130px;white-space:normal}
   h2[id]{scroll-margin-top:84px}
+  /* geniş ekranda sol sabit menü */
+  .side{display:none}
+  @media (min-width:1100px){
+    .wrap{max-width:1240px;display:grid;grid-template-columns:200px minmax(0,1000px);gap:32px;justify-content:center}
+    .side{display:flex;flex-direction:column;gap:2px;position:sticky;top:94px;align-self:start;padding-top:6px}
+    .sidelabel{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 10px}
+    .side a{font-size:14px;color:var(--muted2);padding:5px 10px;border-left:2px solid transparent}
+    .side a:hover{color:var(--navy);text-decoration:none;background:#EEF2F7}
+    .side a.on{color:var(--navy);font-weight:700;border-left-color:var(--navy);background:#EEF2F7}
+    .toc{display:none}
+  }
+
 
   footer{max-width:1000px;margin:0 auto;padding:0 20px 36px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
@@ -125,6 +137,21 @@
 
 
 <div class="wrap">
+<aside class="side" aria-label="Bölümler">
+  <div class="sidelabel">Bu sayfada</div>
+  <a href="#ozgecmis">Özgeçmiş</a>
+  <a href="#akademik-deneyim">Akademik Deneyim</a>
+  <a href="#idari-deneyim">İdari Deneyim</a>
+  <a href="#egitim">Eğitim</a>
+  <a href="#yayinlar">Yayınlar</a>
+  <a href="#bildiriler">Bildiriler</a>
+  <a href="#projeler-arastirma">Projeler</a>
+  <a href="#editorluk-ve-hakemlik">Editörlük ve Hakemlik</a>
+  <a href="#burslar-egitimler-ve-oduller">Burslar ve Ödüller</a>
+  <a href="#dersler">Dersler</a>
+  <a href="#tez-danismanliklari">Tez Danışmanlıkları</a>
+  <a href="#iletisim">İletişim</a>
+</aside>
 <div class="card">
 
   <div class="profile" id="top">
@@ -381,5 +408,19 @@
   <span>Bu sayfa bir tasarım denemesidir; arama motorlarına kapalıdır.</span>
 </footer>
 
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.side a'));
+  if(!links.length)return;
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var y=window.scrollY+110,cur=secs[0];
+    for(var i=0;i<secs.length;i++){if(secs[i].offsetTop<=y)cur=secs[i]}
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur.id)});
+  }
+  window.addEventListener('scroll',update,{passive:true});window.addEventListener('load',update);update();
+})();
+</script>
 </body>
 </html>
