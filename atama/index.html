@@ -38,6 +38,7 @@
       .note { font-size: .85rem; color: var(--muted); }
       .hidden { display: none; }
       details summary { cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+      tr.item td.code, tr.item td:nth-child(2) { font-weight: 700; text-transform: uppercase; color: var(--ink); }
       details summary .note { text-transform: none; letter-spacing: 0; font-weight: 400; }
     </style>
   </head>
@@ -299,7 +300,7 @@
               const isPub = PUB_CODES.includes(c) && data.pubs;
               const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
               const inp = isPub ? `<b>${mine.length}</b> adet` : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
-              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" || opt?.na ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
+              html += `<tr class="item"><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" || opt?.na ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
               mine.forEach(([p, i], k) => {
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
