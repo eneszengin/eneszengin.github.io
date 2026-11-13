@@ -77,6 +77,19 @@
           </div>
         </div>
 
+        <div class="card" id="scopusCard">
+          <h2>Scopus'tan otomatik çek</h2>
+          <p class="note">Elsevier API anahtarınız yalnızca bu tarayıcıda saklanır. h-indeksi ve yazar bilgisi için İTÜ ağında / VPN'de olmanız gerekebilir. Gelen her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
+          <div class="row">
+            <input id="apiKey" type="password" placeholder="Elsevier API anahtarı" style="width:300px" />
+            <button id="fetchBtn" type="button">Scopus'tan çek</button>
+            <span id="fetchStatus" class="note"></span>
+          </div>
+          <div id="pubWrap" class="hidden" style="margin-top:10px; max-height:420px; overflow:auto">
+            <table><thead><tr><th>Yıl</th><th>Başlık / Kaynak</th><th>Tür</th><th class="num">CiteScore %</th><th>Sınıf</th></tr></thead><tbody id="pubs"></tbody></table>
+          </div>
+        </div>
+
         <div class="card sticky">
           <div class="summary" id="summary"></div>
         </div>
@@ -307,7 +320,7 @@
         $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
         $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
         history.replaceState(null, "", "?id=" + x);
-        build(); calc();
+        $("#apiKey").value = getKey(); renderPubs(); build(); calc();
       }
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
       $("#target").addEventListener("change", () => { calc(); save(); });
@@ -333,6 +346,94 @@
           build(); calc(); save();
         } catch { $("#saved").textContent = "Dosya okunamadı."; }
       });
+
+
+      // ---- Scopus (Elsevier API) ----
+      const CLASSES = [["A.1","Q1 makale"],["A.2","Q2 makale"],["A.3","Q3 makale"],["A.4","Q4 makale"],["A.11","TR Dizin makale"],["B.1","Uluslararası bildiri"],["B.2","Ulusal bildiri"],["C.3","Uluslararası kitap bölümü"],["C.4","Ulusal kitap bölümü"],["-","Sayılmaz"]];
+      const getKey = () => { try { return localStorage.getItem("atama:apikey") || ""; } catch { return ""; } };
+      async function els(url) {
+        const r = await fetch("https://api.elsevier.com/content/" + url, { headers: { "X-ELS-APIKey": $("#apiKey").value.trim(), Accept: "application/json" } });
+        if (!r.ok) throw new Error(r.status + " " + (await r.text()).slice(0, 160));
+        return r.json();
+      }
+      const qCache = {};
+      async function percentile(issn, year) {
+        if (!issn) return null;
+        if (!(issn in qCache)) {
+          try {
+            const j = await els("serial/title/issn/" + issn + "?view=CITESCORE");
+            const info = j["serial-metadata-response"].entry[0].citeScoreYearInfoList?.citeScoreYearInfo || [];
+            const byYear = {};
+            for (const y of info) {
+              const ranks = y.citeScoreInformationList?.[0]?.citeScoreInfo?.[0]?.citeScoreSubjectRank || [];
+              const best = Math.max(...ranks.map((x) => parseFloat(x.percentile) || 0));
+              if (isFinite(best)) byYear[y["@year"]] = best;
+            }
+            qCache[issn] = byYear;
+          } catch { qCache[issn] = {}; }
+        }
+        const t = qCache[issn], ys = Object.keys(t).map(Number);
+        if (!ys.length) return null;
+        // Yayın yılı yoksa en yakın önceki, o da yoksa en yakın yıl
+        const y = t[year] != null ? year : (ys.filter((v) => v <= year).sort((a, b) => b - a)[0] ?? ys.sort((a, b) => a - b)[0]);
+        return t[y];
+      }
+      const qFromPct = (p) => p >= 75 ? "A.1" : p >= 50 ? "A.2" : p >= 25 ? "A.3" : "A.4";
+      async function fetchScopus() {
+        const st = $("#fetchStatus");
+        try { localStorage.setItem("atama:apikey", $("#apiKey").value.trim()); } catch {}
+        st.textContent = "Yazar bilgisi alınıyor…";
+        try {
+          const a = await els("author/author_id/" + id + "?view=METRICS");
+          const core = a["author-retrieval-response"]?.[0];
+          const h = core?.["h-index"];
+          if (h != null) { data.h = String(h); }
+        } catch (e) { st.textContent = "h-indeksi alınamadı (" + e.message.slice(0, 60) + "). Yayınlara geçiliyor…"; }
+        const pubs = []; let start = 0, total = 1;
+        try {
+          while (start < total) {
+            const j = await els(`search/scopus?query=AU-ID(${id})&count=25&start=${start}&sort=-coverDate`);
+            const r = j["search-results"]; total = +r["opensearch:totalResults"];
+            for (const e of r.entry || []) if (!e.error) pubs.push(e);
+            start += 25; st.textContent = `Yayınlar: ${pubs.length}/${total}`;
+            if (start > 1000) break;
+          }
+        } catch (e) { st.textContent = "Hata: " + e.message + " — anahtarı ve ağ bağlantısını (İTÜ/VPN) kontrol edin."; return; }
+        const out = [];
+        for (const [i, e] of pubs.entries()) {
+          st.textContent = `Çeyrekler hesaplanıyor: ${i + 1}/${pubs.length}`;
+          const year = parseInt((e["prism:coverDate"] || "").slice(0, 4));
+          const type = e.subtypeDescription || "", agg = e["prism:aggregationType"] || "";
+          let cls = "-", pct = null;
+          if (agg === "Journal" && /Article|Review/.test(type)) {
+            pct = await percentile(e["prism:issn"] || e["prism:eIssn"], year);
+            cls = pct == null ? "-" : qFromPct(pct);
+          } else if (/Conference/.test(type) || agg.includes("Conference")) cls = "B.1";
+          else if (/Book Chapter/.test(type)) cls = "C.3";
+          out.push({ eid: e.eid, year, title: e["dc:title"], src: e["prism:publicationName"], type, pct, cls });
+        }
+        // Daha önce elle düzeltilen sınıfları koru
+        const prev = Object.fromEntries((data.pubs || []).filter((p) => p.manual).map((p) => [p.eid, p]));
+        data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, manual: true } : p);
+        st.textContent = `${out.length} yayın alındı · ${new Date().toLocaleString("tr-TR")}`;
+        applyPubs(); build(); calc(); save();
+      }
+      function applyPubs() {
+        if (!data.pubs) return;
+        for (const c of ["A.1","A.2","A.3","A.4","B.1","C.3"]) data[c] = String(data.pubs.filter((p) => p.cls === c).length);
+        renderPubs();
+      }
+      function renderPubs() {
+        $("#pubWrap").classList.toggle("hidden", !data.pubs?.length);
+        $("#pubs").innerHTML = (data.pubs || []).map((p, i) => `<tr><td>${p.year || ""}</td><td>${esc(p.title)}<br><span class="note">${esc(p.src)}</span></td><td class="note">${esc(p.type)}</td><td class="num">${p.pct ?? "—"}</td><td><select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select></td></tr>`).join("");
+        document.querySelectorAll("[data-pub]").forEach((el) => el.addEventListener("change", () => {
+          const p = data.pubs[el.dataset.pub]; p.cls = el.value; p.manual = true;
+          for (const c of ["A.11","B.2","C.4"]) data[c] = String(data.pubs.filter((q) => q.cls === c).length || num(c));
+          applyPubs(); build(); calc(); save();
+        }));
+      }
+      const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      $("#fetchBtn").addEventListener("click", fetchScopus);
 
       // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
       const qid = new URLSearchParams(location.search).get("id");
