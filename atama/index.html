@@ -77,6 +77,9 @@
                 <option value="grp">Gıda / Metalurji ve Malzeme Müh.</option>
               </select>
             </label>
+            <label>ÜAK doçentlik tarihi
+              <input type="date" id="docDate" />
+            </label>
           </div>
         </div>
 
@@ -307,8 +310,9 @@
               mine.forEach(([p, i], k) => {
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <input type="text" data-edit="${i}" data-f="doi" value="${esc(p.doi || "")}" placeholder="DOI" style="width:200px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
-                  : `<b>${esc(p.title)}</b><br><span class="note">${esc(p.src)} · ${p.year || ""}`;
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + (p.doi ? ` · DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
+                  : `<b>${esc(p.title)}</b><br><span class="note">${esc(p.src)} · ${p.year || ""}${p.doi ? ` · <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">https://doi.org/${esc(p.doi)}</a>` : ""}</span>`
+                    + ((p.pct != null || p.cites) ? `<br><span class="note">${[p.pct != null ? `<b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : "", p.cites ? `<b style="color:var(--bad)">${p.cites} atıf</b>` : ""].filter(Boolean).join(" · ")}</span>` : "");
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
               });
               if (isPub) html += `<tr class="pubrow"><td></td><td colspan="4"><button type="button" class="ghost" style="padding:2px 10px" data-add="${c}">+ ${c} ekle</button></td></tr>`;
             }
@@ -317,7 +321,6 @@
         }
         $("#sections").innerHTML = html;
         $("#extra").innerHTML = `
-          <tr><td>ÜAK doçentlik unvanı tarihi</td><td class="num"><input type="date" data-k="docDate" value="${data.docDate || ""}"></td></tr>
           <tr><td>Başlıca eser sayısı <span class="note">— A.1/A.2 yayınlarında "Başlıca eser" kutusunu işaretleyin (tek yazarlı; kendi tezinden/projesinden ilk veya sorumlu yazar; ya da yönettiği tezden)</span></td><td class="num"><b>${baslCount().all}</b></td></tr>
           <tr><td>— bunlardan doçentlik tarihinden sonra yayımlananlar</td><td class="num"><b>${data.docDate ? baslCount().post : "tarih girin"}</b></td></tr>
           <tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr>
@@ -400,6 +403,7 @@
         id = x; data = load(x); data.pubs ||= [];
         if (data.target) $("#target").value = data.target;
         if (data.dept) $("#dept").value = data.dept;
+        $("#docDate").value = data.docDate || "";
         $("#idLabel").textContent = x;
         $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
         $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
@@ -410,6 +414,7 @@
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
       $("#target").addEventListener("change", () => { calc(); save(); });
       $("#dept").addEventListener("change", () => { calc(); save(); });
+      $("#docDate").addEventListener("change", (e) => { data.docDate = e.target.value; build(); calc(); save(); });
       $("#logoutBtn").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
       $("#resetBtn").addEventListener("click", () => {
         if (!confirmDelete()) return;
