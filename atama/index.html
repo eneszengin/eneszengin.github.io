@@ -117,7 +117,7 @@
         <div id="sections"></div>
 
         <div class="card">
-          <h2>Ek koşullar</h2>
+          <h2>Araştırmacı kimlikleri ve ek koşullar</h2>
           <table><tbody id="extra"></tbody></table>
         </div>
 
@@ -333,6 +333,7 @@
         $("#extra").innerHTML = `
           <tr><td>Başlıca eser sayısı <span class="note">— A.1/A.2 yayınlarında "Başlıca eser" kutusunu işaretleyin (tek yazarlı; kendi tezinden/projesinden ilk veya sorumlu yazar; ya da yönettiği tezden)</span></td><td class="num"><b>${baslCount().all}</b></td></tr>
           <tr><td>— bunlardan doçentlik tarihinden sonra yayımlananlar</td><td class="num"><b>${data.docDate ? baslCount().post : "tarih girin"}</b></td></tr>
+          ${[["orcid", "ORCID", "0000-0000-0000-0000"], ["rid", "ResearcherID", "ABC-1234-2020"], ["gscholar", "Google Scholar ID", "ör. AbCdEfGAAAAJ"], ["yokid", "YÖK Araştırmacı ID", "ör. 123456"]].map(([k, l, ph]) => `<tr><td>${l}</td><td class="num"><input type="text" data-k="${k}" value="${esc(data[k] || "")}" placeholder="${ph}" style="width:200px"></td></tr>`).join("")}
           ${data.target === "dou" ? `<tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr><tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>` : ""}
           ${data.target === "prof" ? `<tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>` : ""}`;
         document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener(el.dataset.k === "docDate" ? "change" : "input", () => { data[el.dataset.k] = el.value; if (el.dataset.k === "docDate") build(); calc(); save(); }));
@@ -759,7 +760,7 @@
         const buf = await fetch("forms/baslica_eser_formu.xlsx").then((x) => { if (!x.ok) throw new Error("şablon bulunamadı"); return x.arrayBuffer(); });
         const wb = new ExcelJS.Workbook(); await wb.xlsx.load(buf); const ws = wb.worksheets[0];
         const set = (addr, v) => { ws.getCell(addr).value = v; };
-        set("D3", data.orcid || ""); set("D4", id);
+        set("D3", data.orcid || ""); set("D4", id); set("D5", data.rid || ""); set("D6", data.gscholar || ""); set("D7", data.yokid || "");
         set("F11", trDate(data.phdDate)); set("G11", trDate(data.docDate));
         const phdY = data.phdDate ? +data.phdDate.slice(0, 4) : null, docY = data.docDate ? +data.docDate.slice(0, 4) : null;
         const after = (y, ref) => (ref == null || !y ? null : +y >= ref);
