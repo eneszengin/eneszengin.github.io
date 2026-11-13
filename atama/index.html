@@ -31,6 +31,9 @@
       td.num, th.num { text-align: right; white-space: nowrap; }
       .code { color: var(--muted); font-size: .85rem; width: 48px; }
       .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 14px; }
+      .fields label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
+      .fields input, .fields select { width: 100% !important; box-sizing: border-box; }
       .sticky { position: sticky; top: 0; z-index: 5; }
       .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
       .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; text-align: center; }
@@ -64,9 +67,9 @@
 
       <!-- Uygulama -->
       <section id="app" class="hidden">
-        <div class="card row" style="justify-content: space-between">
-          <div>Scopus ID: <b id="idLabel"></b> · <a id="scopusLink" target="_blank" rel="noopener">Scopus profili</a></div>
-          <div class="row">
+        <div class="card">
+          <div style="margin-bottom:12px">Scopus ID: <b id="idLabel"></b> · <a id="scopusLink" target="_blank" rel="noopener">Scopus profili</a></div>
+          <div class="fields">
             <label><b>Atama Kadrosu</b>
               <select id="target">
                 <option value="dou">Dr. Öğr. Üyesi</option>
@@ -81,8 +84,6 @@
                 <option value="grp">Gıda / Metalurji ve Malzeme Müh.</option>
               </select>
             </label>
-          </div>
-          <div class="row" style="flex-basis:100%;justify-content:flex-end">
             <label><b>Doktora Tarihi</b>
               <input type="date" id="phdDate" />
             </label>
@@ -90,7 +91,7 @@
               <input type="date" id="docDate" />
             </label>
           </div>
-          <div class="row" id="ids" style="flex-basis:100%;justify-content:flex-end"></div>
+          <div class="fields" id="ids" style="margin-top:10px"></div>
         </div>
 
         <div class="card" id="scopusCard">
@@ -329,8 +330,8 @@
           html += `</tbody></table></details>`;
         }
         $("#sections").innerHTML = html;
-        $("#ids").innerHTML = [["orcid", "ORCID", "0000-0000-0000-0000"], ["rid", "ResearcherID", "ABC-1234-2020"], ["gscholar", "Google Scholar ID", "AbCdEfGAAAAJ"], ["yokid", "YÖK Araştırmacı ID", "123456"]].map(([k, l, ph]) => `<label><b>${l}</b> <input type="text" data-k="${k}" value="${esc(data[k] || "")}" placeholder="${ph}" style="width:170px"></label>`).join("")
-          + (data.target === "dou" ? `<label><b>Yabancı Dil Puanı</b> ${inputCell("lang")}</label>` : "");
+        $("#ids").innerHTML = [["orcid", "ORCID", "0000-0000-0000-0000"], ["rid", "ResearcherID", "ABC-1234-2020"], ["gscholar", "Google Scholar ID", "AbCdEfGAAAAJ"], ["yokid", "YÖK Araştırmacı ID", "123456"]].map(([k, l, ph]) => `<label><b>${l}</b><input type="text" data-k="${k}" value="${esc(data[k] || "")}" placeholder="${ph}"></label>`).join("")
+          + (data.target === "dou" ? `<label><b>Yabancı Dil Puanı</b>${inputCell("lang")}</label>` : "");
         document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener(el.dataset.k === "docDate" ? "change" : "input", () => { data[el.dataset.k] = el.value; if (el.dataset.k === "docDate") build(); calc(); save(); }));
         bindPubSelects();
         document.querySelectorAll("[data-add]").forEach((b) => b.onclick = () => {
