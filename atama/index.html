@@ -7,6 +7,7 @@
     <title>İTÜ Atama Kriterleri Motoru</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>" />
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
     <style>
       :root {
         --bg: #f7f7f5; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e3e0;
@@ -80,6 +81,9 @@
                 <option value="grp">Gıda / Metalurji ve Malzeme Müh.</option>
               </select>
             </label>
+            <label><b>Doktora Tarihi</b>
+              <input type="date" id="phdDate" />
+            </label>
             <label><b>ÜAK Doçentlik Tarihi</b>
               <input type="date" id="docDate" />
             </label>
@@ -119,7 +123,7 @@
 
         <div class="card">
           <h2>Başvuru belgeleri</h2>
-          <p class="note">İlandaki "İstenen Belgeler" sırasıyla. Dosyalar yalnızca bu tarayıcıda saklanır. Başlıca eser formu (2) ve puan çizelgesi (3) ayrıca hazırlanacak.</p>
+          <p class="note">İlandaki "İstenen Belgeler" sırasıyla. Dosyalar yalnızca bu tarayıcıda saklanır. Başlıca eser formu (2) ve puan çizelgesi (3) ZIP'e girdiğiniz verilerle doldurulmuş Excel olarak otomatik eklenir; kontrol edip imzalı hallerini isterseniz buraya da yükleyebilirsiniz.</p>
           <table><tbody id="docs"></tbody></table>
           <div class="row" style="margin-top:10px">
             <button id="zipBtn" type="button">Başvuru dosyasını indir (ZIP)</button>
@@ -318,7 +322,7 @@
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="${isPaper ? "Dergi / kitap / toplantı" : "Kurum / kuruluş / açıklama"}" style="width:60%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px">${type === "year" ? ` <input type="number" min="0" step="0.5" data-edit="${i}" data-f="yrs" value="${p.yrs || ""}" placeholder="Süre (yıl)" style="width:100px">` : ""}${isPaper ? ` <input type="text" data-edit="${i}" data-f="doi" value="${esc(p.doi || "")}" placeholder="DOI" style="width:200px">` : ""} <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
                   : `<b>${esc(p.title)}</b><br><span class="note">${[esc(p.src), p.year || "", p.pct != null ? `<b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : "", p.cites ? `<b style="color:var(--bad)">${p.cites} atıf</b>` : ""].filter(Boolean).join(" · ")}</span>`
                     + (p.doi ? `<br><span class="note">DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">https://doi.org/${esc(p.doi)}</a></span>` : "");
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}</td><td colspan="2" class="num">${isPaper ? pubSelect(p, i) + "<br>" : ""}${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, isPaper ? "PDF" : "Belge")}</td></tr>`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}</td><td colspan="2" class="num">${isPaper ? pubSelect(p, i) + "<br>" : ""}${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label>${p.basl ? ` <select data-basis="${i}" class="note">${BASIS.map(([v, l]) => `<option value="${v}" ${(p.basis || (p.nAuth === 1 ? "tek" : "")) === v ? "selected" : ""}>${l}</option>`).join("")}</select>` : ""}<br>` : ""}${fileBtn("pub:" + p.eid, isPaper ? "PDF" : "Belge")}</td></tr>`;
               });
               if (isPub) html += `<tr class="pubrow"><td></td><td colspan="4"><button type="button" class="ghost" style="padding:2px 10px" data-add="${c}">+ ${c} ekle</button></td></tr>`;
             }
@@ -337,6 +341,7 @@
           data.pubs.push({ eid: "m" + Date.now(), cls: b.dataset.add, title: "", src: "", year: "", entry: true, manual: true });
           build(); calc(); save();
         });
+        document.querySelectorAll("[data-basis]").forEach((el) => el.onchange = () => { data.pubs[el.dataset.basis].basis = el.value; save(); });
         document.querySelectorAll("[data-basl]").forEach((el) => el.onchange = () => { data.pubs[el.dataset.basl].basl = el.checked; build(); calc(); save(); });
         document.querySelectorAll("[data-edit]").forEach((el) => el.oninput = () => { data.pubs[el.dataset.edit][el.dataset.f] = el.value; if (el.dataset.f === "yrs") calc(); save(); });
         document.querySelectorAll("[data-edit][data-f=yrs]").forEach((el) => el.onchange = () => build());
@@ -440,6 +445,7 @@
         if (data.target) $("#target").value = data.target;
         if (data.dept) $("#dept").value = data.dept;
         $("#docDate").value = data.docDate || "";
+        $("#phdDate").value = data.phdDate || "";
         $("#idLabel").textContent = x;
         $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
         $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
@@ -450,6 +456,7 @@
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
       $("#target").addEventListener("change", () => { data.target = $("#target").value; build(); calc(); save(); });
       $("#dept").addEventListener("change", () => { calc(); save(); });
+      $("#phdDate").addEventListener("change", (e) => { data.phdDate = e.target.value; build(); calc(); save(); });
       $("#docDate").addEventListener("change", (e) => { data.docDate = e.target.value; build(); calc(); save(); });
       $("#logoutBtn").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
       $("#resetBtn").addEventListener("click", () => {
@@ -572,7 +579,7 @@
           } else if (/Conference/.test(type) || (/^(Article|Review)$/.test(type) && confLike)) cls = "B.1";
           else if (/Book chapter/i.test(type)) cls = "C.3";
           const eid = r.EID || r.DOI || r.Title;
-          return { eid, year, title: r.Title, src, type, doi: r.DOI || "", issn: r.ISSN || "", pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: cls === "A.4" };
+          return { eid, year, title: r.Title, src, type, nAuth: (r["Author(s) ID"] || "").split(";").filter((x) => x.trim()).length || null, doi: r.DOI || "", issn: r.ISSN || "", pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: cls === "A.4" };
         }).sort((a, b) => (b.year || 0) - (a.year || 0));
         // h-indeksi (öz atıflar dahil)
         const c = out.map((p) => p.cites).sort((a, b) => b - a);
@@ -588,6 +595,7 @@
       }
       function showName() { $("#idLabel").textContent = id + (data.name ? " · " + data.name : ""); }
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
+      const BASIS = [["", "Dayanak seçin"], ["tek", "Tek yazarlı"], ["kendi", "Kendi tezi / doktora sonrası (ilk/sorumlu yazar)"], ["danis", "Yönettiği tezden"], ["proje", "Projeden (ilk/sorumlu yazar)"]];
       const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
       // Yayın listesinden gelen adet + elle girilen ek adet
       // Başlıca eser: işaretli A.1/A.2 yayınları; doçentlik sonrası = yayın yılı > doçentlik yılı (aynı yıl: tarih bilinmediği için sayılır, kontrol edin)
@@ -669,7 +677,11 @@
         alertBox("Hazırlanıyor…");
         for (const [k, folder, label] of DOCS) {
           const f = await fileGet("doc:" + k);
-          if (f) root.folder(folder).file(f.name, f.blob); else missing.push(label);
+          if (f) root.folder(folder).file(f.name, f.blob); else if (!["d2", "d3"].includes(k)) missing.push(label);
+        }
+        if (window.ExcelJS) {
+          try { root.folder("03_Puan_Cizelgesi").file("Puan_Cizelgesi_doldurulmus.xlsx", await puanCizelgesi()); } catch (e) { missing.push("Puan çizelgesi oluşturulamadı: " + e.message); }
+          try { root.folder("02_Baslica_Eser_Formu").file("Baslica_Eser_Formu_doldurulmus.xlsx", await baslicaEserFormu()); } catch (e) { missing.push("Başlıca eser formu oluşturulamadı: " + e.message); }
         }
         const pubs = root.folder("06_Yayinlar"), rows = [["Kod", "Başlık", "Kaynak", "Yıl", "DOI", "CiteScore yılı", "CiteScore %", "Puan", "Dosya"]];
         const pts = Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , p]) => [c, p]));
@@ -695,6 +707,82 @@
         if (i == null) return;
         $("#progBar").style.width = (n ? Math.round((i / n) * 100) : 0) + "%";
         $("#progText").textContent = `${text} — ${i}/${n}`;
+      }
+      // ---- Formlar (ExcelJS) ----
+      const KADRO = { dou: "Dr. Öğr. Üyesi", doc: "Doçent", prof: "Profesör" };
+      const trDate = (d) => d ? d.split("-").reverse().join(".") : "";
+      const yn = (b) => b == null ? "" : b ? "Evet" : "Hayır";
+      const itemPts = () => Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , p, t, o]) => [c, { p, t, o: o || {} }]));
+      const entryText = (p) => [p.title, p.src, p.year].filter(Boolean).join(" — ");
+      async function puanCizelgesi() {
+        const r = REQ[data.target], wb = new ExcelJS.Workbook(), ws = wb.addWorksheet("Puan Tablosu");
+        ws.columns = [{ width: 14 }, { width: 70 }, { width: 14 }, { width: 14 }, { width: 14 }];
+        const thin = { style: "thin" }, border = { top: thin, left: thin, bottom: thin, right: thin };
+        const add = (vals, opt = {}) => { const row = ws.addRow(vals); row.eachCell({ includeEmpty: true }, (c, i) => { if (i <= 5) { c.border = border; c.alignment = { vertical: "middle", wrapText: true, horizontal: i >= 3 ? "center" : "left" }; if (opt.bold) c.font = { bold: true }; if (opt.fill) c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: opt.fill } }; } }); return row; };
+        ws.addRow(["TABLO 1. AKADEMİK, KURUMSAL VE TOPLUMSAL KATKI FAALİYETLERİNE İLİŞKİN PUAN ÇİZELGESİ"]).font = { bold: true, size: 12 };
+        ws.mergeCells("A1:E1");
+        ws.addRow([`Adı Soyadı (Unvanı): ${data.name || ""}`, "", `Başvuru tarihi: ${new Date().toLocaleDateString("tr-TR")}`]);
+        ws.addRow([`Başvurmak İstediği Kadro: ${KADRO[data.target]}`]);
+        ws.addRow([`Scopus ID: ${id}`]);
+        add(["Dosya Adı", "Etkinlik", "Senato Esasları Puan", "Aday Önerilen Puan", "Onaylanan Puan"], { bold: true, fill: "FFD9E2F3" });
+        const ip = itemPts(); let genel = 0; const totalRows = [];
+        for (const sec of SECTIONS) {
+          let secTotal = 0;
+          add([sec.id, sec.title.replace(/^[A-Z]\.\s*/, "")], { bold: true, fill: "FFBDD7EE" });
+          if (sec.special === "D") {
+            const d1 = Math.max(0, num("h") - r.hThr) * 25, d2 = Math.max(0, (num("fwci") - 1) * num("fwciN"));
+            add(["D1", `h-indeksi (öz atıflar hariç): ${num("h")} · sınır değer ${r.hThr} → (h − ${r.hThr}) × 25`, "(h−Sınır)×25", d1, ""]);
+            add(["D2", `FWCI: ${num("fwci")} · son 5 yıl yayın sayısı: ${num("fwciN")} → (FWCI − 1) × yayın sayısı`, "(FWCI−1)×n", +d2.toFixed(2), ""]);
+            secTotal = d1 + d2;
+          } else {
+            for (const [c, label, pts, type, opt = {}] of sec.items) {
+              add([c.replace(/[a-d]$/, ""), label, opt.na ? "—" : (type === "raw" ? "" : pts), "", ""], { bold: true, fill: "FFEAF1FB" });
+              if (type === "raw") { const v = Math.min(num(c) * pts, opt.cap ?? Infinity); add([c + ".1", `${label}: ${num(c)}`, "", v, ""]); secTotal += v; continue; }
+              let itemSum = 0;
+              (data.pubs || []).filter((p) => p.cls === c).forEach((p, k) => {
+                const v = opt.na ? 0 : type === "year" ? (parseFloat(p.yrs) || 0) * pts : pts;
+                itemSum += v;
+                add([`${c}.${k + 1}`, entryText(p) + (type === "year" ? ` (${p.yrs || 0} yıl)` : "") + (p.pct != null ? ` · CiteScore ${p.pctYear || ""} %${p.pct}` : ""), "", v, ""]);
+              });
+              secTotal += opt.cap ? Math.min(itemSum, opt.cap) : itemSum;
+            }
+            if (sec.id === "O") secTotal = Math.min(secTotal, r.total * 0.1);
+          }
+          secTotal = +secTotal.toFixed(2); genel += secTotal;
+          add([`${sec.id} Toplam`, "", "", secTotal, ""], { bold: true });
+          totalRows.push(ws.rowCount);
+        }
+        add(["", "GENEL TOPLAM", "", +genel.toFixed(2), ""], { bold: true, fill: "FFFFF2CC" });
+        return wb.xlsx.writeBuffer();
+      }
+      async function baslicaEserFormu() {
+        const buf = await fetch("forms/baslica_eser_formu.xlsx").then((x) => { if (!x.ok) throw new Error("şablon bulunamadı"); return x.arrayBuffer(); });
+        const wb = new ExcelJS.Workbook(); await wb.xlsx.load(buf); const ws = wb.worksheets[0];
+        const set = (addr, v) => { ws.getCell(addr).value = v; };
+        set("D3", data.orcid || ""); set("D4", id);
+        set("F11", trDate(data.phdDate)); set("G11", trDate(data.docDate));
+        const phdY = data.phdDate ? +data.phdDate.slice(0, 4) : null, docY = data.docDate ? +data.docDate.slice(0, 4) : null;
+        const after = (y, ref) => (ref == null || !y ? null : +y >= ref);
+        const cl = Object.fromEntries(CLASSES);
+        const ip = itemPts(), label = (c) => (SECTIONS.flatMap((s) => s.items || []).find((x) => x[0] === c) || [, c])[1];
+        const code = (p) => { const list = data.pubs.filter((q) => q.cls === p.cls); return `${p.cls}.${list.indexOf(p) + 1}`; };
+        const basl = data.pubs.filter((p) => p.basl && ["A.1", "A.2"].includes(p.cls));
+        basl.slice(0, 8).forEach((p, k) => {
+          const r = 13 + k, basis = p.basis || (p.nAuth === 1 ? "tek" : "");
+          [["B", code(p)], ["C", p.title], ["D", cl[p.cls] || p.cls], ["E", +p.year || p.year], ["F", yn(after(p.year, phdY))], ["G", yn(after(p.year, docY))],
+           ["H", yn(p.nAuth == null ? null : p.nAuth === 1)], ["I", basis === "kendi" ? "Evet" : ""], ["J", basis === "danis" ? "Evet" : ""], ["K", basis === "proje" ? "Evet" : ""]].forEach(([col, v]) => set(col + r, v));
+        });
+        const fillRows = (rows, list) => list.slice(0, rows.length).forEach((p, k) => {
+          const r = rows[k];
+          [["B", code(p)], ["C", p.title || ""], ["D", label(p.cls)], ["E", +p.year || p.year || ""], ["F", yn(after(p.year, phdY))], ["G", yn(after(p.year, docY))]].forEach(([col, v]) => set(col + r, v));
+        });
+        fillRows([26, 27], data.pubs.filter((p) => p.cls === "A.11"));
+        fillRows([28, 29, 30], data.pubs.filter((p) => /^F\./.test(p.cls)));
+        fillRows([31, 32, 33], data.pubs.filter((p) => /^J\./.test(p.cls)));
+        fillRows([34, 35], data.pubs.filter((p) => /^K\./.test(p.cls)));
+        fillRows([36, 37, 38], data.pubs.filter((p) => /^[LMN]\./.test(p.cls)));
+        set("I41", data.name || "");
+        return wb.xlsx.writeBuffer();
       }
       $("#zipBtn").addEventListener("click", () => buildZip().catch((e) => alertBox("Hata: " + e.message)));
 
