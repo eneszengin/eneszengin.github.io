@@ -368,7 +368,7 @@
         return rows.filter((r) => r.length > 1).map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
       }
       // Elsevier Serial Title API: derginin yıllık CiteScore yüzdeliği (tarayıcıdan doğrudan)
-      const ELS_KEY = ""; // ← Elsevier API anahtarı buraya yazılır
+      const ELS_KEY = "031d1b21f3bfa141175780a1b237078c"; // ← Elsevier API anahtarı buraya yazılır
       const qCache = {};
       async function serialPct(issn) {
         if (issn in qCache) return qCache[issn];
