@@ -32,7 +32,8 @@
       .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
       .sticky { position: sticky; top: 0; z-index: 5; }
       .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
-      .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; }
+      .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; text-align: center; }
+      .pill .note { font-weight: 700; color: var(--ink); }
       .pill b { display: block; font-size: 1.15rem; }
       .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
       .note { font-size: .85rem; color: var(--muted); }
@@ -375,21 +376,21 @@
         if (r.thesis === "soft" && thesis < 1) baslReq += 1;
 
         const checks = [
-          ["Toplam puan", total, r.total],
-          ["Eser puanı (A1–A3)", eser, eserReq],
-          ["Başlıca eser", baslCount().all, baslReq],
+          ["Toplam Puan", total, r.total],
+          ["Eser Puanı (A1–A3)", eser, eserReq],
+          ["Başlıca Eser", baslCount().all, baslReq],
         ];
         if (data.target === "prof") {
-          checks.push(["Doçentlik sonrası başlıca eser", baslCount().post, 3]);
-          checks.push(["Proje (yürütücü / uluslararası)", projLead, r.proj]);
-          checks.push(["Tamamlanmış tez", thesis, r.thesis]);
-          checks.push(["TR Dizin makale", trCount, r.tr, "soft"]);
+          checks.push(["Doçentlik Sonrası Başlıca Eser", baslCount().post, 3]);
+          checks.push(["Proje (Yürütücü / Uluslararası)", projLead, r.proj]);
+          checks.push(["Tamamlanmış Tez", thesis, r.thesis]);
+          checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
         }
         if (data.target === "doc") {
-          checks.push(["Proje (yürütücü/araştırmacı)", projAny, r.proj]);
-          checks.push(["TR Dizin makale", trCount, r.tr, "soft"]);
+          checks.push(["Proje (Yürütücü / Araştırmacı)", projAny, r.proj]);
+          checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
         }
-        if (data.target === "dou") checks.push(["Yabancı dil", num("lang"), 65]);
+        if (data.target === "dou") checks.push(["Yabancı Dil", num("lang"), 65]);
 
         $("#summary").innerHTML = checks.map(([label, v, req, soft]) => {
           const ok = v >= req;
