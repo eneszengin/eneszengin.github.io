@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Enes Zengin — alternatif tasarım 2</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F6F3EC; --paper:#FFFDF9; --ink:#1E1A16; --ink2:#4A443C; --mute:#7A7268; --line:#E4DED2;
+    --acc:#A8432B; --acc2:#8A3622; --acc-bg:#F6E6E0; --acc-bg2:#EFD6CD;
+    --tl:#C9BFAE;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  .serif{font-family:Newsreader,Georgia,serif;font-weight:400}
+
+  /* üst çubuk */
+  .top{border-bottom:1px solid var(--line);background:var(--bg)}
+  .top .in{max-width:1080px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .brand{font-family:Newsreader,serif;font-size:22px;color:var(--ink);margin-right:auto}
+  .brand:hover{text-decoration:none}
+  .nav{display:flex;flex-wrap:wrap;gap:22px;font-size:14px;font-weight:500}
+  .nav a{color:var(--ink2)}
+  .nav a:hover{color:var(--ink);text-decoration:none}
+  .nav .lang{padding-left:16px;border-left:1px solid var(--line);color:var(--mute)}
+
+  /* kapak: stratigrafik şerit */
+  .cover{max-width:1080px;margin:0 auto;padding:0 24px}
+  .strata{display:block;width:100%;height:120px;margin-top:28px;border:1px solid var(--line)}
+  .hero{max-width:1080px;margin:0 auto;padding:34px 24px 10px;display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:40px;align-items:start}
+  .hero h1{margin:0 0 6px;font-family:Newsreader,serif;font-weight:400;font-size:52px;line-height:1.02;letter-spacing:-.01em}
+  .hero .sub{margin:0 0 18px;color:var(--ink2);font-size:16px}
+  .hero .bio{margin:0 0 18px;max-width:64ch;color:var(--ink2);font-size:15.5px;line-height:1.65}
+  .hero img{width:150px;height:150px;object-fit:cover;display:block;border:1px solid var(--line);filter:grayscale(100%)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+  .tags span{font-family:Newsreader,serif;font-style:italic;font-size:16px;color:var(--acc2);padding:2px 0;border-bottom:1px solid var(--acc-bg2)}
+  .ids{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px}
+  .ids a{color:var(--ink2);border-bottom:1px solid var(--line)}
+  .ids a:hover{color:var(--acc);border-color:var(--acc);text-decoration:none}
+
+  /* gövde */
+  .wrap{max-width:1080px;margin:28px auto 56px;padding:0 24px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px;align-items:start}
+  .toc{position:sticky;top:24px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;padding-top:6px}
+  .toc a{color:var(--mute);padding:3px 0 3px 12px;border-left:2px solid transparent}
+  .toc a:hover{color:var(--ink);text-decoration:none;border-left-color:var(--acc)}
+  main{min-width:0}
+  h2{font-family:Newsreader,serif;font-weight:400;font-size:30px;line-height:1.15;margin:44px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--ink);display:flex;align-items:baseline;gap:10px}
+  main h2:first-child{margin-top:0}
+  h2 .n{font-family:Inter,sans-serif;font-size:13px;color:var(--mute);font-weight:500;letter-spacing:.04em}
+  h3{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:26px 0 10px}
+  .bio{color:var(--ink2);margin:0 0 12px;max-width:72ch}
+  main .tags{margin-bottom:0}
+  .yr{font-family:Newsreader,serif;font-size:17px;color:var(--ink2);margin:14px 0 6px}
+
+  /* zaman çizelgesi */
+  .tl{position:relative;margin:4px 0 6px;padding-left:0}
+  .tr{display:grid;grid-template-columns:104px minmax(0,1fr);gap:18px;position:relative;padding:9px 0}
+  .tr::before{content:"";position:absolute;left:104px;top:0;bottom:0;width:1px;background:var(--tl);transform:translateX(9px)}
+  .tr::after{content:"";position:absolute;left:104px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--acc);transform:translateX(6px)}
+  .tr:first-child::before{top:14px}
+  .tr:last-child::before{bottom:calc(100% - 20px)}
+  .ty{font-family:Newsreader,serif;font-size:16px;color:var(--ink2);text-align:right;padding-top:1px;white-space:nowrap}
+  .tc{padding-left:22px}
+  .tc strong{font-weight:600}
+  .tc .l{display:block;color:var(--ink2);font-size:14px;margin-top:1px}
+
+  ol,ul{margin:0;padding-left:26px}
+  li{margin:0 0 10px;font-size:14.5px;line-height:1.55}
+  li::marker{color:var(--mute);font-variant-numeric:tabular-nums}
+  ul li{margin-bottom:4px}
+  li strong{font-weight:600}
+
+  /* etiketler: tek renk ailesi */
+  .b{display:inline-block;font-size:11.5px;font-weight:500;line-height:18px;padding:0 7px;margin-left:4px;vertical-align:1px;white-space:nowrap;letter-spacing:.02em;border:1px solid var(--line);color:var(--ink2);background:var(--paper)}
+  .b.q1{background:var(--acc);border-color:var(--acc);color:#fff}
+  .b.q2{background:var(--acc-bg2);border-color:var(--acc-bg2);color:var(--acc2)}
+  .b.q3{background:var(--acc-bg);border-color:var(--acc-bg);color:var(--acc2)}
+  .b.q4{background:transparent;border-color:var(--acc-bg2);color:var(--acc2)}
+  .b.yur{background:var(--ink);border-color:var(--ink);color:#fff}
+  .b.devam{border-style:dashed}
+
+  .back{margin-top:36px;font-weight:500}
+  footer{max-width:1080px;margin:0 auto;padding:18px 24px 36px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+
+  @media (max-width:860px){
+    .wrap{grid-template-columns:1fr;gap:20px}
+    .toc{position:static;flex-direction:row;flex-wrap:wrap;gap:4px 14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+    .toc a{padding:2px 0;border-left:0}
+  }
+  @media (max-width:640px){
+    .top .in{padding:14px 16px;gap:10px 16px}
+    .brand{width:100%}
+    .cover{padding:0 16px}
+    .strata{height:72px;margin-top:16px}
+    .hero{grid-template-columns:1fr;gap:18px;padding:22px 16px 6px}
+    .hero img{width:110px;height:110px;order:-1}
+    .hero h1{font-size:38px}
+    .wrap{padding:0 16px;margin-top:18px}
+    h2{font-size:25px}
+    .tr{grid-template-columns:72px minmax(0,1fr);gap:12px}
+    .tr::before{left:72px} .tr::after{left:72px}
+    .ty{font-size:14px}
+    .tc{padding-left:16px}
+    .b{white-space:normal}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="in">
+    <a class="brand" href="/">Enes Zengin</a>
+    <nav class="nav" aria-label="Site">
+      <a href="/">Hakkımda</a>
+      <a href="/publications/">Yayınlar</a>
+      <a href="/projects/">Projeler</a>
+      <a href="/teaching/">Dersler</a>
+      <a href="/cv/">CV</a>
+      <a class="lang" href="/en/" lang="en">English</a>
+    </nav>
+  </div>
+</div>
+
+<div class="cover">
+  <svg class="strata" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+    <rect width="1200" height="120" fill="#FFFDF9"/>
+    <path d="M0 18 C 200 10, 380 30, 600 22 S 1000 8, 1200 20 V 38 C 1000 30, 820 46, 600 40 S 200 28, 0 36 Z" fill="#EDE6D8"/>
+    <path d="M0 36 C 200 28, 380 44, 600 40 S 1000 30, 1200 38 V 62 C 1000 56, 800 70, 600 64 S 220 52, 0 58 Z" fill="#E3DAC8"/>
+    <path d="M0 58 C 220 52, 400 68, 600 64 S 1000 56, 1200 62 V 82 C 980 78, 820 90, 600 86 S 240 74, 0 80 Z" fill="#D9CDB7"/>
+    <path d="M0 80 C 240 74, 420 90, 600 86 S 980 78, 1200 82 V 120 H 0 Z" fill="#CDBFA5"/>
+    <path d="M0 80 C 240 74, 420 90, 600 86 S 980 78, 1200 82" fill="none" stroke="#A8432B" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<div class="hero">
+  <div>
+    <h1>Enes Zengin</h1>
+    <p class="sub">Doç. Dr. · İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü · <a href="mailto:eneszengin@itu.edu.tr">eneszengin@itu.edu.tr</a></p>
+    <div class="tags"><span>Mühendislik jeolojisi</span><span>Kaya mekaniği</span><span>Yer bilimlerinde mekânsal analiz</span></div>
+    <p class="bio">İstanbul Teknik Üniversitesi Maden Fakültesi Jeoloji Mühendisliği Bölümü’nde öğretim üyesiyim. Arazi gözlemleri, laboratuvar deneyleri, sayısal analizler ve mekânsal veri işleme yöntemlerini birlikte kullanarak kaya ve zemin ortamlarının mühendislik davranışını, jeolojik tehlikeleri ve bu tehlikelerin altyapı, yerleşim alanları ve kültürel miras yapıları üzerindeki etkilerini çalışıyorum.</p>
+    <div class="ids">
+      <a href="https://orcid.org/0000-0002-5740-7763">ORCID</a>
+      <a href="https://scholar.google.com/citations?user=DhM4L_kAAAAJ">Google Scholar</a>
+      <a href="https://www.scopus.com/authid/detail.uri?authorId=57189441189">Scopus</a>
+      <a href="https://www.webofscience.com/wos/author/record/MZS-1743-2025">Web of Science</a>
+      <a href="https://www.researchgate.net/profile/Enes-Zengin/">ResearchGate</a>
+      <a href="https://www.linkedin.com/in/eneszengin">LinkedIn</a>
+    </div>
+  </div>
+  <img src="/assets/img/prof_pic.jpg" alt="Enes Zengin">
+</div>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Bölümler">
+<a href="#akademik-deneyim">Akademik Deneyim</a>
+<a href="#idari-deneyim">İdari Deneyim</a>
+<a href="#egitim">Eğitim</a>
+<a href="#yayinlar">Yayınlar</a>
+<a href="#bildiriler">Bildiriler</a>
+<a href="#projeler-arastirma">Projeler (Araştırma)</a>
+<a href="#projeler-kamu-universite-sanayi">Projeler (Kamu-Üniversite-Sanayi)</a>
+<a href="#editorluk-ve-hakemlik">Editörlük ve Hakemlik</a>
+<a href="#burslar-egitimler-ve-oduller">Burslar, Eğitimler ve Ödüller</a>
+<a href="#tez-danismanliklari">Tez Danışmanlıkları</a>
+  </nav>
+  <main>
+<h2 id="akademik-deneyim">Akademik Deneyim</h2>
+  <div class="tl">
+<div class="tr"><div class="ty">2025–</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2024–2025</div><div class="tc"><strong>Doç. Dr.</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2022–2024</div><div class="tc"><strong>Dr. Öğr. Üyesi</strong><span class="l">Şehir ve Bölge Planlama Bölümü, Mimarlık Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2021–2022</div><div class="tc"><strong>Doktora Sonrası Araştırmacı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
+<div class="tr"><div class="ty">2019–2022</div><div class="tc"><strong>Arş. Gör. Dr.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2017–2018</div><div class="tc"><strong>Doktora Sırası Araştırmacı</strong><span class="l">Department of Geology and Geophysics, School of Geosciences, University of Aberdeen (Birleşik Krallık)</span></div></div>
+<div class="tr"><div class="ty">2010–2019</div><div class="tc"><strong>Arş. Gör.</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+</div>
+
+  <h2 id="idari-deneyim">İdari Deneyim</h2>
+  <div class="tl">
+<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Değerlendirici</strong><span class="l">Yükseköğretim Kalite Kurulu (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Araştırma-Geliştirme Koordinatörü</strong><span class="l">Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Üye</strong><span class="l">Lisansüstü Eğitimde Sürekli Kalite İyileştirme Komisyonu, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2025–</div><div class="tc"><strong>Üye</strong><span class="l">ABET Komisyonu, Jeoloji Mühendisliği Bölümü, Maden Fakültesi, İstanbul Teknik Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2023–2025</div><div class="tc"><strong>Üye</strong><span class="l">Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2023–2024</div><div class="tc"><strong>Koordinatör</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2019–2023</div><div class="tc"><strong>Koordinatör Yardımcısı</strong><span class="l">Bilimsel Araştırma Projeleri Koordinasyon Birimi, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2019–2025</div><div class="tc"><strong>Üye</strong><span class="l">Araştırma-Geliştirme Alt Çalışma Grubu, Kalite Komisyonu, Kütahya Dumlupınar Üniversitesi (Türkiye)</span></div></div>
+</div>
+
+  <h2 id="egitim">Eğitim</h2>
+  <div class="tl">
+<div class="tr"><div class="ty">2013–2019</div><div class="tc"><strong>Doktora</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
+<div class="tr"><div class="ty">2010–2013</div><div class="tc"><strong>Yüksek Lisans</strong><span class="l">Jeoloji Mühendisliği Anabilim Dalı, Fen Bilimleri Enstitüsü, Kütahya Dumlupınar Üniversitesi (Türkiye)</span><span class="l">Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması</span><span class="l">Danışman: Prof. Dr. Zeynal Abiddin Ergüler</span></div></div>
+<div class="tr"><div class="ty">2004–2009</div><div class="tc"><strong>Lisans</strong><span class="l">Jeoloji Mühendisliği Bölümü, Mühendislik Fakültesi, Kocaeli Üniversitesi (Türkiye)</span></div></div>
+</div>
+
+  <h2 id="yayinlar">Yayınlar <span class="n">(22)</span></h2>
+  <h3>Uluslararası Hakemli Dergilerde Yayımlanan Makaleler (13)</h3>
+  <ol>
+    <li>Toleubek K.E., Kopobayeva A.N., Amangeldikyzy A., Askarova N.S., <strong>Zengin E.</strong>, Zhunusbekova G.Y., Mazakh B., Battalova A.S. (2026). Mineralogical characteristics of oxidized copper-porphyry ores at the Koktaszhal deposit. <em>Kompleksnoe Ispolzovanie Mineralnogo Syra, 346(3), 28-39</em>. <a href="https://doi.org/10.31643/2028/6445.26">DOI</a> <span class="b q2">Q2 (%35)</span></li>
+    <li><strong>Zengin E.</strong> (2026). GIS-Based Evaluation of Green Space Accessibility (GSA) in Earthquake-Prone Urban Areas: a Case Study of Istanbul, Türkiye. <em>Remote Sensing in Earth Systems Sciences, 9(2), 36</em>. <a href="https://doi.org/10.1007/s41976-026-00287-y">DOI</a> <span class="b q2">Q2 (%28)</span></li>
+    <li>Dinç Göğüş Ö., <strong>Zengin E.</strong>, Korkut M., Doğu M.M., Avcıoğlu M., Ündül Ö., Çiftçi E. (2026). Fractal Analysis of Thermally Induced Damage in Volcanic Rocks: Linking Mechanical Behavior and Mineralogical Controls. <em>Fractal and Fractional, 10(4), 250</em>. <a href="https://doi.org/10.3390/fractalfract10040250">DOI</a> <span class="b q1">Q1 (%3)</span></li>
+    <li>Ündül Ö., Nasery M.M., Doğu M.M., <strong>Zengin E.</strong> (2026). Assessment of a Weathering-Induced Rockfall Event and Development of Minimal-Intervention Mitigation Strategies in an Urban Environment. <em>Applied Sciences Switzerland, 16(2), 1045</em>. <a href="https://doi.org/10.3390/app16021045">DOI</a> <span class="b q1">Q1 (%15)</span></li>
+    <li>Ündül Ö., <strong>Zengin E.</strong> (2026). Bonded-particle modeling of sedimentary rocks: insights into model selection and mechanical response. <em>Mediterranean Geoscience Reviews, 8(1), 35-54</em>. <a href="https://doi.org/10.1007/s42990-025-00214-1">DOI</a> <span class="b q2">Q2 (%38)</span></li>
+    <li>Ündül Ö., <strong>Zengin E.</strong> (2025). The Influence of Strain Rate Variations on Bonded-Particle Models in PFC. <em>Geotechnics, 5(4), 82</em>. <a href="https://doi.org/10.3390/geotechnics5040082">DOI</a> <span class="b q2">Q2 (%41)</span></li>
+    <li><strong>Zengin E.</strong>, Acar R.U. (2025). Spatial analysis of wildfire burn severity and urban exposure assessment in Southwestern Türkiye. <em>Euro Mediterranean Journal for Environmental Integration, 10(5), 4161-4177</em>. <a href="https://doi.org/10.1007/s41207-025-00850-x">DOI</a> <span class="b q2">Q2 (%45)</span></li>
+    <li><strong>Zengin E.</strong> (2023). Inundation risk assessment of Eastern Mediterranean Coastal archaeological and historical sites of Türkiye and Greece. <em>Environmental Monitoring and Assessment, 195(8), 968</em>. <a href="https://doi.org/10.1007/s10661-023-11549-3">DOI</a> <span class="b q1">Q1 (%22)</span></li>
+    <li><strong>Zengin E.</strong> (2023). A Combined Assessment of Sea Level Rise (SLR) Effect on Antalya Gulf (Türkiye) and Future Predictions on Land Loss. <em>Journal of the Indian Society of Remote Sensing, 51(5), 1121-1133</em>. <a href="https://doi.org/10.1007/s12524-023-01694-0">DOI</a> <span class="b q2">Q2 (%32)</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2022). Experimental investigation of pore-fracture relationship on failure behaviour of porous rock materials. <em>Bulletin of Engineering Geology and the Environment, 81(9), 351</em>. <a href="https://doi.org/10.1007/s10064-022-02857-y">DOI</a> <span class="b q1">Q1 (%12)</span></li>
+    <li><strong>Zengin E.</strong> (2022). Usability Assessment of Different Contact Models for Modelling the Failure Behaviour of Sedimentary Rocks Under Unconfined Stress Conditions. <em>Yerbilimleri Earth Sciences, 43(1), 61-75</em>. <a href="https://doi.org/10.17824/yerbilimleri.1030332">DOI</a> <span class="b q4">Q4 (%85)</span></li>
+    <li>Celik I., <strong>Zengin E.</strong>, Sensogut C. (2018). Modeling and Production of Solid Model of South Panel, Tuncbilek Open Pit by 3D Printer. <em>International Journal of Economic and Environmental Geology</em>, 9(1), 44-49. <span class="b doaj">DOAJ</span></li>
+    <li>Erguler Z.A., <strong>Zengin E.</strong>, Kalyoncu Erguler G. (2016). Time-dependent physicomechanical behavior of ballasts used for railway between Sabuncupinar and Kütahya in Western Turkey. <em>Environmental Earth Sciences, 75(10), 918</em>. <a href="https://doi.org/10.1007/s12665-016-5724-0">DOI</a> <span class="b q1">Q1 (%13)</span></li>
+  </ol>
+
+  <h3>Ulusal Hakemli Dergilerde Yayımlanan Makaleler (7)</h3>
+  <ol>
+    <li><strong>Zengin E.</strong>, Acar R.U., Öngen A.S. (2025). Assessing Boundary Shifts at Gölcük Lake (Kütahya) with Google Earth Images. <em>Afyon Kocatepe University Journal of Sciences and Engineering</em>, 25(4), 946-955. <a href="https://doi.org/10.35414/akufemubid.1579340">DOI</a> <span class="b tr">TR Dizin</span> <span class="b doaj">DOAJ</span></li>
+    <li>Acar R.U., <strong>Zengin E.</strong>, Öngen A.S. (2025). Machine learning-based temporal change detection of land use and land cover changes in the Tunçbilek open pit coal mine region using PlanetScope imagery. <em>Niğde Ömer Halisdemir University Journal of Engineering Sciences</em>, 14(3), 1001-1013. <a href="https://doi.org/10.28948/ngumuh.1619090">DOI</a> <span class="b tr">TR Dizin</span></li>
+    <li>Acar R.U., <strong>Zengin E.</strong> (2025). Monitoring Wetland Transformations in Lake Eber Over A Decade Using Remote Sensing. <em>Akdeniz Engineering Journal</em>, 3(1), 11-19.</li>
+    <li>Öngen A.S., <strong>Zengin E.</strong> (2025). Spatial Assessment of Urban Heat Island (UHI) in Kütahya using Landsat-8 Satellite Data. <em>Niğde Ömer Halisdemir University Journal of Engineering Sciences</em>, 14(1), 122-131. <a href="https://doi.org/10.28948/ngumuh.1527341">DOI</a> <span class="b tr">TR Dizin</span></li>
+    <li>Acar R.U., <strong>Zengin E.</strong> (2023). Performance Assessment of Landsat 8 and Sentinel-2 Satellite Images for the Production of Time Series Land Use/Land Cover (LULC) Maps. <em>Journal of Scientific Reports-A</em>, (53), 1-15. <a href="https://doi.org/10.59313/jsr-a.1213548">DOI</a> <span class="b tr">TR Dizin</span></li>
+    <li>Özok İ.H., <strong>Zengin E.</strong>, Karakuş H., Erguler Z.A. (2018). Hidrolik İletkenlik İle İnce Taneli Zeminlerin Fiziksel Özellikleri Arasındaki İlişkinin Araştırılması. <em>Dumlupınar Üniversitesi Fen Bilimleri Enstitüsü Dergisi</em>, 40, 1-6.</li>
+    <li>Derman M., Adıgüzel Ö., <strong>Zengin E.</strong>, Erguler Z.A. (2016). Sabuncupınar-Kütahya Arasındaki Demiryollarında Balast Malzemesi Olarak Kullanılan Volkanik Kayacın Fiziksel, Mineralojik ve Aşınma Özellikleri Üzerinde Bozunma Süreçlerinin Etkisi. <em>Dumlupınar Üniversitesi Fen Bilimleri Enstitüsü Dergisi (Özel Sayı 2015)</em>, 40, 183-188.</li>
+  </ol>
+
+  <h3>Kitap Bölümleri (2)</h3>
+  <ol>
+    <li>Şahbaz O., <strong>Zengin E.</strong> (2025). Madencilikte Risk Değerlendirmede Klasik ve Yenilikçi Yaklaşımlar. <em>Madencilik Sektöründeki Yenilikçi Gelişim Eğilimleri</em>, Nobel Yayınevi, s. 262-280.</li>
+    <li>Erguler Z.A., <strong>Zengin E.</strong>, Öngen A.S. (2014). Höyüktepe ve Attepe arkeolojik yerleşim alanlarının jeolojik, jeomorfolojik ve jeoteknik özellikleri. <em>Kureyşler Barajı Kurtarma Kazıları 2014</em>, Kütahya Müzesi Müdürlüğü, s. 11-36.</li>
+  </ol>
+
+  <h2 id="bildiriler">Bildiriler <span class="n">(31)</span></h2>
+  <h3>Uluslararası Bildiriler (23)</h3>
+  <ol>
+    <li>Dinç Göğüş Ö., Ündül Ö., <strong>Zengin E.</strong>, Korkut M., Doğu M.M. (2026). Fractal Quantification of Crack Networks: Predicting Rock Damage in Thermally Exposed Rock Environments. <em>EUROCK 2026 — Risk Management in Rock Engineering</em>, Skopje, North Macedonia. <span class="b tam">Tam metin</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Ündül Ö., Dinç Göğüş Ö., Doğu M.M. (2026). Laboratory-Scale Assessment of 2D and 3D Bonded-Particle Models. <em>EUROCK 2026 — Risk Management in Rock Engineering</em>, Skopje, North Macedonia. <span class="b tam">Tam metin</span> <span class="b poster">Poster</span></li>
+    <li><strong>Zengin E.</strong>, Ündül Ö., Dinç Göğüş Ö., Doğu M.M., Korkut M. (2026). A Preliminary Assessment of Stone Selection for Istanbul's Cultural Heritage Buildings. <em>EUROCK 2026 — Risk Management in Rock Engineering</em>, Skopje, North Macedonia. <span class="b tam">Tam metin</span> <span class="b poster">Poster</span></li>
+    <li>Doğu M.M., Nasery M.M., Ündül Ö., <strong>Zengin E.</strong> (2026). Assessment of the Risky and Hazardous Conditions of Rockfalls in Clayey Limestone with Discontinuity Control Using Integrated Analysis Methods: The Birecik–Halfeti Motorway (Şanlıurfa, Türkiye). <em>European Geosciences Union General Assembly 2026</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li>Kılıç E., Doğu M.M., Mutlu B., Korkut M., <strong>Zengin E.</strong>, Ündül Ö. (2026). Integration of InSAR and Inclinometer Measurements for Evaluating Surface Deformation in an Active Landslide Area. <em>European Geosciences Union General Assembly 2026</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li><strong>Zengin E.</strong>, Ündül Ö., Doğu M.M., Korkut M. (2026). Preliminary Landslide Hazard and Multi-Infrastructure Exposure Assessment along the Arifiye-Bozüyük Corridor in Western Türkiye. <em>European Geosciences Union General Assembly 2026</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li><strong>Zengin E.</strong>, Hiçdurmaz Z., Cardoso C., Baptista J.S. (2025). Assessing Occupational Health and Safety in the Mining Sectors of Angola and Mozambique. <em>International Symposium on Occupational Safety and Hygiene (SHO 2025)</em>, Porto, Portugal. <span class="b tam">Tam metin</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Cardoso C., Duarte J., Şahbaz O., <strong>Zengin E.</strong>, Hiçdurmaz Z., Baptista J.S. (2025). Enhancing Occupational Safety in Mining: Insights From The STRIM Project. <em>21st International Conference “Man and Working Environment” — Safety Engineering &amp; Management: Science, Industry, Education (SEMSIE 2025)</em>, Sokobanja, Serbia, s. 49-53. <a href="https://doi.org/10.46793/SEMSIE25.049C">DOI</a> <span class="b tam">Tam metin</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Ündül Ö. (2025). Exploring Dyke Geometry Effects on Tunnel Stability Using Particle Flow Code. <em>European Geosciences Union General Assembly 2025</em>, Vienna, Austria. <a href="https://doi.org/10.5194/egusphere-egu25-7280">DOI</a> <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Öngen A.S., <strong>Zengin E.</strong> (2024). Analyzing Land Surface Temperature Variations in Türkiye (2014-2023) Using MODIS Data and Google Earth Engine. <em>Mediterranean Geosciences Union 4th Annual Meeting</em>.</li>
+    <li>Dinç Göğüş Ö., <strong>Zengin E.</strong> (2023). Effects of Layering on Mechanical Behaviors of Rocks Under Quasi-Static Loading. <em>3rd International Congress of Engineering and Natural Sciences (ICENSS 2023)</em>, Ankara, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong> (2022). Representative and Reliable Modeling for Rock Materials: 2D vs 3D. <em>European Geosciences Union General Assembly 2022</em>, Vienna, Austria. <a href="https://doi.org/10.5194/egusphere-egu22-3008">DOI</a> <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2021). Effect of Gap Geometries on the Crack Initiation Stress of Synthetic Rock Material. <em>European Geosciences Union General Assembly 2021</em>, Vienna, Austria. <a href="https://doi.org/10.5194/egusphere-egu21-9409">DOI</a> <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Kibici Y., <strong>Zengin E.</strong>, Yanık G., Özkul C., Karakuş H., Demirbilek M., Aksoy İ., Acar R.U. (2017). Emet (Kütahya) Yöresindeki Travertenlerin Fiziko-Mekanik Özellikleri ve Petrografik Özellikleri ile Karşılaştırılması. <em>Türkiye 9. Uluslararası Mermer ve Doğaltaş Kongresi ve Sergisi (MERSEM 2017)</em>.</li>
+    <li>Kibici Y., Demirbilek M., Yanık G., Karakuş H., Aksoy İ., <strong>Zengin E.</strong>, Acar R.U. (2017). Yeniceköy, Sefaköy, Uyuzhamamı ve Hamamköy (Emet-Hisarcık/Kütahya-Türkiye) Yöresindeki Travertenlerin Mineralojik ve Petrografik Özellikleri. <em>Türkiye 9. Uluslararası Mermer ve Doğaltaş Kongresi ve Sergisi (MERSEM 2017)</em>.</li>
+    <li>Kibici Y., Karakuş H., Yanık G., Özkul C., Demirbilek M., Aksoy İ., <strong>Zengin E.</strong>, Doğan N. (2017). Yeniceköy (Emet-Kütahya) Yöresindeki Traverten Sahasında Hidrotermal Alterasyon Oluşumunun Jeokimyasal Özellikleri. <em>Uluslararası Madencilik ve Çevre Sempozyumu (ISME 2017)</em>.</li>
+    <li>Celik I., <strong>Zengin E.</strong>, Sensogut C. (2017). Modelling and Production of Solid Model of South Panel, Tuncbilek Open Pit by 3D Printer. <em>International Conference on Mining and Fuel Industries (CMFI-2017)</em>, Karachi, Pakistan. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2017). Comparison of Crack Initiation, Propagation and Coalescence Behavior of Concrete and Rock Materials. <em>European Geosciences Union General Assembly 2017</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2017). The Usability of Rock-Like Materials for Numerical Studies on Rocks. <em>European Geosciences Union General Assembly 2017</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A., Karakuş H. (2017). Hydraulic Conductivity Prediction of Fine-Grained Soils based on Grain Size Index. <em>European Geosciences Union General Assembly 2017</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A., Karakuş H. (2015). The Comparison of Predicted and Measured Hydraulic Conductivities of Soils having Different Physical Properties. <em>European Geosciences Union General Assembly 2015</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2014). Assessment of Liquefaction Susceptibility of Kutahya Soils Based on Recent Earthquakes in Turkey. <em>European Geosciences Union General Assembly 2014</em>, Vienna, Austria. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A., Ozburan M., Karakuş H. (2014). Earthquake Hazard and Risk Assessment of Kutahya Settlement Area Founded on the Kutahya Fault Zone (KFZ). <em>9th Alexander von Humboldt Conference 2014</em>, İstanbul, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+  </ol>
+
+  <h3>Ulusal Bildiriler (8)</h3>
+  <ol>
+    <li>Kılıç E., Ede M., Alan G.K., Doğu M.M., Mutlu B., Korkut M., <strong>Zengin E.</strong>, Ündül Ö. (2026). Evaluation of Active Slope Instabilities Between Büyükçekmece and Küçükçekmece Using Numerical Modelling and Remote Sensing Data. <em>78th Geological Congress of Türkiye</em>. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li>Çevik T.B., Doğu M.M., <strong>Zengin E.</strong>, Ündül Ö. (2026). Detection of Drill Cores Using CNNs for Quality Metric (RQD and TCR) Calculation and Integration into 3D Engineering Software. <em>78th Geological Congress of Türkiye</em>. <span class="b ozet">Özet</span> <span class="b poster">Poster</span></li>
+    <li>Doğan B., Erkül F., Şen F., <strong>Zengin E.</strong>, Alaçam S., Çakıcı Alp N., Aydoğan Ö., Akçal A.N. (2023). 06/02/2023 Tarihli, M 7.7 ve M 7.6 Kahramanmaraş Depremlerinin Yüzey Kırığı, Yanal Atım, Büyüklük İlişkisi ve 20/02/2023 Tarihli, M 6.3 Hatay Depremi ile Birlikte Aktif Fay–Tektonik Ortam Analizi. <em>Aktif Tektonik Araştırma Grubu 26. Çalıştayı</em>, İstanbul, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Doğan B., Şen F., <strong>Zengin E.</strong>, Alaçam S., Çakıcı Alp N. (2023). Kahramanmaraş (Türkiye), 06/02/2023 Tarihli, M 7.7 ve M 7.6 Depremlerinin, Yüzey Kırıklarının ve Tektonik Kaynağı Fayların Geometrisi. <em>75. Türkiye Jeoloji Kurultayı</em>, Ankara, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Kibici Y., Özkul C., Yanık G., Demirbilek M., Karakuş H., Aksoy İ., <strong>Zengin E.</strong> (2017). Emet-Hisarcık (Kütahya-Türkiye) Grabenindeki Travertenlerin Jeokimyasal Özellikleri. <em>Çukurova Üniversitesi 40. Yıl Jeoloji Sempozyumu</em>.</li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A., Karakuş H. (2015). Hidrolik İletkenlik Değerlerinin Belirlenmesine Yönelik Önerilen Görgül Eşitliklere Genel Bakış ve Uygulanabilirliklerinin Araştırılması. <em>Uluslararası Katılımlı Doğu Anadolu Jeoloji Sempozyumu</em>, Van, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li><strong>Zengin E.</strong>, Erguler Z.A. (2012). Kütahya Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması. <em>65. Türkiye Jeoloji Kurultayı</em>, Ankara, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+    <li>Özkul C., <strong>Zengin E.</strong> (2012). Kütahya Yerleşim Alanı Toprak Ağır Metal Derişiminin Belirlenmesi. <em>V. Ulusal Jeokimya Sempozyumu</em>, Denizli, Türkiye. <span class="b ozet">Özet</span> <span class="b sozlu">Sözlü</span></li>
+  </ol>
+
+  <h2 id="projeler-arastirma">Projeler (Araştırma) <span class="n">(16)</span></h2>
+  <ol>
+    <li>Sedimanter Kaya Malzemelerinde Çatlak Başlangıcı Gerilmesinin Parçacık Tabanlı Sayısal Modellemesinde Bağ Modellerinin Karşılaştırmalı Analizi. <em>İstanbul Teknik Üniversitesi BAP</em>, FHD-2026-48522 (2026). <span class="b yur">Yürütücü</span> <span class="b devam">Devam Ediyor</span></li>
+    <li>İstanbul’un Kültürel Miras Yapılarında Kullanılan Taşlar İçin Alternatif Kaynakların Belirlenmesine Yönelik Veri Tabanlı Uyumluluk İndeksi ve Deneysel Sistematiğin Geliştirilmesi. <em>TÜBİTAK 1001</em>, 126M496 (2026). <span class="b yur">Yürütücü</span> <span class="b devam">Devam Ediyor</span></li>
+    <li>D-650 Karayolunun Arifiye-Bozüyük Kesimindeki Heyelan Tehlikesinin AHP ve CBS Tabanlı Yöntemlerle Değerlendirilmesi. <em>İstanbul Teknik Üniversitesi BAP</em>, MAB-2025-47218 (2025). <span class="b yur">Yürütücü</span> <span class="b devam">Devam Ediyor</span></li>
+    <li>İstanbul Kilinin Makaslama Parametrelerine Katkı Malzemelerinin Etkisinin Araştırılması. <em>İstanbul Teknik Üniversitesi BAP</em>, FHD-2025-47837 (2025). <span class="b yur">Yürütücü</span></li>
+    <li>Türkiye'nin Ege ve Akdeniz Bölgelerindeki Orman Yangını Riskinin Uzaktan Algılama ve Coğrafi Bilgi Sistemleri Yöntemleri Kullanılarak Araştırılması. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2024-01 (2024). <span class="b yur">Yürütücü</span></li>
+    <li>Doğu Anadolu Fay Sistemi (DAFS) üzerinde 06/02/2023 tarihli 7.7 ve 7.6 büyüklüğündeki Kahramanmaraş depremlerini oluşturan faylanma geometrisinin, sahadaki yapısal verilerinin tespit edilmesi. <em>TÜBİTAK 1002-C Doğal Afetler Odaklı Saha Çalışması Acil Destek Programı</em> (2023). <span class="b ars">Araştırmacı</span></li>
+    <li>Master Programme in Eco-Mining and Innovative Natural Resources Management (EMINREM). <em>Erasmus+ Yükseköğretimde Kapasite Geliştirme (CBHE), Avrupa Birliği</em>, 101082621 (2023–2026). <span class="b ars">Araştırmacı</span></li>
+    <li>Safety Training with Real Immersivity for Mining (STRIM). <em>Erasmus+ Yükseköğretimde Kapasite Geliştirme (CBHE), Avrupa Birliği</em>, 101083272 (2023–2026). <span class="b ars">Araştırmacı</span></li>
+    <li>Kütahya İli Diri Faylarının Paleosismolojik ve Kinematik Özelliklerinin Tespitine Yönelik Yaklaşım Belirlemesi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2021-31 (2021). <span class="b ars">Araştırmacı</span></li>
+    <li>Kaya Malzemelerinin Dayanım ve Deformasyon Özellikleri Üzerinde Yapısal Kusurların Etkisinin Nümerik Yöntemler Kullanılarak Araştırılması. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2021-30 (2021). <span class="b yur">Yürütücü</span></li>
+    <li>Farklı Bağ Modellerinin Sedimanter Kayaların Yenilme Davranışlarının Modellenmesinde Kullanılabilirliğinin Araştırılması. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2020-09 (2020). <span class="b yur">Yürütücü</span></li>
+    <li>Maden Atık Sahalarında (Pasa) Statik-Kinetik Yöntemler ve Benzetim Modeli ile Asit Maden Drenajı (AMD) Kestirimi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2020-06 (2020). <span class="b ars">Araştırmacı</span></li>
+    <li>Dumlupınar Üniversitesi Evliya Çelebi Yerleşkesi ve Yakın Çevresinin Mikrotremor Ölçümleri ile Yerel Zemin Özelliklerinin Belirlenmesi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2016-04 (2016). <span class="b ars">Araştırmacı</span></li>
+    <li>Kaya Kütlelerinin Dayanım ve Deformasyon Özelliklerinin Sentetik Kaya Kütlesi Yaklaşımı ile Modellenmesi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2015-88 (2015). <span class="b ars">Araştırmacı</span></li>
+    <li>Emet (Kütahya) Travertenlerinin Mineralojik, Petrografik ve Jeokimyasal Özelliklerinin Araştırılması ve Fizikomekanik Özellikleri İle İlişkisi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2012-10 (2012). <span class="b ars">Araştırmacı</span></li>
+    <li>Kütahya Yerleşim Alanı Toprak Ağır Metal Derişiminin Belirlenmesi. <em>Kütahya Dumlupınar Üniversitesi BAP</em>, 2011-11 (2011). <span class="b ars">Araştırmacı</span></li>
+  </ol>
+
+  <h2 id="projeler-kamu-universite-sanayi">Projeler (Kamu-Üniversite-Sanayi) <span class="n">(7)</span></h2>
+  <ol>
+    <li>Düzensiz Basamaklı Terk Edilmiş Bir Taş Ocağında Güvenli Şev Tasarımı İçin Mühendislik Jeolojisi Araştırması. <em>İTÜ Teknoloji Transfer Ofisi</em>, İTÜ1773 (2026). <span class="b ars">Araştırmacı</span> <span class="b devam">Devam Ediyor</span></li>
+    <li>İstanbul İli, Bağcılar İlçesi, Mahmutbey Mahallesi, 2144 Ada 4 Parselin Kaya Kütlesi Parametrelerinin Değerlendirilmesi. <em>On Zemin, Sanayi-Üniversite İşbirliği</em> (2025). <span class="b ars">Araştırmacı</span></li>
+    <li>B7LP ve D12LP Vadilerindeki Sina Çuha Çiçeği Habitatı İçin Jeomorfolojik Değerlendirme Raporu, Trojena Projesi, NEOM (Suudi Arabistan). <em>Koloğlu Holding, Sanayi-Üniversite İşbirliği</em> (2025). <span class="b ars">Araştırmacı</span></li>
+    <li>Kartalkaya Barajı (Gaziantep) Su Toplama Havzasındaki Madencilik Faaliyetlerinin Baraj Rezervuar Alanına Etkilerinin Değerlendirilmesi. <em>Miryıldız Madencilik, Sanayi-Üniversite İşbirliği</em> (2025). <span class="b ars">Araştırmacı</span></li>
+    <li>Türkiye Kömür İşletmeleri Ege Linyitleri İşletme Müdürlüğü Manisa İli Soma İlçesi Soma Bölgesi ve Deniş Bölgesi Açık Ocak İşletmelerine Ait Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi. <em>Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü, Kamu-Üniversite İşbirliği</em> (2020). <span class="b ars">Araştırmacı</span></li>
+    <li>Türkiye Kömür İşletmeleri Çan Linyitleri İşletme Müdürlüğü Faaliyetleri Sonucu Oluşan Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi. <em>Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü, Kamu-Üniversite İşbirliği</em> (2019). <span class="b ars">Araştırmacı</span></li>
+    <li>Türkiye Kömür İşletmeleri Garp Linyitleri İşletme Müdürlüğü Faaliyetleri Sonucu Oluşan Pasa Sahalarının Asit Üretim Potansiyelinin Belirlenmesine ve Çözüm Önerilerine Yönelik Ar-Ge Projesi. <em>Türkiye Kömür İşletmeleri Kurumu Genel Müdürlüğü, Kamu-Üniversite İşbirliği</em> (2018). <span class="b ars">Araştırmacı</span></li>
+  </ol>
+
+  <h2 id="editorluk-ve-hakemlik">Editörlük ve Hakemlik</h2>
+  <div class="tl">
+<div class="tr"><div class="ty">2026–</div><div class="tc"><strong>Editör</strong><span class="l">DSİ Teknik Bülteni</span></div></div>
+</div>
+  <h3>Hakemlik Yapılan Dergiler</h3>
+  <ul>
+    <li>Arabian Journal of Geosciences</li>
+    <li>Bulletin of Engineering Geology and the Environment</li>
+    <li>Engineering Fracture Mechanics</li>
+    <li>Environmental Geology</li>
+    <li>Euro-Mediterranean Journal for Environmental Integration</li>
+    <li>Natural Hazards</li>
+    <li>Natural Hazards and Earth System Sciences</li>
+  </ul>
+
+  <h2 id="burslar-egitimler-ve-oduller">Burslar, Eğitimler ve Ödüller</h2>
+  <div class="tl">
+<div class="tr"><div class="ty">2022–2023</div><div class="tc"><strong>Data Science and Machine Learning Bootcamp</strong><span class="l">Miuul (İstanbul, Türkiye)</span></div></div>
+<div class="tr"><div class="ty">2021–2022</div><div class="tc"><strong>TÜBİTAK 2219 Yurt Dışı Doktora Sonrası Araştırma Burs Programı</strong><span class="l">Department of Earth, Ocean and Atmospheric Sciences, Faculty of Science, The University of British Columbia (Kanada)</span></div></div>
+<div class="tr"><div class="ty">2020</div><div class="tc"><strong>EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials</strong><span class="l">University of Liège (Liège, Belçika)</span></div></div>
+<div class="tr"><div class="ty">2019</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Fas)</span></div></div>
+<div class="tr"><div class="ty">2016</div><div class="tc"><strong>PFC Introductory Training</strong><span class="l">ITASCA Consulting Group (Écully, Fransa)</span></div></div>
+<div class="tr"><div class="ty">2014</div><div class="tc"><strong>Erasmus Personel Hareketliliği</strong><span class="l">Comenius University, Faculty of Natural Sciences (Bratislava, Slovakya)</span></div></div>
+</div>
+
+  <h2 id="tez-danismanliklari">Tez Danışmanlıkları</h2>
+  <h3>Lisans</h3>
+  <p class="yr">2026–2027</p>
+  <ol>
+    <li>Elif Yaren Cürul, Zehra Betül Akbal: <em>İstanbul İli İçin Haber Tabanlı, Dinamik ve İnteraktif Kütle Hareketleri Envanter Sisteminin Tasarımı</em></li>
+    <li>Batuhan Aktemur, Hasan Basri Arıca: <em>İstanbul İli İçin Katı Atık Düzenli Depolama Tesisi Yer Seçimine Yönelik CBS ve AHP Tabanlı Bir Karar Destek Sisteminin Tasarımı</em></li>
+    <li>Elif Yaren Cürul: <em>İstanbul İlinde Kütle Hareketlerinin Meydana Geldiği Alanların Jeolojik Özelliklerinin İncelenmesi</em></li>
+    <li>İbrahim Kaya</li>
+    <li>Nisanur Sevinç</li>
+  </ol>
+  <p class="yr">2025–2026</p>
+  <ol>
+    <li>Kübra Beste Karaca, Eda Karanfil: <em>Küçükçekmece Gölü (İstanbul) Güney Doğusundaki Bölgenin Üç Boyutlu Jeolojik Model Tasarımı ve Duraylılık Koşullarının Değerlendirilmesi</em></li>
+  </ol>
+
+  
+  <p class="back"><a href="/">← Mevcut siteye dön</a> · <a href="/alternatif/">Alternatif 1</a></p>
+  </main>
+</div>
+
+<footer>
+  <span>© 2026 Enes Zengin</span>
+  <span>Tasarım denemesi 2; arama motorlarına kapalı.</span>
+</footer>
+
+</body>
+</html>
