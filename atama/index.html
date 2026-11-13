@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>İTÜ Atama Kriterleri Motoru</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>" />
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <style>
+      :root {
+        --bg: #f7f7f5; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e3e0;
+        --accent: #1f5fa8; --ok: #1f7a3f; --bad: #b3261e; --warn: #9a6700;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      main { max-width: 980px; margin: 0 auto; padding: 24px 16px 80px; }
+      h1 { font-size: 1.5rem; margin: 0 0 4px; }
+      h2 { font-size: 1.05rem; margin: 0 0 10px; }
+      .sub { color: var(--muted); margin: 0 0 20px; }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+      input, select, button { font: inherit; }
+      input[type="number"], input[type="text"], select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+      input[type="number"] { width: 84px; text-align: right; }
+      button { padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+      button.ghost { background: #fff; color: var(--accent); }
+      table { width: 100%; border-collapse: collapse; }
+      td, th { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+      th { font-weight: 600; color: var(--muted); font-size: 1em; }
+      td.num, th.num { text-align: right; white-space: nowrap; }
+      .code { color: var(--muted); font-size: .85rem; width: 48px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 14px; }
+      .fields label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
+      .fields input, .fields select { width: 100% !important; box-sizing: border-box; }
+      .sticky { position: sticky; top: 0; z-index: 5; }
+      .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+      .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; text-align: center; }
+      .pill .note { font-weight: 700; color: var(--ink); }
+      .pill b { display: block; font-size: 1.15rem; }
+      .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+      .note { font-size: .85rem; color: var(--muted); }
+      .hidden { display: none; }
+      details summary { cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+      tr.item td { font-weight: 700; color: var(--ink); }
+      tr.item td { background: #eaf1fb; border-top: 2px solid #c9dbf2; }
+      tr.item td.code, tr.item td:nth-child(2) { font-weight: 700; text-transform: uppercase; color: var(--ink); }
+      details summary .note { text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--ink); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>İTÜ Atama Kriterleri Motoru</h1>
+      <p class="sub">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022) · H, S, MF ve TMDK dışındaki birimler</p>
+
+      <!-- Giriş -->
+      <section id="login" class="card">
+        <h2>Scopus Author ID</h2>
+        <p class="note">Bilgileriniz bu ID ile <b>yalnızca bu tarayıcıda</b> saklanır, hiçbir sunucuya gönderilmez. Aynı tarayıcıdan geri döndüğünüzde kaldığınız yerden devam edersiniz. Başka cihaza geçmek için “Dışa aktar / İçe aktar” kullanın.</p>
+        <form id="loginForm" class="row">
+          <input id="scopusInput" type="text" inputmode="numeric" pattern="\d{8,12}" placeholder="ör. 57190000000" required />
+          <button type="submit">Devam et</button>
+        </form>
+        <p id="known" class="note"></p>
+      </section>
+
+      <!-- Uygulama -->
+      <section id="app" class="hidden">
+        <div class="card">
+          <div style="margin-bottom:12px">Scopus ID: <b id="idLabel"></b> · <a id="scopusLink" target="_blank" rel="noopener">Scopus profili</a></div>
+          <div class="fields">
+            <label><b>Atama Kadrosu</b>
+              <select id="target">
+                <option value="dou">Dr. Öğr. Üyesi</option>
+                <option value="doc">Doçent</option>
+                <option value="prof" selected>Profesör</option>
+              </select>
+            </label>
+            <label><b>Bölüm</b>
+              <select id="dept">
+                <option value="std">Tüm bölümler</option>
+                <option value="kim">Kimya Müh.</option>
+                <option value="grp">Gıda / Metalurji ve Malzeme Müh.</option>
+              </select>
+            </label>
+            <label><b>Doktora Tarihi</b>
+              <input type="date" id="phdDate" />
+            </label>
+            <label><b>ÜAK Doçentlik Tarihi</b>
+              <input type="date" id="docDate" />
+            </label>
+          </div>
+          <div class="fields" id="ids" style="margin-top:10px"></div>
+        </div>
+
+        <div class="card" id="scopusCard">
+          <h2>Scopus yayınlarınız</h2>
+          <p class="note">Scopus'ta yazar profilinize gidin → <b>Export all</b> (veya Documents → Export) → <b>CSV</b>, tüm alanları seçerek indirin ve dosyayı buraya yükleyin. Ad soyad, yayınlar ve atıf sayılarından h-indeksi dosyadan alınır. Her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
+          <div class="row">
+            <label class="ghost" style="cursor:pointer"><button type="button" onclick="document.getElementById('csvFile').click()">Scopus CSV yükle</button>
+              <input id="csvFile" type="file" accept=".csv,text/csv" class="hidden" /></label>
+            <span id="fetchStatus" class="note"></span>
+          </div>
+          <div id="progWrap" class="hidden" style="margin-top:10px">
+            <div style="height:10px;background:var(--line);border-radius:5px;overflow:hidden"><div id="progBar" style="height:100%;width:0;background:var(--accent);transition:width .2s"></div></div>
+            <div id="progText" style="margin-top:4px;font-weight:600"></div>
+          </div>
+          <div id="pubWrap" class="hidden" style="margin-top:10px; max-height:420px; overflow:auto">
+            <p class="note" style="margin:0 0 6px"><b>Puanlanmayan yayınlar</b> (düzeltme, erratum vb.) — sınıf seçerek ilgili bölüme taşıyabilirsiniz.</p>
+            <table><thead><tr><th>Yıl</th><th>Başlık / Kaynak</th><th>Tür</th><th class="num">CiteScore %</th><th class="num">Atıf</th><th>Sınıf</th></tr></thead><tbody id="pubs"></tbody></table>
+          </div>
+        </div>
+
+        <div class="card" id="musts"></div>
+
+        <div class="card sticky">
+          <div class="summary" id="summary"></div>
+        </div>
+
+        <div id="sections"></div>
+
+
+        <div class="card">
+          <h2>Başvuru belgeleri</h2>
+          <p class="note">İlandaki "İstenen Belgeler" sırasıyla. Dosyalar yalnızca bu tarayıcıda saklanır. Başlıca eser formu (2) ve puan çizelgesi (3) ZIP'e girdiğiniz verilerle doldurulmuş Excel olarak otomatik eklenir; kontrol edip imzalı hallerini isterseniz buraya da yükleyebilirsiniz.</p>
+          <table><tbody id="docs"></tbody></table>
+          <div class="row" style="margin-top:10px">
+            <button id="zipBtn" type="button">Başvuru dosyasını indir (ZIP)</button>
+            <span id="zipStatus" class="note"></span>
+          </div>
+        </div>
+
+        <div class="card row">
+          <button class="ghost" id="exportBtn" type="button">Dışa aktar (JSON)</button>
+          <label class="ghost" style="cursor:pointer"><button class="ghost" type="button" onclick="document.getElementById('importFile').click()">İçe aktar</button>
+            <input id="importFile" type="file" accept="application/json" class="hidden" /></label>
+          <button class="ghost" id="logoutBtn" type="button">Başka ID</button>
+          <button class="ghost" id="resetBtn" type="button" style="color: var(--bad); border-color: var(--bad)">Bu ID'nin verisini sil</button>
+          <span id="saved" class="note"></span>
+        </div>
+
+        <p class="note">Bu araç ön değerlendirme amaçlıdır; resmi değerlendirme İTÜ komisyonlarınca yapılır. Puan değerleri 2022 Senato Esasları'ndan alınmıştır. Güncel metni <a href="https://www.itu.edu.tr/docs/librariesprovider2/duyurular/itu-atama-olcutleri.pdf" target="_blank" rel="noopener">İTÜ'nün belgesinden</a> kontrol edin.</p>
+      </section>
+    </main>
+
+    <script>
+      // ---- Puan tablosu (Tablo 1). type: "count" = adet × puan, "year" = yıl × puan, "raw" = doğrudan puan
+      const SECTIONS = [
+        { id: "A", title: "A. Makaleler", items: [
+          ["A.1", "Scopus Q1 makale", 10, "count", { eser: true }],
+          ["A.2", "Scopus Q2 makale", 8, "count", { eser: true }],
+          ["A.3", "Scopus Q3 makale", 4, "count", { eser: true }],
+          ["A.4", "Scopus Q4 makale", 3, "count"],
+          ["A.5", "AHCI tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.6", "SSCI, ESCI veya SCI-E tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.7", "EBSCO, Proquest, RILM veya MLA tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.8", "ASOS veya Sobiad tarafından taranan dergilerde makale", 0, "count", { na: true }],
+          ["A.9", "ÜAK tarafından tanımlanmış ilgili alan indekslerindeki dergilerde makale", 0, "count", { na: true }],
+          ["A.10", "WOS ve Scopus'ta taranan dergilerde forum ve kitap değerlendirmesi", 0, "count", { na: true }],
+          ["A.11", "TR Dizin makale", 3, "count"],
+        ]},
+        { id: "B", title: "B. Bildiriler", items: [
+          ["B.1", "Uluslararası bildiri", 3, "count"],
+          ["B.2", "Ulusal bildiri", 2, "count"],
+        ]},
+        { id: "C", title: "C. Kitaplar", items: [
+          ["C.1", "Uluslararası kitap (yazar)", 40, "count"],
+          ["C.2", "Ulusal kitap (yazar)", 30, "count"],
+          ["C.3", "Uluslararası kitap bölümü", 10, "count"],
+          ["C.4", "Ulusal kitap bölümü", 3, "count"],
+          ["C.5", "Uluslararası kitap editörlüğü", 30, "count"],
+          ["C.6", "Ulusal kitap editörlüğü", 15, "count"],
+          ["C.7", "Kitap çevirisi", 10, "count"],
+          ["C.8", "Uluslararası ansiklopedi maddesi", 0, "count", { na: true }],
+        ]},
+        { id: "D", title: "D. Atıflar", special: "D" },
+        { id: "E", title: "E. Patentler (tescilli)", items: [
+          ["E.1", "Ticarileşmiş patent", 40, "count"],
+          ["E.2", "Yurt dışı incelemeli patent", 10, "count"],
+          ["E.3", "Yurt içi incelemeli patent", 10, "count"],
+        ]},
+        { id: "F", title: "F. Projeler (tamamlanmış)", items: [
+          ["F.1", "Uluslararası proje – yürütücü", 50, "count", { proj: "lead" }],
+          ["F.2", "Uluslararası proje – eş yürütücü", 40, "count", { proj: "lead" }],
+          ["F.3", "Uluslararası proje – araştırmacı", 20, "count", { proj: "intl" }],
+          ["F.4", "Uluslararası proje – danışman", 5, "count"],
+          ["F.5", "Ulusal proje – yürütücü", 25, "count", { proj: "lead" }],
+          ["F.6", "Ulusal proje – araştırmacı", 10, "count", { proj: "res" }],
+          ["F.7", "Ulusal proje – danışman", 3, "count"],
+        ]},
+        { id: "G", title: "G. Ödüller", items: [
+          ["G.1", "Uluslararası jürili bilim/sanat ödülü", 80, "count"],
+          ["G.2", "TÜBİTAK/TÜBA bilim ödülü", 80, "count"],
+          ["G.3", "TÜBİTAK/TÜBA teşvik ödülü", 50, "count"],
+          ["G.4", "TÜBA özgün eser ödülü", 20, "count"],
+          ["G.5", "Diğer ulusal jürili ödül", 20, "count"],
+          ["G.6", "En iyi makale/bildiri ödülü", 10, "count"],
+          ["G.7a", "MF yarışma ödülü – uluslararası derece", 0, "count", { na: true }],
+          ["G.7b", "MF yarışma ödülü – uluslararası mansiyon", 0, "count", { na: true }],
+          ["G.7c", "MF yarışma ödülü – uluslararası satın alma", 0, "count", { na: true }],
+          ["G.7d", "MF yarışma ödülü – ulusal derece", 0, "count", { na: true }],
+          ["G.7e", "MF yarışma ödülü – ulusal mansiyon", 0, "count", { na: true }],
+          ["G.7f", "MF yarışma ödülü – ulusal satın alma", 0, "count", { na: true }],
+        ]},
+        { id: "H", title: "H. Dergilerde editörlük", items: [
+          ["H.1", "Editör", 40, "count"],
+          ["H.2", "Yardımcı editör", 30, "count"],
+          ["H.3", "Yayın kurulu üyeliği", 20, "count"],
+          ["H.4", "Misafir editör", 10, "count"],
+        ]},
+        { id: "I", title: "I. Hakemlik (en fazla 20)", items: [
+          ["I", "İndeksli uluslararası dergide hakemlik (her biri)", 2, "count", { cap: 20 }],
+        ]},
+        { id: "J", title: "J. Tez danışmanlığı (tamamlanmış)", items: [
+          ["J.1", "Doktora – danışman", 40, "count", { thesis: true }],
+          ["J.2", "Yüksek lisans – danışman", 10, "count", { thesis: true }],
+          ["J.3", "Doktora – eş danışman", 20, "count", { thesis: true }],
+          ["J.4", "Yüksek lisans – eş danışman", 5, "count", { thesis: true }],
+        ]},
+        { id: "K", title: "K. Eğitim-öğretim", items: [
+          ["K.1", "Son 2 yılda verilen lisans ve lisansüstü derslerin kredi toplamı", 1, "raw"],
+          ["K.2", "MOOC geliştirme", 10, "count"],
+          ["K.3", "Uluslararası yaz okulu vb. program", 10, "count"],
+          ["K.4", "MF: ders ürünlerini İTÜ dışında sergileme/yayımlama", 0, "count", { na: true }],
+          ["K.5", "MF: eğitime yönelik laboratuvar/atölye kurma", 0, "count", { na: true }],
+          ["K.6", "MF: eğitime yönelik atölye/çalıştay düzenleme", 0, "count", { na: true }],
+          ["K.7", "İTÜ SEM ile yeni program tasarımı", 1, "count"],
+          ["K.8", "Kısa uluslararası ders (ATHENS vb.)", 1, "count"],
+        ]},
+        { id: "L", title: "L. Müzik ve sahne çalışmaları", items: [
+          ["L.1", "Uluslararası yapımlarda solo icracı, besteci, şef, koreograf vb.", 25, "count"],
+          ["L.2", "Ulusal yapımlarda solo icracı, besteci, şef, koreograf vb.", 15, "count"],
+          ["L.3", "Uluslararası yapımlarda aranjör/topluluk içinde icra, ortak eser", 15, "count"],
+          ["L.4", "Ulusal yapımlarda aranjör/topluluk içinde icra, ortak eser", 8, "count"],
+          ["L.5", "Uluslararası etkinliklerde solo icracı, besteci, şef vb.", 10, "count"],
+          ["L.6", "Ulusal etkinliklerde solo icracı, besteci, şef vb.", 5, "count"],
+          ["L.7", "Uluslararası etkinliklerde aranjör/topluluk içinde icra", 8, "count"],
+          ["L.8", "Ulusal etkinliklerde aranjör/topluluk içinde icra", 3, "count"],
+          ["L.9", "Uluslararası görsel-işitsel yayınlarda solo icracı, besteci vb.", 10, "count"],
+          ["L.10", "Ulusal görsel-işitsel yayınlarda solo icracı, besteci vb.", 5, "count"],
+          ["L.11", "Uluslararası görsel-işitsel yayınlarda aranjör/topluluk içinde icra", 8, "count"],
+          ["L.12", "Ulusal görsel-işitsel yayınlarda aranjör/topluluk içinde icra", 3, "count"],
+        ]},
+        { id: "M", title: "M. Moda tasarımı çalışmaları", items: [
+          ["M.1", "Uluslararası kişisel etkinlik (özgün tasarım/eser)", 30, "count"],
+          ["M.2", "Ulusal kişisel etkinlik (özgün tasarım/eser)", 10, "count"],
+          ["M.3", "Uluslararası karma-ortak etkinliğe katılım", 20, "count"],
+          ["M.4", "Ulusal karma-ortak etkinliğe katılım", 8, "count"],
+          ["M.5", "Uluslararası sempozyum/festival/bienal katılımı veya tasarım yarışması derecesi", 15, "count"],
+          ["M.6", "Ulusal sempozyum/festival/bienal katılımı veya tasarım yarışması derecesi", 6, "count"],
+        ]},
+        { id: "N", title: "N. Tasarım/planlama/koruma uygulamaları", items: [
+          ["N.1", "Planlama/mimarlık/tasarım yarışmalarında jüri üyeliği", 3, "count"],
+          ["N.2", "Uygulanmış tasarım/planlama/koruma projesi hakkında yayın", 3, "count"],
+          ["N.3", "MF: yazılım üreticisi veya faydalı model sahibi", 3, "count"],
+          ["N.4", "Döner sermaye/TTO/teknokent üzerinden proje/uygulama yürütme veya danışmanlık", 3, "count"],
+        ]},
+        { id: "O", title: "O. İdari görevler (yıl; toplam asgari puanın %10'u ile sınırlı)", items: [
+          ["O.1a", "Dekan / enstitü-YO müdürü", 10, "year"],
+          ["O.1b", "Bölüm başkanı / enstitü ABD başkanı", 8, "year"],
+          ["O.1c", "Araştırma merkezi müdürü", 8, "year"],
+          ["O.1d", "Dekan/müdür/bölüm başkan yardımcısı", 5, "year"],
+          ["O.2", "Rektörlük komisyon/ofis üyeliği", 4, "year"],
+          ["O.2b", "Rektörlük komisyon/ofis başkanlığı", 8, "year"],
+          ["O.3", "Fakülte/enstitü kurulu, yönetim kurulu üyeliği", 2, "year"],
+          ["O.4", "Fakülte/bölüm komisyon üyeliği", 3, "year"],
+          ["O.4b", "Fakülte/bölüm komisyon başkanlığı", 6, "year"],
+        ]},
+        { id: "P", title: "P. Kurumsal akademik faaliyetler (yıl)", items: [
+          ["P.1", "Lisansüstü program koordinatörlüğü", 3, "year"],
+          ["P.2", "Çift diploma program koordinatörlüğü", 3, "year"],
+          ["P.3", "Öğrenci proje takımı danışmanlığı", 3, "year"],
+          ["P.4", "Bilimsel toplantı düzenleme / bilim kurulu", 3, "count"],
+          ["P.4b", "Bilimsel toplantı düzenleme kurulu başkanlığı", 6, "count"],
+        ]},
+      ];
+
+      const REQ = {
+        dou: { name: "Dr. Öğr. Üyesi", total: 60, eser: { std: 30, kim: 40, grp: 30 }, basl: 2, hThr: 4 },
+        doc: { name: "Doçent", total: 250, eser: { std: 70, kim: 80, grp: 80 }, basl: 4, hThr: 6, tr: 1, proj: 1, thesis: "soft" },
+        prof: { name: "Profesör", total: 500, eser: { std: 110, kim: 120, grp: 120 }, basl: 7, hThr: 10, tr: 2, proj: 2, thesis: 3 },
+      };
+
+      const $ = (s) => document.querySelector(s);
+      let id = null, data = {};
+      const key = (x) => "atama:" + x;
+      const num = (k) => Math.max(0, parseFloat(data[k]) || 0);
+
+      // ---- Depolama (localStorage, try/catch ile)
+      function load(x) { try { return JSON.parse(localStorage.getItem(key(x))) || {}; } catch { return {}; } }
+      function save() {
+        data._updated = new Date().toISOString();
+        try { localStorage.setItem(key(id), JSON.stringify(data)); $("#saved").textContent = "Kaydedildi · " + new Date().toLocaleTimeString("tr-TR"); }
+        catch { $("#saved").textContent = "Bu tarayıcı kaydetmeye izin vermiyor; Dışa aktar kullanın."; }
+      }
+      function knownIds() {
+        try { return Object.keys(localStorage).filter((k) => k.startsWith("atama:")).map((k) => k.slice(6)); } catch { return []; }
+      }
+
+      // ---- Form oluşturma
+      function inputCell(k, step = 1) {
+        return `<input type="number" min="0" step="${step}" data-k="${k}" value="${data[k] ?? ""}" />`;
+      }
+      function build() {
+        let html = "";
+        for (const s of SECTIONS) {
+          html += `<details class="card" ${["A", "B", "C", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
+          if (s.special === "D") {
+            html += `<tr class="item"><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − Eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
+            html += `<tr class="item"><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
+          } else {
+            for (const [c, label, pts, type, opt] of s.items) {
+              const unit = type === "year" ? "yıl" : type === "raw" ? "kredi" : "adet";
+              const isPub = type !== "raw";
+              const isPaper = PUB_CODES.includes(c);
+              const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
+              const inp = isPub ? (type === "year" ? `<b>${cnt(c)}</b> yıl` : `<b>${mine.length}</b> adet`) : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
+              html += `<tr class="item"><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${opt?.na ? "—" : type === "raw" ? pts + " / kredi" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
+              mine.forEach(([p, i], k) => {
+                const head = p.entry
+                  ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="${isPaper ? "Dergi / kitap / toplantı" : "Kurum / kuruluş / açıklama"}" style="width:60%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px">${type === "year" ? ` <input type="number" min="0" step="0.5" data-edit="${i}" data-f="yrs" value="${p.yrs || ""}" placeholder="Süre (yıl)" style="width:100px">` : ""}${isPaper ? ` <input type="text" data-edit="${i}" data-f="doi" value="${esc(p.doi || "")}" placeholder="DOI" style="width:200px">` : ""} <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
+                  : `<b>${esc(p.title)}</b><br><span class="note">${[esc(p.src), p.year || "", p.pct != null ? `<b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : "", p.cites ? `<b style="color:var(--bad)">${p.cites} atıf</b>` : ""].filter(Boolean).join(" · ")}</span>`
+                    + (p.doi ? `<br><span class="note">DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">https://doi.org/${esc(p.doi)}</a></span>` : "");
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code"><b style="color:var(--ink)">${c}.${k + 1}</b></td><td colspan="2">${head}</td><td colspan="2" class="num">${isPaper ? pubSelect(p, i) + "<br>" : ""}${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label>${p.basl ? ` <select data-basis="${i}" class="note">${BASIS.map(([v, l]) => `<option value="${v}" ${(p.basis || (p.nAuth === 1 ? "tek" : "")) === v ? "selected" : ""}>${l}</option>`).join("")}</select>` : ""}<br>` : ""}${fileBtn("pub:" + p.eid, isPaper ? "PDF" : "Belge")}</td></tr>`;
+              });
+              if (isPub) html += `<tr class="pubrow"><td></td><td colspan="4"><button type="button" class="ghost" style="padding:2px 10px" data-add="${c}">+ ${c} ekle</button></td></tr>`;
+            }
+          }
+          html += `</tbody></table></details>`;
+        }
+        $("#sections").innerHTML = html;
+        $("#ids").innerHTML = [["orcid", "ORCID", "0000-0000-0000-0000"], ["rid", "ResearcherID", "ABC-1234-2020"], ["gscholar", "Google Scholar ID", "AbCdEfGAAAAJ"], ["yokid", "YÖK Araştırmacı ID", "123456"]].map(([k, l, ph]) => `<label><b>${l}</b><input type="text" data-k="${k}" value="${esc(data[k] || "")}" placeholder="${ph}"></label>`).join("")
+          + (data.target === "dou" ? `<label><b>Yabancı Dil Puanı</b>${inputCell("lang")}</label>` : "");
+        document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener(el.dataset.k === "docDate" ? "change" : "input", () => { data[el.dataset.k] = el.value; if (el.dataset.k === "docDate") build(); calc(); save(); }));
+        bindPubSelects();
+        document.querySelectorAll("[data-add]").forEach((b) => b.onclick = () => {
+          data.pubs.push({ eid: "m" + Date.now(), cls: b.dataset.add, title: "", src: "", year: "", entry: true, manual: true });
+          build(); calc(); save();
+        });
+        document.querySelectorAll("[data-basis]").forEach((el) => el.onchange = () => { data.pubs[el.dataset.basis].basis = el.value; save(); });
+        document.querySelectorAll("[data-basl]").forEach((el) => el.onchange = () => { data.pubs[el.dataset.basl].basl = el.checked; build(); calc(); save(); });
+        document.querySelectorAll("[data-edit]").forEach((el) => el.oninput = () => { data.pubs[el.dataset.edit][el.dataset.f] = el.value; if (el.dataset.f === "yrs") calc(); save(); });
+        document.querySelectorAll("[data-edit][data-f=yrs]").forEach((el) => el.onchange = () => build());
+        document.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => { const p = data.pubs[b.dataset.del]; data.pubs.splice(b.dataset.del, 1); fileDel("pub:" + p.eid); build(); calc(); save(); });
+        renderDocs(); bindFiles();
+      }
+
+      // ---- Hesaplama
+      function calc() {
+        const r = REQ[$("#target").value], dept = $("#dept").value;
+        data.target = $("#target").value; data.dept = dept;
+        let total = 0, eser = 0, trCount = cnt("A.11"), projLead = 0, projAny = 0, thesis = 0, oSum = 0;
+        const fmt = (x) => (Math.round(x * 100) / 100).toLocaleString("tr-TR");
+        for (const s of SECTIONS) {
+          let sub = 0;
+          if (s.special === "D") {
+            const d1 = Math.max(0, num("h") - r.hThr) * 25;
+            const d2 = Math.max(0, (num("fwci") - 1) * num("fwciN"));
+            $("#hthr").textContent = "Eşik " + r.hThr;
+            $("#t-D1").textContent = fmt(d1); $("#t-D2").textContent = fmt(d2);
+            sub = d1 + d2;
+          } else {
+            for (const [c, , pts, type, opt = {}] of s.items) {
+              let v = cnt(c) * pts;
+              if (opt.cap) v = Math.min(v, opt.cap);
+              $("#t-" + CSS.escape(c)).textContent = v ? fmt(v) : "";
+              sub += v;
+              if (opt.eser) eser += v;
+              if (opt.proj) { projAny += cnt(c); if (opt.proj !== "res") projLead += cnt(c); }
+              if (opt.thesis) thesis += cnt(c);
+            }
+          }
+          if (s.id === "O") { oSum = sub; sub = Math.min(sub, r.total * 0.1); }
+          $("#sum-" + s.id).textContent = sub ? "· " + fmt(sub) + " puan" + (s.id === "O" && oSum > sub ? " (sınırlandı)" : "") : "";
+          total += sub;
+        }
+
+        // TR Dizin eksikse eser eşiği artar
+        let eserReq = r.eser[dept];
+        if (r.tr && trCount < r.tr) eserReq += 3 * (r.tr - trCount);
+        let baslReq = r.basl;
+        if (r.thesis === "soft" && thesis < 1) baslReq += 1;
+
+        const checks = [
+          ["Toplam Puan", total, r.total],
+          [eserReq > r.eser[dept] ? `Eser Puanı (A1–A3) · TR Dizin eksiği +${eserReq - r.eser[dept]}` : "Eser Puanı (A1–A3)", eser, eserReq],
+          ["Başlıca Eser", baslCount().all, baslReq],
+        ];
+        if (data.target === "prof") {
+          checks.push(["Doçentlik Sonrası Başlıca Eser", baslCount().post, 3]);
+          checks.push(["Proje", projLead, r.proj]);
+          checks.push(["Tamamlanmış Tez", thesis, r.thesis]);
+          checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
+        }
+        if (data.target === "doc") {
+          checks.push(["Proje", projAny, r.proj]);
+          checks.push(["TR Dizin Makale", trCount, r.tr, "soft"]);
+        }
+        if (data.target === "dou") checks.push(["Yabancı Dil", num("lang"), 65]);
+
+        const ep = (v) => dept === "std" ? v : `${v} (bölümünüz için)`;
+        const MUSTS = {
+          dou: [
+            `Toplam puan en az <b>60</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `En az <b>2 başlıca eser</b>`,
+            `Yabancı dil sınavından en az <b>65 puan</b> (YDS, YÖKDİL, ÜDS, KPDS veya eşdeğeri)`,
+            `İlk atamada <b>uluslararası deneyim</b>: yurt dışında yüksek lisans/doktora, ya da lisansüstü dönemde en az 1 yıl yurt dışı, ya da yurt içinde en az 2 yıl doktora sonrası araştırma`,
+            `R1 niyet mektubu isteğe bağlı (en fazla 1000 kelime)`,
+          ],
+          doc: [
+            `Toplam puan en az <b>250</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `Doktora sonrası en az <b>4 başlıca eser</b>`,
+            `En az <b>1 TR Dizin makalesi</b> (yoksa eser puanı eşiği +3)`,
+            `Doktora sonrası en az <b>1 projede</b> araştırmacı veya yürütücü`,
+            `<b>Tamamlanmış lisansüstü tez</b> danışmanlığı (yoksa +1 başlıca eser)`,
+            `R1 niyet mektubu isteğe bağlı (en fazla 1000 kelime)`,
+          ],
+          prof: [
+            `Toplam puan en az <b>500</b>`,
+            `Eser puanı (A1–A3) en az <b>${ep(r.eser[dept])}</b>`,
+            `En az <b>7 başlıca eser</b>, bunların en az <b>3'ü doçentlik sonrası</b>`,
+            `En az <b>2 TR Dizin makalesi</b> (yoksa eser puanı eşiği +6)`,
+            `Doktora sonrası en az <b>2 proje</b> (yürütücü veya uluslararası projede araştırmacı)`,
+            `En az <b>3 tamamlanmış lisansüstü tez</b> danışmanlığı`,
+            `<b>R2 niyet beyanı zorunlu</b> (1500–2000 kelime)`,
+          ],
+        };
+        $("#musts").innerHTML = `<h2 style="text-align:center">${r.name} Kadrosu İçin Zorunlu Koşullar</h2><ul style="margin:0;padding-left:20px">${MUSTS[data.target].map((x) => `<li>${x}</li>`).join("")}</ul><p class="note" style="margin:8px 0 0">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022), Tablo 2 ve 4.</p>`;
+        $("#summary").innerHTML = checks.map(([label, v, req, soft]) => {
+          const ok = v >= req;
+          const cls = ok ? "ok" : soft ? "warn" : "bad";
+          return `<div class="pill"><span class="note">${label}</span><b class="${cls}">${fmt(v)} / ${fmt(req)} ${ok ? "✓" : soft ? "!" : "✗"}</b></div>`;
+        }).join("");
+      }
+
+      // ---- Giriş akışı
+      function open(x) {
+        id = x; data = load(x); data.pubs ||= [];
+        if (data.target) $("#target").value = data.target;
+        if (data.dept) $("#dept").value = data.dept;
+        $("#docDate").value = data.docDate || "";
+        $("#phdDate").value = data.phdDate || "";
+        $("#idLabel").textContent = x;
+        $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
+        $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+        history.replaceState(null, "", "?id=" + x);
+        renderPubs(); build(); calc();
+        showName();
+      }
+      $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
+      $("#target").addEventListener("change", () => { data.target = $("#target").value; build(); calc(); save(); });
+      $("#dept").addEventListener("change", () => { calc(); save(); });
+      $("#phdDate").addEventListener("change", (e) => { data.phdDate = e.target.value; build(); calc(); save(); });
+      $("#docDate").addEventListener("change", (e) => { data.docDate = e.target.value; build(); calc(); save(); });
+      $("#logoutBtn").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
+      $("#resetBtn").addEventListener("click", () => {
+        if (!confirmDelete()) return;
+        try { localStorage.removeItem(key(id)); } catch {}
+        data = {}; build(); calc();
+      });
+      function confirmDelete() { return window.confirm("Bu ID için girilen tüm veriler silinsin mi?"); }
+      $("#exportBtn").addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify({ scopusId: id, ...data }, null, 2)], { type: "application/json" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `atama-${id}.json`; a.click();
+      });
+      $("#importFile").addEventListener("change", async (e) => {
+        const f = e.target.files[0]; if (!f) return;
+        try {
+          const obj = JSON.parse(await f.text());
+          const { scopusId, ...rest } = obj; data = rest;
+          if (data.target) $("#target").value = data.target;
+          if (data.dept) $("#dept").value = data.dept;
+          build(); calc(); save();
+        } catch { $("#saved").textContent = "Dosya okunamadı."; }
+      });
+
+
+      // ---- Scopus (Elsevier API) ----
+      const CLASSES = [["A.1","Q1 makale"],["A.2","Q2 makale"],["A.3","Q3 makale"],["A.4","Q4 makale"],["A.11","TR Dizin makale"],["B.1","Uluslararası bildiri"],["B.2","Ulusal bildiri"],["C.3","Uluslararası kitap bölümü"],["C.4","Ulusal kitap bölümü"],["-","Sayılmaz"]];
+      // CSV ayrıştırıcı (tırnaklı alanlar, satır içi virgül/yeni satır)
+      function parseCSV(t) {
+        t = t.replace(/^﻿/, "");
+        const rows = []; let row = [], f = "", q = false;
+        for (let i = 0; i < t.length; i++) {
+          const ch = t[i];
+          if (q) { if (ch === '"') { if (t[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += ch; }
+          else if (ch === '"') q = true;
+          else if (ch === ",") { row.push(f); f = ""; }
+          else if (ch === "\n" || ch === "\r") { if (ch === "\r" && t[i + 1] === "\n") i++; row.push(f); rows.push(row); row = []; f = ""; }
+          else f += ch;
+        }
+        if (f || row.length) { row.push(f); rows.push(row); }
+        const head = rows.shift().map((h) => h.trim());
+        return rows.filter((r) => r.length > 1).map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
+      }
+      // Elsevier Serial Title API: derginin yıllık CiteScore yüzdeliği (tarayıcıdan doğrudan)
+      const ELS_KEY = "031d1b21f3bfa141175780a1b237078c"; // ← Elsevier API anahtarı buraya yazılır
+      const qCache = {};
+      async function serialPct(issn) {
+        if (issn in qCache) return qCache[issn];
+        qCache[issn] = (async () => {
+          try {
+            const r = await fetch("https://api.elsevier.com/content/serial/title/issn/" + issn + "?view=CITESCORE", { headers: { "X-ELS-APIKey": ELS_KEY, Accept: "application/json" } });
+            if (!r.ok) return null;
+            const j = await r.json();
+            const info = j["serial-metadata-response"]?.entry?.[0]?.citeScoreYearInfoList?.citeScoreYearInfo || [];
+            const byYear = {};
+            for (const y of info) {
+              if (y["@status"] !== "Complete") continue;
+              const ranks = y.citeScoreInformationList?.[0]?.citeScoreInfo?.[0]?.citeScoreSubjectRank || [];
+              const best = Math.max(...ranks.map((x) => parseFloat(x.percentile) || 0));
+              if (ranks.length) byYear[y["@year"]] = best;
+            }
+            return byYear;
+          } catch { return null; }
+        })();
+        return qCache[issn];
+      }
+      async function lookupPct(issns, year) {
+        for (const raw of issns) {
+          const t = await serialPct(raw.replace(/[^\dXx]/g, "").toUpperCase());
+          if (!t) continue;
+          const ys = Object.keys(t).map(Number);
+          if (!ys.length) continue;
+          const y = t[year] != null ? year : (ys.filter((v) => v <= year).sort((a, b) => b - a)[0] ?? ys.sort((a, b) => a - b)[0]);
+          return { pct: t[y], y };
+        }
+        return null;
+      }
+      async function checkQuartiles() {
+        const st = $("#fetchStatus");
+        if (!ELS_KEY) { st.textContent += " · Scopus çeyrek kontrolü kapalı (anahtar tanımlı değil)."; return; }
+        const arts = data.pubs.filter((p) => p.issn && /^(Article|Review)$/.test(p.type) && !p.manual);
+        let done = 0, found = 0;
+        for (const p of arts) {
+          prog(++done, arts.length, "Çeyrekler Scopus'tan kontrol ediliyor");
+          const r = await lookupPct(p.issn.split(/[;,\s]+/).filter(Boolean), p.year);
+          if (r) { p.pct = r.pct; p.pctYear = r.y; p.cls = qFromPct(r.pct); p.guess = false; found++; }
+        }
+        prog(null);
+        const left = data.pubs.filter((p) => p.guess && !p.manual).length;
+        st.textContent = `${data.pubs.length} yayın · h-indeksi ${data.h} · ${found}/${arts.length} makalenin çeyreği Scopus'tan alındı` + (left ? ` · ${left} sarı satırı kontrol edin` : "") + (data.csvWarn || "");
+        applyPubs(); build(); calc(); save();
+      }
+      const qFromPct = (p) => p >= 75 ? "A.1" : p >= 50 ? "A.2" : p >= 25 ? "A.3" : "A.4";
+      function importCSV(text) {
+        const st = $("#fetchStatus");
+        let recs;
+        try { recs = parseCSV(text); } catch { st.textContent = "CSV okunamadı."; return; }
+        if (!recs.length || !("Title" in recs[0])) { st.textContent = "Bu bir Scopus CSV dosyası gibi görünmüyor."; return; }
+        // Ad soyad: "Author full names" içinde bu ID
+        for (const r of recs) {
+          const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + id + ")"));
+          if (m) { data.name = m.replace(/\s*\(\d+\)$/, ""); break; }
+        }
+        const mine = recs.filter((r) => r.Title && (!r["Author(s) ID"] || r["Author(s) ID"].split(/;\s*/).includes(id)));
+        // Dosya başka bir yazarın profilinden mi indirilmiş? En sık geçen yazar ID'sine bak
+        const freq = {};
+        for (const r of recs) for (const a of (r["Author(s) ID"] || "").split(/;\s*/).filter(Boolean)) freq[a] = (freq[a] || 0) + 1;
+        const [topId, topN] = Object.entries(freq).sort((a, b) => b[1] - a[1])[0] || [];
+        let warn = "";
+        if (topId && topId !== id && topN > mine.length) {
+          let owner = topId;
+          for (const r of recs) { const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + topId + ")")); if (m) { owner = m; break; } }
+          warn = ` · ⚠ Bu dosya büyük olasılıkla başka bir yazarın profilinden indirilmiş (${owner}); yalnızca ${id} ID'sini içeren ${mine.length} kayıt alındı. Kendi Scopus profilinizden indirin.`;
+        }
+        const out = mine.map((r) => {
+          const year = parseInt(r.Year), type = r["Document Type"] || "", src = r["Source title"] || "";
+          let cls = "-", pct = null;
+          const confLike = /conference|proceedings|symposium|congress|workshop|meeting|colloquium|eurock|summit/i.test(src);
+          if (/^(Article|Review)$/.test(type) && !confLike && r.ISSN) {
+            cls = "A.4";
+          } else if (/Conference/.test(type) || (/^(Article|Review)$/.test(type) && confLike)) cls = "B.1";
+          else if (/Book chapter/i.test(type)) cls = "C.3";
+          const eid = r.EID || r.DOI || r.Title;
+          return { eid, year, title: r.Title, src, type, nAuth: (r["Author(s) ID"] || "").split(";").filter((x) => x.trim()).length || null, doi: r.DOI || "", issn: r.ISSN || "", pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: cls === "A.4" };
+        }).sort((a, b) => (b.year || 0) - (a.year || 0));
+        // h-indeksi (öz atıflar dahil)
+        const c = out.map((p) => p.cites).sort((a, b) => b - a);
+        let h = 0; while (h < c.length && c[h] >= h + 1) h++;
+        data.h = String(h); data.hNote = "CSV'den, öz atıflar dahil";
+        const prev = Object.fromEntries((data.pubs || []).filter((p) => p.manual).map((p) => [p.eid, p]));
+        data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, manual: true } : p);
+        data.csvWarn = warn;
+        const unk = data.pubs.filter((p) => p.guess && !p.manual).length;
+        st.textContent = `CSV: ${recs.length} satır · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "") + warn;
+        showName(); applyPubs(); build(); calc(); save();
+        checkQuartiles();
+      }
+      function showName() { $("#idLabel").textContent = id + (data.name ? " · " + data.name : ""); }
+      $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
+      const BASIS = [["", "Dayanak seçin"], ["tek", "Tek yazarlı"], ["kendi", "Kendi tezi / doktora sonrası (ilk/sorumlu yazar)"], ["danis", "Yönettiği tezden"], ["proje", "Projeden (ilk/sorumlu yazar)"]];
+      const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
+      // Yayın listesinden gelen adet + elle girilen ek adet
+      // Başlıca eser: işaretli A.1/A.2 yayınları; doçentlik sonrası = yayın yılı > doçentlik yılı (aynı yıl: tarih bilinmediği için sayılır, kontrol edin)
+      function baslCount() {
+        const list = (data.pubs || []).filter((p) => p.basl && ["A.1", "A.2"].includes(p.cls));
+        const y = data.docDate ? +data.docDate.slice(0, 4) : null;
+        return { all: list.length, post: y ? list.filter((p) => +p.year >= y).length : 0 };
+      }
+      const ITEM_TYPE = () => Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , , t]) => [c, t]));
+      function cnt(c) {
+        const t = ITEM_TYPE()[c];
+        if (!t || t === "raw") return num(c);
+        const list = (data.pubs || []).filter((p) => p.cls === c);
+        return t === "year" ? list.reduce((a, p) => a + (parseFloat(p.yrs) || 0), 0) : list.length;
+      }
+      const pubSelect = (p, i) => `<select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select>`;
+      function applyPubs() { if (data.pubs) renderPubs(); }
+      function renderPubs() {
+        const rest = (data.pubs || []).map((p, i) => [p, i]).filter(([p]) => p.cls === "-");
+        $("#pubWrap").classList.toggle("hidden", !rest.length);
+        $("#pubs").innerHTML = rest.map(([p, i]) => `<tr${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td>${p.year || ""}</td><td>${esc(p.title)}<br><span class="note">${esc(p.src)}</span></td><td class="note">${esc(p.type)}</td><td class="num">${p.pct ?? "—"}</td><td class="num">${p.cites ?? ""}</td><td>${pubSelect(p, i)}</td></tr>`).join("");
+        bindPubSelects();
+      }
+      function bindPubSelects() {
+        document.querySelectorAll("[data-pub]").forEach((el) => { el.onchange = () => {
+          const p = data.pubs[el.dataset.pub]; p.cls = el.value; p.manual = true; p.guess = false;
+          renderPubs(); build(); calc(); save();
+        }; });
+      }
+      const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      
+      // ---- Dosyalar (IndexedDB; yalnızca bu tarayıcıda) ----
+      let dbp = null;
+      function db() {
+        return dbp ||= new Promise((res, rej) => {
+          const r = indexedDB.open("atama-files", 1);
+          r.onupgradeneeded = () => r.result.createObjectStore("files");
+          r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+        });
+      }
+      const fkey = (k) => id + "|" + k;
+      async function fileOp(mode, fn) { const d = await db(); return new Promise((res, rej) => { const t = d.transaction("files", mode); const st = t.objectStore("files"); const q = fn(st); t.oncomplete = () => res(q?.result); t.onerror = () => rej(t.error); }); }
+      const filePut = (k, f) => fileOp("readwrite", (st) => st.put({ name: f.name, blob: f }, fkey(k)));
+      const fileGet = (k) => fileOp("readonly", (st) => st.get(fkey(k)));
+      const fileDel = (k) => fileOp("readwrite", (st) => st.delete(fkey(k))).catch(() => {});
+      // Hangi anahtarların dosyası var (görünüm için data.files'ta da tutulur)
+      const fileBtn = (k, label) => {
+        const has = data.files?.[k];
+        return `<label style="cursor:pointer" class="note" title="${has ? esc(has) : ""}"><input type="file" accept="application/pdf" class="hidden" data-file="${esc(k)}"><span style="display:inline-block;margin-top:4px;padding:2px 8px;border:1px solid ${has ? "var(--ok)" : "var(--line)"};border-radius:6px;color:${has ? "var(--ok)" : "var(--accent)"}">${has ? "✓ " + label : "⬆ " + label + " yükle"}</span></label>`;
+      };
+      function bindFiles() {
+        document.querySelectorAll("[data-file]").forEach((el) => el.onchange = async () => {
+          const f = el.files[0]; if (!f) return;
+          try { await filePut(el.dataset.file, f); (data.files ||= {})[el.dataset.file] = f.name; save(); build(); calc(); }
+          catch { alertBox("Dosya kaydedilemedi (tarayıcı depolama sınırı olabilir)."); }
+        });
+      }
+      const alertBox = (t) => { $("#zipStatus").textContent = t; };
+      const DOCS = [
+        ["d1", "01_Doktora_Docentlik_Belgesi", "1. Doçentlik belgesi, doktora/denklik belgesi (e-Devlet karekodlu)"],
+        ["d2", "02_Baslica_Eser_Formu", "2. Başlıca eser listesi ve koşulları kanıtlayan belgeler formu"],
+        ["d3", "03_Puan_Cizelgesi", "3. Akademik personel yükseltme ve atama puan çizelgesi"],
+        ["d4", "04_Ozgecmis", "4. Özgeçmiş"],
+        ["d5", "05_Niyet_Mektubu", "5. Niyet mektubu (Profesörlük için R2, 1500–2000 kelime)"],
+        ["d7", "07_Nufus_Cuzdani", "7. Nüfus cüzdanı fotokopisi"],
+        ["d8", "08_Yabanci_Dil_Belgesi", "8. Yabancı dil belgesi (Dr. Öğr. Üyesi için)"],
+        ["d9", "09_Uluslararasi_Deneyim", "9. Uluslararası deneyim belgesi (Dr. Öğr. Üyesi için)"],
+      ];
+      function renderDocs() {
+        const row = ([k, , label]) => `<tr><td>${label}</td><td class="num">${fileBtn("doc:" + k, "PDF")}</td></tr>`;
+        $("#docs").innerHTML = DOCS.filter(([k]) => k <= "d5").map(row).join("")
+          + `<tr><td>6. Yayınlar</td><td class="num note">Yukarıda her yayının satırından yüklenir</td></tr>`
+          + DOCS.filter(([k]) => k > "d5").map(row).join("");
+      }
+      const slug = (t) => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").replace(/[^\w]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
+      async function buildZip() {
+        if (!window.JSZip) { alertBox("ZIP kütüphanesi yüklenemedi; sayfayı yenileyin."); return; }
+        const zip = new JSZip(), root = zip.folder(`Basvuru_${slug(data.name || id)}`), missing = [];
+        alertBox("Hazırlanıyor…");
+        for (const [k, folder, label] of DOCS) {
+          const f = await fileGet("doc:" + k);
+          if (f) root.folder(folder).file(f.name, f.blob); else if (!["d2", "d3"].includes(k)) missing.push(label);
+        }
+        if (window.ExcelJS) {
+          try { root.folder("03_Puan_Cizelgesi").file("Puan_Cizelgesi_doldurulmus.xlsx", await puanCizelgesi()); } catch (e) { missing.push("Puan çizelgesi oluşturulamadı: " + e.message); }
+          try { root.folder("02_Baslica_Eser_Formu").file("Baslica_Eser_Formu_doldurulmus.xlsx", await baslicaEserFormu()); } catch (e) { missing.push("Başlıca eser formu oluşturulamadı: " + e.message); }
+        }
+        const pubs = root.folder("06_Yayinlar"), rows = [["Kod", "Başlık", "Kaynak", "Yıl", "DOI", "CiteScore yılı", "CiteScore %", "Puan", "Dosya"]];
+        const pts = Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , p]) => [c, p]));
+        const other = root.folder("10_Kanitlayici_Belgeler");
+        for (const c of Object.keys(ITEM_TYPE()).filter((k) => ITEM_TYPE()[k] !== "raw")) {
+          const list = (data.pubs || []).filter((p) => p.cls === c);
+          for (const [k, p] of list.entries()) {
+            const code = `${c}.${k + 1}`, f = await fileGet("pub:" + p.eid);
+            const name = `${code}_${slug(p.title)}.pdf`;
+            if (f) (PUB_CODES.includes(c) ? pubs : other).folder(c).file(name, f.blob); else missing.push(`${code} ${p.title || "(başlıksız)"}`);
+            rows.push([code, p.title, p.src, p.year, p.doi || "", p.pctYear || "", p.pct ?? "", pts[c] ?? "", f ? `${c}/${name}` : "EKSİK"]);
+          }
+        }
+        const csv = "﻿" + rows.map((r) => r.map((x) => `"${String(x ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+        pubs.file("Yayin_Listesi.csv", csv);
+        if (missing.length) root.file("EKSIKLER.txt", "Yüklenmemiş belgeler:\r\n\r\n" + missing.map((m) => "- " + m).join("\r\n"));
+        const blob = await zip.generateAsync({ type: "blob" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Basvuru_${slug(data.name || id)}.zip`; a.click();
+        alertBox(missing.length ? `İndirildi · ${missing.length} belge eksik (EKSIKLER.txt)` : "İndirildi · tüm belgeler tamam");
+      }
+      function prog(i, n, text) {
+        $("#progWrap").classList.toggle("hidden", i == null);
+        if (i == null) return;
+        $("#progBar").style.width = (n ? Math.round((i / n) * 100) : 0) + "%";
+        $("#progText").textContent = `${text} — ${i}/${n}`;
+      }
+      // ---- Formlar (ExcelJS) ----
+      const KADRO = { dou: "Dr. Öğr. Üyesi", doc: "Doçent", prof: "Profesör" };
+      const trDate = (d) => d ? d.split("-").reverse().join(".") : "";
+      const yn = (b) => b == null ? "" : b ? "Evet" : "Hayır";
+      const itemPts = () => Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , p, t, o]) => [c, { p, t, o: o || {} }]));
+      const entryText = (p) => [p.title, p.src, p.year].filter(Boolean).join(" — ");
+      async function puanCizelgesi() {
+        const r = REQ[data.target], wb = new ExcelJS.Workbook(), ws = wb.addWorksheet("Puan Tablosu");
+        ws.columns = [{ width: 14 }, { width: 70 }, { width: 14 }, { width: 14 }, { width: 14 }];
+        const thin = { style: "thin" }, border = { top: thin, left: thin, bottom: thin, right: thin };
+        const add = (vals, opt = {}) => { const row = ws.addRow(vals); row.eachCell({ includeEmpty: true }, (c, i) => { if (i <= 5) { c.border = border; c.alignment = { vertical: "middle", wrapText: true, horizontal: i >= 3 ? "center" : "left" }; if (opt.bold) c.font = { bold: true }; if (opt.fill) c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: opt.fill } }; } }); return row; };
+        ws.addRow(["TABLO 1. AKADEMİK, KURUMSAL VE TOPLUMSAL KATKI FAALİYETLERİNE İLİŞKİN PUAN ÇİZELGESİ"]).font = { bold: true, size: 12 };
+        ws.mergeCells("A1:E1");
+        ws.addRow([`Adı Soyadı (Unvanı): ${data.name || ""}`, "", `Başvuru tarihi: ${new Date().toLocaleDateString("tr-TR")}`]);
+        ws.addRow([`Başvurmak İstediği Kadro: ${KADRO[data.target]}`]);
+        ws.addRow([`Scopus ID: ${id}`]);
+        add(["Dosya Adı", "Etkinlik", "Senato Esasları Puan", "Aday Önerilen Puan", "Onaylanan Puan"], { bold: true, fill: "FFD9E2F3" });
+        const ip = itemPts(); let genel = 0; const totalRows = [];
+        for (const sec of SECTIONS) {
+          let secTotal = 0;
+          add([sec.id, sec.title.replace(/^[A-Z]\.\s*/, "")], { bold: true, fill: "FFBDD7EE" });
+          if (sec.special === "D") {
+            const d1 = Math.max(0, num("h") - r.hThr) * 25, d2 = Math.max(0, (num("fwci") - 1) * num("fwciN"));
+            add(["D1", `h-indeksi (öz atıflar hariç): ${num("h")} · sınır değer ${r.hThr} → (h − ${r.hThr}) × 25`, "(h−Sınır)×25", d1, ""]);
+            add(["D2", `FWCI: ${num("fwci")} · son 5 yıl yayın sayısı: ${num("fwciN")} → (FWCI − 1) × yayın sayısı`, "(FWCI−1)×n", +d2.toFixed(2), ""]);
+            secTotal = d1 + d2;
+          } else {
+            for (const [c, label, pts, type, opt = {}] of sec.items) {
+              add([c.replace(/[a-d]$/, ""), label, opt.na ? "—" : (type === "raw" ? "" : pts), "", ""], { bold: true, fill: "FFEAF1FB" });
+              if (type === "raw") { const v = Math.min(num(c) * pts, opt.cap ?? Infinity); add([c + ".1", `${label}: ${num(c)}`, "", v, ""]); secTotal += v; continue; }
+              let itemSum = 0;
+              (data.pubs || []).filter((p) => p.cls === c).forEach((p, k) => {
+                const v = opt.na ? 0 : type === "year" ? (parseFloat(p.yrs) || 0) * pts : pts;
+                itemSum += v;
+                add([`${c}.${k + 1}`, entryText(p) + (type === "year" ? ` (${p.yrs || 0} yıl)` : "") + (p.pct != null ? ` · CiteScore ${p.pctYear || ""} %${p.pct}` : ""), "", v, ""]);
+              });
+              secTotal += opt.cap ? Math.min(itemSum, opt.cap) : itemSum;
+            }
+            if (sec.id === "O") secTotal = Math.min(secTotal, r.total * 0.1);
+          }
+          secTotal = +secTotal.toFixed(2); genel += secTotal;
+          add([`${sec.id} Toplam`, "", "", secTotal, ""], { bold: true });
+          totalRows.push(ws.rowCount);
+        }
+        add(["", "GENEL TOPLAM", "", +genel.toFixed(2), ""], { bold: true, fill: "FFFFF2CC" });
+        return wb.xlsx.writeBuffer();
+      }
+      async function baslicaEserFormu() {
+        const buf = await fetch("forms/baslica_eser_formu.xlsx").then((x) => { if (!x.ok) throw new Error("şablon bulunamadı"); return x.arrayBuffer(); });
+        const wb = new ExcelJS.Workbook(); await wb.xlsx.load(buf); const ws = wb.worksheets[0];
+        const set = (addr, v) => { ws.getCell(addr).value = v; };
+        set("D3", data.orcid || ""); set("D4", id); set("D5", data.rid || ""); set("D6", data.gscholar || ""); set("D7", data.yokid || "");
+        set("F11", trDate(data.phdDate)); set("G11", trDate(data.docDate));
+        const phdY = data.phdDate ? +data.phdDate.slice(0, 4) : null, docY = data.docDate ? +data.docDate.slice(0, 4) : null;
+        const after = (y, ref) => (ref == null || !y ? null : +y >= ref);
+        const cl = Object.fromEntries(CLASSES);
+        const ip = itemPts(), label = (c) => (SECTIONS.flatMap((s) => s.items || []).find((x) => x[0] === c) || [, c])[1];
+        const code = (p) => { const list = data.pubs.filter((q) => q.cls === p.cls); return `${p.cls}.${list.indexOf(p) + 1}`; };
+        const basl = data.pubs.filter((p) => p.basl && ["A.1", "A.2"].includes(p.cls));
+        basl.slice(0, 8).forEach((p, k) => {
+          const r = 13 + k, basis = p.basis || (p.nAuth === 1 ? "tek" : "");
+          [["B", code(p)], ["C", p.title], ["D", cl[p.cls] || p.cls], ["E", +p.year || p.year], ["F", yn(after(p.year, phdY))], ["G", yn(after(p.year, docY))],
+           ["H", yn(p.nAuth == null ? null : p.nAuth === 1)], ["I", basis === "kendi" ? "Evet" : ""], ["J", basis === "danis" ? "Evet" : ""], ["K", basis === "proje" ? "Evet" : ""]].forEach(([col, v]) => set(col + r, v));
+        });
+        const fillRows = (rows, list) => list.slice(0, rows.length).forEach((p, k) => {
+          const r = rows[k];
+          [["B", code(p)], ["C", p.title || ""], ["D", label(p.cls)], ["E", +p.year || p.year || ""], ["F", yn(after(p.year, phdY))], ["G", yn(after(p.year, docY))]].forEach(([col, v]) => set(col + r, v));
+        });
+        fillRows([26, 27], data.pubs.filter((p) => p.cls === "A.11"));
+        fillRows([28, 29, 30], data.pubs.filter((p) => /^F\./.test(p.cls)));
+        fillRows([31, 32, 33], data.pubs.filter((p) => /^J\./.test(p.cls)));
+        fillRows([34, 35], data.pubs.filter((p) => /^K\./.test(p.cls)));
+        fillRows([36, 37, 38], data.pubs.filter((p) => /^[LMN]\./.test(p.cls)));
+        set("I41", data.name || "");
+        return wb.xlsx.writeBuffer();
+      }
+      $("#zipBtn").addEventListener("click", () => buildZip().catch((e) => alertBox("Hata: " + e.message)));
+
+      // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
+      const qid = new URLSearchParams(location.search).get("id");
+      if (qid && /^\d{8,12}$/.test(qid)) open(qid);
+      else {
+        const ids = knownIds();
+        if (ids.length) $("#known").innerHTML = "Bu tarayıcıda kayıtlı: " + ids.map((x) => `<a href="?id=${x}">${x}</a>`).join(", ");
+      }
+    </script>
+  </body>
+</html>
