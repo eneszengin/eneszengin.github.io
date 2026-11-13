@@ -86,6 +86,7 @@
             <span id="fetchStatus" class="note"></span>
           </div>
           <div id="pubWrap" class="hidden" style="margin-top:10px; max-height:420px; overflow:auto">
+            <p class="note" style="margin:0 0 6px"><b>Puanlanmayan yayınlar</b> (düzeltme, erratum vb.) — sınıf seçerek ilgili bölüme taşıyabilirsiniz.</p>
             <table><thead><tr><th>Yıl</th><th>Başlık / Kaynak</th><th>Tür</th><th class="num">CiteScore %</th><th class="num">Atıf</th><th>Sınıf</th></tr></thead><tbody id="pubs"></tbody></table>
           </div>
         </div>
@@ -229,14 +230,20 @@
       function build() {
         let html = "";
         for (const s of SECTIONS) {
-          html += `<details class="card" ${["A", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
+          html += `<details class="card" ${["A", "B", "C", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
           if (s.special === "D") {
             html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
             html += `<tr><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
           } else {
             for (const [c, label, pts, type] of s.items) {
               const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
-              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span></td><td class="num" id="t-${c}"></td></tr>`;
+              const isPub = PUB_CODES.includes(c) && data.pubs;
+              const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
+              const inp = isPub ? `<span class="note">${mine.length} +</span> ${inputCell(c + "+")} <span class="note">ek</span>` : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
+              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
+              mine.forEach(([p, i], k) => {
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}${p.pct != null ? " · CiteScore %" + p.pct : ""}${p.cites ? " · " + p.cites + " atıf" : ""}</span></td><td colspan="2" class="num">${pubSelect(p, i)}</td></tr>`;
+              });
             }
           }
           html += `</tbody></table></details>`;
@@ -249,13 +256,14 @@
           <tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>
           <tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>`;
         document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener("input", () => { data[el.dataset.k] = el.value; calc(); save(); }));
+        bindPubSelects();
       }
 
       // ---- Hesaplama
       function calc() {
         const r = REQ[$("#target").value], dept = $("#dept").value;
         data.target = $("#target").value; data.dept = dept;
-        let total = 0, eser = 0, trCount = num("A.11"), projLead = 0, projAny = 0, thesis = 0, oSum = 0;
+        let total = 0, eser = 0, trCount = cnt("A.11"), projLead = 0, projAny = 0, thesis = 0, oSum = 0;
         const fmt = (x) => (Math.round(x * 100) / 100).toLocaleString("tr-TR");
         for (const s of SECTIONS) {
           let sub = 0;
@@ -267,7 +275,7 @@
             sub = d1 + d2;
           } else {
             for (const [c, , pts, type, opt = {}] of s.items) {
-              let v = num(c) * pts;
+              let v = cnt(c) * pts;
               if (opt.cap) v = Math.min(v, opt.cap);
               $("#t-" + CSS.escape(c)).textContent = v ? fmt(v) : "";
               sub += v;
@@ -461,19 +469,22 @@
       }
       function showName() { $("#idLabel").textContent = id + (data.name ? " · " + data.name : ""); }
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
-      function applyPubs() {
-        if (!data.pubs) return;
-        for (const c of ["A.1","A.2","A.3","A.4","B.1","C.3"]) data[c] = String(data.pubs.filter((p) => p.cls === c).length);
-        renderPubs();
-      }
+      const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
+      // Yayın listesinden gelen adet + elle girilen ek adet
+      function cnt(c) { return data.pubs && PUB_CODES.includes(c) ? data.pubs.filter((p) => p.cls === c).length + num(c + "+") : num(c); }
+      const pubSelect = (p, i) => `<select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select>`;
+      function applyPubs() { if (data.pubs) renderPubs(); }
       function renderPubs() {
-        $("#pubWrap").classList.toggle("hidden", !data.pubs?.length);
-        $("#pubs").innerHTML = (data.pubs || []).map((p, i) => `<tr${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td>${p.year || ""}</td><td>${esc(p.title)}<br><span class="note">${esc(p.src)}</span></td><td class="note">${esc(p.type)}</td><td class="num">${p.pct ?? "—"}</td><td class="num">${p.cites ?? ""}</td><td><select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select></td></tr>`).join("");
-        document.querySelectorAll("[data-pub]").forEach((el) => el.addEventListener("change", () => {
-          const p = data.pubs[el.dataset.pub]; p.cls = el.value; p.manual = true;
-          for (const c of ["A.11","B.2","C.4"]) data[c] = String(data.pubs.filter((q) => q.cls === c).length || num(c));
-          applyPubs(); build(); calc(); save();
-        }));
+        const rest = (data.pubs || []).map((p, i) => [p, i]).filter(([p]) => p.cls === "-");
+        $("#pubWrap").classList.toggle("hidden", !rest.length);
+        $("#pubs").innerHTML = rest.map(([p, i]) => `<tr${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td>${p.year || ""}</td><td>${esc(p.title)}<br><span class="note">${esc(p.src)}</span></td><td class="note">${esc(p.type)}</td><td class="num">${p.pct ?? "—"}</td><td class="num">${p.cites ?? ""}</td><td>${pubSelect(p, i)}</td></tr>`).join("");
+        bindPubSelects();
+      }
+      function bindPubSelects() {
+        document.querySelectorAll("[data-pub]").forEach((el) => { el.onchange = () => {
+          const p = data.pubs[el.dataset.pub]; p.cls = el.value; p.manual = true; p.guess = false;
+          renderPubs(); build(); calc(); save();
+        }; });
       }
       const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
       
