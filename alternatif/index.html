@@ -49,12 +49,13 @@
   .ids svg{width:14px;height:14px}
 
   h2{color:var(--navy);font-size:26px;font-weight:700;margin:34px 0 12px;line-height:1.2}
-  h2:first-of-type{margin-top:0}
+  .toc + h2{margin-top:0}
   h2 .n{color:var(--muted);font-weight:400;font-size:18px;margin-left:6px}
   h3{color:#444;font-size:16px;font-weight:700;margin:22px 0 8px}
 
   .bio{color:var(--muted);font-size:15px;line-height:1.55;margin:0 0 12px}
   .tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .profile .tags{margin:0 0 12px}
   .tags span{background:#EEF2F7;color:var(--navy);font-size:14px;padding:3px 12px}
 
   table{border-collapse:collapse;width:100%}
@@ -137,7 +138,6 @@
 
 <div class="wrap">
 <aside class="side" aria-label="Bölümler">
-  <a href="#ozgecmis">Özgeçmiş</a>
   <a href="#akademik-deneyim">Akademik Deneyim</a>
   <a href="#idari-deneyim">İdari Deneyim</a>
   <a href="#egitim">Eğitim</a>
@@ -160,6 +160,7 @@
       <p class="dept">İTÜ Maden Fakültesi, Jeoloji Mühendisliği Bölümü</p>
       <p class="dept grp"><a href="https://mjkmh.itu.edu.tr/" target="_blank" rel="noopener">Mühendislik Jeolojisi, Kaya Mekaniği, Hidrojeoloji (MJKMH) Çalışma Grubu</a></p>
       <p class="mail"><a href="mailto:eneszengin@itu.edu.tr">eneszengin@itu.edu.tr</a></p>
+      <div class="tags"><span>Mühendislik Jeolojisi</span><span>Kaya Mekaniği</span><span>Doğal Afetler ve Risk Yönetimi</span></div>
       <div class="ids">
         <a href="https://orcid.org/0000-0002-5740-7763" target="_blank" rel="noopener">ORCID</a>
         <a href="https://www.scopus.com/authid/detail.uri?authorId=57189441189" target="_blank" rel="noopener">Scopus</a>
@@ -172,8 +173,7 @@
   </div>
 
   <nav class="toc" aria-label="Bölümler">
-    <a href="#ozgecmis">Özgeçmiş</a>
-    <a href="#akademik-deneyim">Akademik Deneyim</a>
+      <a href="#akademik-deneyim">Akademik Deneyim</a>
     <a href="#idari-deneyim">İdari Deneyim</a>
     <a href="#egitim">Eğitim</a>
     <a href="#yayinlar">Yayınlar</a>
@@ -184,10 +184,6 @@
     <a href="#dersler">Dersler</a>
     <a href="#tez-danismanliklari">Tez Danışmanlıkları</a>
   </nav>
-
-  <h2 id="ozgecmis">Özgeçmiş</h2>
-  <p class="bio">İstanbul Teknik Üniversitesi Maden Fakültesi Jeoloji Mühendisliği Bölümü’nde öğretim üyesi olarak görev yapmaktadır. Araştırmaları mühendislik jeolojisi, kaya mekaniği ve yer bilimlerinde mekânsal analiz konularında yoğunlaşmaktadır. Arazi gözlemleri, laboratuvar deneyleri, sayısal analizler ve mekânsal veri işleme yöntemlerini birlikte kullanarak kaya ve zemin ortamlarının mühendislik davranışını, jeolojik tehlikeleri ve bu tehlikelerin altyapı sistemleri, yerleşim alanları ve kültürel miras yapıları üzerindeki etkilerini çalışmaktadır.</p>
-  <div class="tags"><span>Mühendislik Jeolojisi</span><span>Kaya Mekaniği</span><span>Doğal Afetler ve Risk Yönetimi</span></div>
 
   <h2 id="akademik-deneyim">Akademik Deneyim</h2>
   <table>
