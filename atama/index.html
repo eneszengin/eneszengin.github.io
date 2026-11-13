@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>İTÜ Atama Kriterleri Motoru</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>" />
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
       :root {
         --bg: #f7f7f5; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e3e0;
@@ -100,6 +101,16 @@
         <div class="card">
           <h2>Ek koşullar</h2>
           <table><tbody id="extra"></tbody></table>
+        </div>
+
+        <div class="card">
+          <h2>Başvuru belgeleri</h2>
+          <p class="note">İlandaki "İstenen Belgeler" sırasıyla. Dosyalar yalnızca bu tarayıcıda saklanır. Başlıca eser formu (2) ve puan çizelgesi (3) ayrıca hazırlanacak.</p>
+          <table><tbody id="docs"></tbody></table>
+          <div class="row" style="margin-top:10px">
+            <button id="zipBtn" type="button">Başvuru dosyasını indir (ZIP)</button>
+            <span id="zipStatus" class="note"></span>
+          </div>
         </div>
 
         <div class="card row">
@@ -239,10 +250,13 @@
               const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
               const isPub = PUB_CODES.includes(c) && data.pubs;
               const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
-              const inp = isPub ? (["A.11", "B.2", "C.4"].includes(c) ? `${mine.length} adet + ${inputCell(c + "+")} <span class="note">Scopus dışı</span>` : `<b>${mine.length}</b> adet`) : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
+              const inp = isPub ? `<b>${mine.length}</b> adet <button type="button" class="ghost" style="padding:2px 8px" data-add="${c}">+ Ekle</button>` : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
               html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
               mine.forEach(([p, i], k) => {
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.cites ? " · " + p.cites + " atıf" : ""}</span></td><td colspan="2" class="num">${pubSelect(p, i)}</td></tr>`;
+                const head = p.entry
+                  ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
+                  : `${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
               });
             }
           }
@@ -257,6 +271,13 @@
           <tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>`;
         document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener("input", () => { data[el.dataset.k] = el.value; calc(); save(); }));
         bindPubSelects();
+        document.querySelectorAll("[data-add]").forEach((b) => b.onclick = () => {
+          data.pubs.push({ eid: "m" + Date.now(), cls: b.dataset.add, title: "", src: "", year: "", entry: true, manual: true });
+          build(); calc(); save();
+        });
+        document.querySelectorAll("[data-edit]").forEach((el) => el.oninput = () => { data.pubs[el.dataset.edit][el.dataset.f] = el.value; save(); });
+        document.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => { const p = data.pubs[b.dataset.del]; data.pubs.splice(b.dataset.del, 1); fileDel("pub:" + p.eid); build(); calc(); save(); });
+        renderDocs(); bindFiles();
       }
 
       // ---- Hesaplama
@@ -321,7 +342,7 @@
 
       // ---- Giriş akışı
       function open(x) {
-        id = x; data = load(x);
+        id = x; data = load(x); data.pubs ||= [];
         if (data.target) $("#target").value = data.target;
         if (data.dept) $("#dept").value = data.dept;
         $("#idLabel").textContent = x;
@@ -471,7 +492,7 @@
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
       const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
       // Yayın listesinden gelen adet + elle girilen ek adet
-      function cnt(c) { return data.pubs && PUB_CODES.includes(c) ? data.pubs.filter((p) => p.cls === c).length + num(c + "+") : num(c); }
+      function cnt(c) { return data.pubs && PUB_CODES.includes(c) ? data.pubs.filter((p) => p.cls === c).length : num(c); }
       const pubSelect = (p, i) => `<select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select>`;
       function applyPubs() { if (data.pubs) renderPubs(); }
       function renderPubs() {
@@ -488,6 +509,76 @@
       }
       const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
       
+      // ---- Dosyalar (IndexedDB; yalnızca bu tarayıcıda) ----
+      let dbp = null;
+      function db() {
+        return dbp ||= new Promise((res, rej) => {
+          const r = indexedDB.open("atama-files", 1);
+          r.onupgradeneeded = () => r.result.createObjectStore("files");
+          r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+        });
+      }
+      const fkey = (k) => id + "|" + k;
+      async function fileOp(mode, fn) { const d = await db(); return new Promise((res, rej) => { const t = d.transaction("files", mode); const st = t.objectStore("files"); const q = fn(st); t.oncomplete = () => res(q?.result); t.onerror = () => rej(t.error); }); }
+      const filePut = (k, f) => fileOp("readwrite", (st) => st.put({ name: f.name, blob: f }, fkey(k)));
+      const fileGet = (k) => fileOp("readonly", (st) => st.get(fkey(k)));
+      const fileDel = (k) => fileOp("readwrite", (st) => st.delete(fkey(k))).catch(() => {});
+      // Hangi anahtarların dosyası var (görünüm için data.files'ta da tutulur)
+      const fileBtn = (k, label) => {
+        const has = data.files?.[k];
+        return `<label style="cursor:pointer" class="note" title="${has ? esc(has) : ""}"><input type="file" accept="application/pdf" class="hidden" data-file="${esc(k)}"><span style="display:inline-block;margin-top:4px;padding:2px 8px;border:1px solid ${has ? "var(--ok)" : "var(--line)"};border-radius:6px;color:${has ? "var(--ok)" : "var(--accent)"}">${has ? "✓ " + label : "⬆ " + label + " yükle"}</span></label>`;
+      };
+      function bindFiles() {
+        document.querySelectorAll("[data-file]").forEach((el) => el.onchange = async () => {
+          const f = el.files[0]; if (!f) return;
+          try { await filePut(el.dataset.file, f); (data.files ||= {})[el.dataset.file] = f.name; save(); build(); calc(); }
+          catch { alertBox("Dosya kaydedilemedi (tarayıcı depolama sınırı olabilir)."); }
+        });
+      }
+      const alertBox = (t) => { $("#zipStatus").textContent = t; };
+      const DOCS = [
+        ["d1", "01_Doktora_Docentlik_Belgesi", "1. Doçentlik belgesi, doktora/denklik belgesi (e-Devlet karekodlu)"],
+        ["d2", "02_Baslica_Eser_Formu", "2. Başlıca eser listesi ve koşulları kanıtlayan belgeler formu"],
+        ["d3", "03_Puan_Cizelgesi", "3. Akademik personel yükseltme ve atama puan çizelgesi"],
+        ["d4", "04_Ozgecmis", "4. Özgeçmiş"],
+        ["d5", "05_Niyet_Mektubu", "5. Niyet mektubu (Profesörlük için R2, 1500–2000 kelime)"],
+        ["d7", "07_Nufus_Cuzdani", "7. Nüfus cüzdanı fotokopisi"],
+        ["d8", "08_Yabanci_Dil_Belgesi", "8. Yabancı dil belgesi (Dr. Öğr. Üyesi için)"],
+        ["d9", "09_Uluslararasi_Deneyim", "9. Uluslararası deneyim belgesi (Dr. Öğr. Üyesi için)"],
+      ];
+      function renderDocs() {
+        $("#docs").innerHTML = DOCS.map(([k, , label]) => `<tr><td>${label}</td><td class="num">${fileBtn("doc:" + k, "PDF")}</td></tr>`).join("")
+          + `<tr><td>6. Yayınlar</td><td class="num note">Yukarıda her yayının satırından yüklenir</td></tr>`;
+      }
+      const slug = (t) => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").replace(/[^\w]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
+      async function buildZip() {
+        if (!window.JSZip) { alertBox("ZIP kütüphanesi yüklenemedi; sayfayı yenileyin."); return; }
+        const zip = new JSZip(), root = zip.folder(`Basvuru_${slug(data.name || id)}`), missing = [];
+        alertBox("Hazırlanıyor…");
+        for (const [k, folder, label] of DOCS) {
+          const f = await fileGet("doc:" + k);
+          if (f) root.folder(folder).file(f.name, f.blob); else missing.push(label);
+        }
+        const pubs = root.folder("06_Yayinlar"), rows = [["Kod", "Başlık", "Kaynak", "Yıl", "CiteScore yılı", "CiteScore %", "Puan", "Dosya"]];
+        const pts = Object.fromEntries(SECTIONS.flatMap((s) => s.items || []).map(([c, , p]) => [c, p]));
+        for (const c of PUB_CODES) {
+          const list = (data.pubs || []).filter((p) => p.cls === c);
+          for (const [k, p] of list.entries()) {
+            const code = `${c}.${k + 1}`, f = await fileGet("pub:" + p.eid);
+            const name = `${code}_${slug(p.title)}.pdf`;
+            if (f) pubs.folder(c).file(name, f.blob); else missing.push(`${code} ${p.title || "(başlıksız)"}`);
+            rows.push([code, p.title, p.src, p.year, p.pctYear || "", p.pct ?? "", pts[c] ?? "", f ? `${c}/${name}` : "EKSİK"]);
+          }
+        }
+        const csv = "﻿" + rows.map((r) => r.map((x) => `"${String(x ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+        pubs.file("Yayin_Listesi.csv", csv);
+        if (missing.length) root.file("EKSIKLER.txt", "Yüklenmemiş belgeler:\r\n\r\n" + missing.map((m) => "- " + m).join("\r\n"));
+        const blob = await zip.generateAsync({ type: "blob" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Basvuru_${slug(data.name || id)}.zip`; a.click();
+        alertBox(missing.length ? `İndirildi · ${missing.length} belge eksik (EKSIKLER.txt)` : "İndirildi · tüm belgeler tamam");
+      }
+      $("#zipBtn").addEventListener("click", () => buildZip().catch((e) => alertBox("Hata: " + e.message)));
+
       // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
       const qid = new URLSearchParams(location.search).get("id");
       if (qid && /^\d{8,12}$/.test(qid)) open(qid);
