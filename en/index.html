@@ -47,8 +47,9 @@
   .wrap{max-width:1000px;margin:28px auto 40px;padding:0 20px}
   .card{background:#fff;padding:30px;border:1px solid var(--line)}
 
-  .profile{display:flex;gap:24px;align-items:flex-start;margin-bottom:28px}
-  .profile img{width:160px;height:160px;object-fit:cover;flex:0 0 160px;display:block;background:#eee}
+  .profile{display:flex;gap:28px;align-items:stretch;margin-bottom:28px}
+  .profile img{width:200px;height:auto;min-height:200px;object-fit:cover;object-position:center top;flex:0 0 200px;align-self:stretch;display:block;background:#eee}
+  .profile>div{display:flex;flex-direction:column;justify-content:space-between}
   .profile .name{color:var(--navy);font-size:26px;font-weight:700;margin:0 0 4px;line-height:1.2}
   h1.name{font-size:26px}
   .profile .dept{color:var(--muted2);margin:0 0 4px}
@@ -129,7 +130,7 @@
     .wrap{padding:0 12px}
     .card{padding:20px 16px}
     .profile{flex-direction:column;gap:14px}
-    .profile img{width:120px;height:120px;flex-basis:120px}
+    .profile img{width:120px;height:120px;min-height:0;flex-basis:120px;align-self:flex-start}
     h2{font-size:22px}
     td:first-child{width:78px}
     .b{white-space:normal}
