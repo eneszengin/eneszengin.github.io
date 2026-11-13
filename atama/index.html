@@ -79,10 +79,9 @@
 
         <div class="card" id="scopusCard">
           <h2>Scopus'tan otomatik çek</h2>
-          <p class="note">Elsevier API anahtarınız yalnızca bu tarayıcıda saklanır. h-indeksi ve yazar bilgisi için İTÜ ağında / VPN'de olmanız gerekebilir. Gelen her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
+          <p class="note">Yayınlar Scopus ID'niz girildiğinde otomatik çekilir. Gelen her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
           <div class="row">
-            <input id="apiKey" type="password" placeholder="Elsevier API anahtarı" style="width:300px" />
-            <button id="fetchBtn" type="button">Scopus'tan çek</button>
+            <button id="fetchBtn" type="button">Scopus'tan yeniden çek</button>
             <span id="fetchStatus" class="note"></span>
           </div>
           <div id="pubWrap" class="hidden" style="margin-top:10px; max-height:420px; overflow:auto">
@@ -320,7 +319,8 @@
         $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
         $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
         history.replaceState(null, "", "?id=" + x);
-        $("#apiKey").value = getKey(); renderPubs(); build(); calc();
+        renderPubs(); build(); calc();
+        if (!data.pubs) setTimeout(fetchScopus, 0);
       }
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
       $("#target").addEventListener("change", () => { calc(); save(); });
@@ -350,9 +350,8 @@
 
       // ---- Scopus (Elsevier API) ----
       const CLASSES = [["A.1","Q1 makale"],["A.2","Q2 makale"],["A.3","Q3 makale"],["A.4","Q4 makale"],["A.11","TR Dizin makale"],["B.1","Uluslararası bildiri"],["B.2","Ulusal bildiri"],["C.3","Uluslararası kitap bölümü"],["C.4","Ulusal kitap bölümü"],["-","Sayılmaz"]];
-      const getKey = () => { try { return localStorage.getItem("atama:apikey") || ""; } catch { return ""; } };
       async function els(url) {
-        const r = await fetch("https://api.elsevier.com/content/" + url, { headers: { "X-ELS-APIKey": $("#apiKey").value.trim(), Accept: "application/json" } });
+        const r = await fetch("https://atama-scopus.eneszengin.workers.dev/content/" + url, { headers: { Accept: "application/json" } });
         if (!r.ok) throw new Error(r.status + " " + (await r.text()).slice(0, 160));
         return r.json();
       }
@@ -381,7 +380,6 @@
       const qFromPct = (p) => p >= 75 ? "A.1" : p >= 50 ? "A.2" : p >= 25 ? "A.3" : "A.4";
       async function fetchScopus() {
         const st = $("#fetchStatus");
-        try { localStorage.setItem("atama:apikey", $("#apiKey").value.trim()); } catch {}
         st.textContent = "Yazar bilgisi alınıyor…";
         try {
           const a = await els("author/author_id/" + id + "?view=METRICS");
@@ -398,7 +396,7 @@
             start += 25; st.textContent = `Yayınlar: ${pubs.length}/${total}`;
             if (start > 1000) break;
           }
-        } catch (e) { st.textContent = "Hata: " + e.message + " — anahtarı ve ağ bağlantısını (İTÜ/VPN) kontrol edin."; return; }
+        } catch (e) { st.textContent = "Hata: " + e.message + ""; return; }
         const out = [];
         for (const [i, e] of pubs.entries()) {
           st.textContent = `Çeyrekler hesaplanıyor: ${i + 1}/${pubs.length}`;
