@@ -355,7 +355,7 @@ external_links:
 
 languages: ["tr", "en"]
 default_lang: "tr"
-exclude_from_localization: ["assets", "anket", "alternatif", "alternatif-2", "sitemap.xml", "robots.txt", "googlecf423349834dbe9a.html"]
+exclude_from_localization: ["assets", "anket", "atama", "alternatif", "alternatif-2", "sitemap.xml", "robots.txt", "googlecf423349834dbe9a.html"]
 lang_from_path: true
 country_flag: true # set true for allowing flag symbol in language toggle
 parallel_localization: false

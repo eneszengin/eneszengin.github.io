@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>İTÜ Atama Kriterleri Motoru</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>" />
+    <style>
+      :root {
+        --bg: #f7f7f5; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e3e0;
+        --accent: #1f5fa8; --ok: #1f7a3f; --bad: #b3261e; --warn: #9a6700;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      main { max-width: 980px; margin: 0 auto; padding: 24px 16px 80px; }
+      h1 { font-size: 1.5rem; margin: 0 0 4px; }
+      h2 { font-size: 1.05rem; margin: 0 0 10px; }
+      .sub { color: var(--muted); margin: 0 0 20px; }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+      input, select, button { font: inherit; }
+      input[type="number"], input[type="text"], select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+      input[type="number"] { width: 84px; text-align: right; }
+      button { padding: 7px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+      button.ghost { background: #fff; color: var(--accent); }
+      table { width: 100%; border-collapse: collapse; }
+      td, th { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+      th { font-weight: 600; color: var(--muted); font-size: .85rem; }
+      td.num, th.num { text-align: right; white-space: nowrap; }
+      .code { color: var(--muted); font-size: .85rem; width: 48px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .sticky { position: sticky; top: 0; z-index: 5; }
+      .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+      .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; }
+      .pill b { display: block; font-size: 1.15rem; }
+      .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+      .note { font-size: .85rem; color: var(--muted); }
+      .hidden { display: none; }
+      details summary { cursor: pointer; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>İTÜ Atama Kriterleri Motoru</h1>
+      <p class="sub">İTÜ Akademik Yükseltme ve Atama Ölçütleri Senato Esasları (2022) · H, S, MF ve TMDK dışındaki birimler</p>
+
+      <!-- Giriş -->
+      <section id="login" class="card">
+        <h2>Scopus Author ID</h2>
+        <p class="note">Bilgileriniz bu ID ile <b>yalnızca bu tarayıcıda</b> saklanır, hiçbir sunucuya gönderilmez. Aynı tarayıcıdan geri döndüğünüzde kaldığınız yerden devam edersiniz. Başka cihaza geçmek için “Dışa aktar / İçe aktar” kullanın.</p>
+        <form id="loginForm" class="row">
+          <input id="scopusInput" type="text" inputmode="numeric" pattern="\d{8,12}" placeholder="ör. 57190000000" required />
+          <button type="submit">Devam et</button>
+        </form>
+        <p id="known" class="note"></p>
+      </section>
+
+      <!-- Uygulama -->
+      <section id="app" class="hidden">
+        <div class="card row" style="justify-content: space-between">
+          <div>Scopus ID: <b id="idLabel"></b> · <a id="scopusLink" target="_blank" rel="noopener">Scopus profili</a></div>
+          <div class="row">
+            <label>Hedef unvan
+              <select id="target">
+                <option value="dou">Dr. Öğr. Üyesi</option>
+                <option value="doc">Doçent</option>
+                <option value="prof" selected>Profesör</option>
+              </select>
+            </label>
+            <label>Bölüm
+              <select id="dept">
+                <option value="std">Diğer bölümler</option>
+                <option value="kim">Kimya Müh.</option>
+                <option value="grp">Gıda / Metalurji ve Malzeme Müh.</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="card sticky">
+          <div class="summary" id="summary"></div>
+        </div>
+
+        <div id="sections"></div>
+
+        <div class="card">
+          <h2>Ek koşullar</h2>
+          <table><tbody id="extra"></tbody></table>
+        </div>
+
+        <div class="card row">
+          <button class="ghost" id="exportBtn" type="button">Dışa aktar (JSON)</button>
+          <label class="ghost" style="cursor:pointer"><button class="ghost" type="button" onclick="document.getElementById('importFile').click()">İçe aktar</button>
+            <input id="importFile" type="file" accept="application/json" class="hidden" /></label>
+          <button class="ghost" id="logoutBtn" type="button">Başka ID</button>
+          <button class="ghost" id="resetBtn" type="button" style="color: var(--bad); border-color: var(--bad)">Bu ID'nin verisini sil</button>
+          <span id="saved" class="note"></span>
+        </div>
+
+        <p class="note">Bu araç ön değerlendirme amaçlıdır; resmi değerlendirme İTÜ komisyonlarınca yapılır. Puan değerleri 2022 Senato Esasları'ndan alınmıştır. Güncel metni <a href="https://www.itu.edu.tr/docs/librariesprovider2/duyurular/itu-atama-olcutleri.pdf" target="_blank" rel="noopener">İTÜ'nün belgesinden</a> kontrol edin. Hakemlik puanı belgede birim başına tanımlanmadığı için doğrudan puan olarak girilir (en fazla 20).</p>
+      </section>
+    </main>
+
+    <script>
+      // ---- Puan tablosu (Tablo 1). type: "count" = adet × puan, "year" = yıl × puan, "raw" = doğrudan puan
+      const SECTIONS = [
+        { id: "A", title: "A. Makaleler", items: [
+          ["A.1", "Scopus Q1 makale", 10, "count", { eser: true }],
+          ["A.2", "Scopus Q2 makale", 8, "count", { eser: true }],
+          ["A.3", "Scopus Q3 makale", 4, "count", { eser: true }],
+          ["A.4", "Scopus Q4 makale", 3, "count"],
+          ["A.11", "TR Dizin makale", 3, "count"],
+        ]},
+        { id: "B", title: "B. Bildiriler", items: [
+          ["B.1", "Uluslararası bildiri", 3, "count"],
+          ["B.2", "Ulusal bildiri", 2, "count"],
+        ]},
+        { id: "C", title: "C. Kitaplar", items: [
+          ["C.1", "Uluslararası kitap (yazar)", 40, "count"],
+          ["C.2", "Ulusal kitap (yazar)", 30, "count"],
+          ["C.3", "Uluslararası kitap bölümü", 10, "count"],
+          ["C.4", "Ulusal kitap bölümü", 3, "count"],
+          ["C.5", "Uluslararası kitap editörlüğü", 30, "count"],
+          ["C.6", "Ulusal kitap editörlüğü", 15, "count"],
+          ["C.7", "Kitap çevirisi", 10, "count"],
+        ]},
+        { id: "D", title: "D. Atıflar", special: "D" },
+        { id: "E", title: "E. Patentler (tescilli)", items: [
+          ["E.1", "Ticarileşmiş patent", 40, "count"],
+          ["E.2", "Yurt dışı incelemeli patent", 10, "count"],
+          ["E.3", "Yurt içi incelemeli patent", 10, "count"],
+        ]},
+        { id: "F", title: "F. Projeler (tamamlanmış)", items: [
+          ["F.1", "Uluslararası proje – yürütücü", 50, "count", { proj: "lead" }],
+          ["F.2", "Uluslararası proje – eş yürütücü", 40, "count", { proj: "lead" }],
+          ["F.3", "Uluslararası proje – araştırmacı", 20, "count", { proj: "intl" }],
+          ["F.4", "Uluslararası proje – danışman", 5, "count"],
+          ["F.5", "Ulusal proje – yürütücü", 25, "count", { proj: "lead" }],
+          ["F.6", "Ulusal proje – araştırmacı", 10, "count", { proj: "res" }],
+          ["F.7", "Ulusal proje – danışman", 3, "count"],
+        ]},
+        { id: "G", title: "G. Ödüller", items: [
+          ["G.1", "Uluslararası jürili bilim/sanat ödülü", 80, "count"],
+          ["G.2", "TÜBİTAK/TÜBA bilim ödülü", 80, "count"],
+          ["G.3", "TÜBİTAK/TÜBA teşvik ödülü", 50, "count"],
+          ["G.4", "TÜBA özgün eser ödülü", 20, "count"],
+          ["G.5", "Diğer ulusal jürili ödül", 20, "count"],
+          ["G.6", "En iyi makale/bildiri ödülü", 10, "count"],
+        ]},
+        { id: "H", title: "H. Dergi editörlüğü ve hakemlik", items: [
+          ["H.1", "Editör", 40, "count"],
+          ["H.2", "Yardımcı editör", 30, "count"],
+          ["H.3", "Yayın kurulu üyeliği", 20, "count"],
+          ["H.4", "Misafir editör", 10, "count"],
+          ["HK", "Hakemlik (toplam puan, en fazla 20)", 1, "raw", { cap: 20 }],
+        ]},
+        { id: "J", title: "J. Tez danışmanlığı (tamamlanmış)", items: [
+          ["J.1", "Doktora – danışman", 40, "count", { thesis: true }],
+          ["J.2", "Yüksek lisans – danışman", 10, "count", { thesis: true }],
+          ["J.3", "Doktora – eş danışman", 20, "count", { thesis: true }],
+          ["J.4", "Yüksek lisans – eş danışman", 5, "count", { thesis: true }],
+        ]},
+        { id: "K", title: "K. Eğitim-öğretim", items: [
+          ["K.1", "Son 2 yılda verilen ders kredisi toplamı", 1, "raw"],
+          ["K.2", "MOOC geliştirme", 10, "count"],
+          ["K.3", "Uluslararası yaz okulu vb. program", 10, "count"],
+          ["K.7", "İTÜ SEM ile yeni program tasarımı", 1, "count"],
+          ["K.8", "Kısa uluslararası ders (ATHENS vb.)", 1, "count"],
+        ]},
+        { id: "O", title: "O. İdari görevler (yıl; toplam asgari puanın %10'u ile sınırlı)", items: [
+          ["O.1a", "Dekan / enstitü-YO müdürü", 10, "year"],
+          ["O.1b", "Bölüm başkanı / enstitü ABD başkanı", 8, "year"],
+          ["O.1c", "Araştırma merkezi müdürü", 8, "year"],
+          ["O.1d", "Dekan/müdür/bölüm başkan yardımcısı", 5, "year"],
+          ["O.2", "Rektörlük komisyon/ofis üyeliği", 4, "year"],
+          ["O.2b", "Rektörlük komisyon/ofis başkanlığı", 8, "year"],
+          ["O.3", "Fakülte/enstitü kurulu, yönetim kurulu üyeliği", 2, "year"],
+          ["O.4", "Fakülte/bölüm komisyon üyeliği", 3, "year"],
+          ["O.4b", "Fakülte/bölüm komisyon başkanlığı", 6, "year"],
+        ]},
+        { id: "P", title: "P. Kurumsal akademik faaliyetler (yıl)", items: [
+          ["P.1", "Lisansüstü program koordinatörlüğü", 3, "year"],
+          ["P.2", "Çift diploma program koordinatörlüğü", 3, "year"],
+          ["P.3", "Öğrenci proje takımı danışmanlığı", 3, "year"],
+          ["P.4", "Bilimsel toplantı düzenleme / bilim kurulu", 3, "count"],
+          ["P.4b", "Bilimsel toplantı düzenleme kurulu başkanlığı", 6, "count"],
+        ]},
+      ];
+
+      const REQ = {
+        dou: { name: "Dr. Öğr. Üyesi", total: 60, eser: { std: 30, kim: 40, grp: 30 }, basl: 2, hThr: 4 },
+        doc: { name: "Doçent", total: 250, eser: { std: 70, kim: 80, grp: 80 }, basl: 4, hThr: 6, tr: 1, proj: 1, thesis: "soft" },
+        prof: { name: "Profesör", total: 500, eser: { std: 110, kim: 120, grp: 120 }, basl: 7, hThr: 10, tr: 2, proj: 2, thesis: 3 },
+      };
+
+      const $ = (s) => document.querySelector(s);
+      let id = null, data = {};
+      const key = (x) => "atama:" + x;
+      const num = (k) => Math.max(0, parseFloat(data[k]) || 0);
+
+      // ---- Depolama (localStorage, try/catch ile)
+      function load(x) { try { return JSON.parse(localStorage.getItem(key(x))) || {}; } catch { return {}; } }
+      function save() {
+        data._updated = new Date().toISOString();
+        try { localStorage.setItem(key(id), JSON.stringify(data)); $("#saved").textContent = "Kaydedildi · " + new Date().toLocaleTimeString("tr-TR"); }
+        catch { $("#saved").textContent = "Bu tarayıcı kaydetmeye izin vermiyor; Dışa aktar kullanın."; }
+      }
+      function knownIds() {
+        try { return Object.keys(localStorage).filter((k) => k.startsWith("atama:")).map((k) => k.slice(6)); } catch { return []; }
+      }
+
+      // ---- Form oluşturma
+      function inputCell(k, step = 1) {
+        return `<input type="number" min="0" step="${step}" data-k="${k}" value="${data[k] ?? ""}" />`;
+      }
+      function build() {
+        let html = "";
+        for (const s of SECTIONS) {
+          html += `<details class="card" ${["A", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
+          if (s.special === "D") {
+            html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
+            html += `<tr><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
+          } else {
+            for (const [c, label, pts, type] of s.items) {
+              const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
+              html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span></td><td class="num" id="t-${c}"></td></tr>`;
+            }
+          }
+          html += `</tbody></table></details>`;
+        }
+        $("#sections").innerHTML = html;
+        $("#extra").innerHTML = `
+          <tr><td>Başlıca eser sayısı (A1/A2; tek yazarlı, kendi tezinden/projesinden ilk veya sorumlu yazar, ya da yönettiği tezden)</td><td class="num">${inputCell("basl")}</td></tr>
+          <tr><td>— bunlardan doçentlik sonrası olanlar (Profesörlük için)</td><td class="num">${inputCell("baslPost")}</td></tr>
+          <tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr>
+          <tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>
+          <tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>`;
+        document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener("input", () => { data[el.dataset.k] = el.value; calc(); save(); }));
+      }
+
+      // ---- Hesaplama
+      function calc() {
+        const r = REQ[$("#target").value], dept = $("#dept").value;
+        data.target = $("#target").value; data.dept = dept;
+        let total = 0, eser = 0, trCount = num("A.11"), projLead = 0, projAny = 0, thesis = 0, oSum = 0;
+        const fmt = (x) => (Math.round(x * 100) / 100).toLocaleString("tr-TR");
+        for (const s of SECTIONS) {
+          let sub = 0;
+          if (s.special === "D") {
+            const d1 = Math.max(0, num("h") - r.hThr) * 25;
+            const d2 = Math.max(0, (num("fwci") - 1) * num("fwciN"));
+            $("#hthr").textContent = "eşik " + r.hThr;
+            $("#t-D1").textContent = fmt(d1); $("#t-D2").textContent = fmt(d2);
+            sub = d1 + d2;
+          } else {
+            for (const [c, , pts, type, opt = {}] of s.items) {
+              let v = num(c) * pts;
+              if (opt.cap) v = Math.min(v, opt.cap);
+              $("#t-" + CSS.escape(c)).textContent = v ? fmt(v) : "";
+              sub += v;
+              if (opt.eser) eser += v;
+              if (opt.proj) { projAny += num(c); if (opt.proj !== "res") projLead += num(c); }
+              if (opt.thesis) thesis += num(c);
+            }
+          }
+          if (s.id === "O") { oSum = sub; sub = Math.min(sub, r.total * 0.1); }
+          $("#sum-" + s.id).textContent = sub ? "· " + fmt(sub) + " puan" + (s.id === "O" && oSum > sub ? " (sınırlandı)" : "") : "";
+          total += sub;
+        }
+
+        // TR Dizin eksikse eser eşiği artar
+        let eserReq = r.eser[dept];
+        if (r.tr && trCount < r.tr) eserReq += 3 * (r.tr - trCount);
+        let baslReq = r.basl;
+        if (r.thesis === "soft" && thesis < 1) baslReq += 1;
+
+        const checks = [
+          ["Toplam puan", total, r.total],
+          ["Eser puanı (A1–A3)", eser, eserReq],
+          ["Başlıca eser", num("basl"), baslReq],
+        ];
+        if (data.target === "prof") {
+          checks.push(["Doçentlik sonrası başlıca eser", num("baslPost"), 3]);
+          checks.push(["Proje (yürütücü / uluslararası)", projLead, r.proj]);
+          checks.push(["Tamamlanmış tez", thesis, r.thesis]);
+          checks.push(["TR Dizin makale", trCount, r.tr, "soft"]);
+        }
+        if (data.target === "doc") {
+          checks.push(["Proje (yürütücü/araştırmacı)", projAny, r.proj]);
+          checks.push(["TR Dizin makale", trCount, r.tr, "soft"]);
+        }
+        if (data.target === "dou") checks.push(["Yabancı dil", num("lang"), 65]);
+
+        $("#summary").innerHTML = checks.map(([label, v, req, soft]) => {
+          const ok = v >= req;
+          const cls = ok ? "ok" : soft ? "warn" : "bad";
+          return `<div class="pill"><span class="note">${label}</span><b class="${cls}">${fmt(v)} / ${fmt(req)} ${ok ? "✓" : soft ? "!" : "✗"}</b></div>`;
+        }).join("");
+      }
+
+      // ---- Giriş akışı
+      function open(x) {
+        id = x; data = load(x);
+        if (data.target) $("#target").value = data.target;
+        if (data.dept) $("#dept").value = data.dept;
+        $("#idLabel").textContent = x;
+        $("#scopusLink").href = "https://www.scopus.com/authid/detail.uri?authorId=" + x;
+        $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+        history.replaceState(null, "", "?id=" + x);
+        build(); calc();
+      }
+      $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
+      $("#target").addEventListener("change", () => { calc(); save(); });
+      $("#dept").addEventListener("change", () => { calc(); save(); });
+      $("#logoutBtn").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
+      $("#resetBtn").addEventListener("click", () => {
+        if (!confirmDelete()) return;
+        try { localStorage.removeItem(key(id)); } catch {}
+        data = {}; build(); calc();
+      });
+      function confirmDelete() { return window.confirm("Bu ID için girilen tüm veriler silinsin mi?"); }
+      $("#exportBtn").addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify({ scopusId: id, ...data }, null, 2)], { type: "application/json" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `atama-${id}.json`; a.click();
+      });
+      $("#importFile").addEventListener("change", async (e) => {
+        const f = e.target.files[0]; if (!f) return;
+        try {
+          const obj = JSON.parse(await f.text());
+          const { scopusId, ...rest } = obj; data = rest;
+          if (data.target) $("#target").value = data.target;
+          if (data.dept) $("#dept").value = data.dept;
+          build(); calc(); save();
+        } catch { $("#saved").textContent = "Dosya okunamadı."; }
+      });
+
+      // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
+      const qid = new URLSearchParams(location.search).get("id");
+      if (qid && /^\d{8,12}$/.test(qid)) open(qid);
+      else {
+        const ids = knownIds();
+        if (ids.length) $("#known").innerHTML = "Bu tarayıcıda kayıtlı: " + ids.map((x) => `<a href="?id=${x}">${x}</a>`).join(", ");
+      }
+    </script>
+  </body>
+</html>
