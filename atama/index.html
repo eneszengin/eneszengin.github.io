@@ -239,10 +239,10 @@
               const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
               const isPub = PUB_CODES.includes(c) && data.pubs;
               const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
-              const inp = isPub ? `<span class="note">${mine.length} +</span> ${inputCell(c + "+")} <span class="note">ek</span>` : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
+              const inp = isPub ? (["A.11", "B.2", "C.4"].includes(c) ? `${mine.length} adet + ${inputCell(c + "+")} <span class="note">Scopus dışı</span>` : `<b>${mine.length}</b> adet`) : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
               html += `<tr><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
               mine.forEach(([p, i], k) => {
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}${p.pct != null ? " · CiteScore %" + p.pct : ""}${p.cites ? " · " + p.cites + " atıf" : ""}</span></td><td colspan="2" class="num">${pubSelect(p, i)}</td></tr>`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.cites ? " · " + p.cites + " atıf" : ""}</span></td><td colspan="2" class="num">${pubSelect(p, i)}</td></tr>`;
               });
             }
           }
