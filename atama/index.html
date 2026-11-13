@@ -256,7 +256,7 @@
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="Dergi / kitap / toplantı" style="width:70%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px"> <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
                   : `${esc(p.title)}<br><span class="note">${esc(p.src)} · ${p.year || ""}`;
-                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
+                html += `<tr class="pubrow"${p.guess && !p.manual ? ' style="background:#fff6d6"' : ""}><td class="code">${c}.${k + 1}</td><td colspan="2">${head}${p.pct != null ? ` · <b style="color:#1f7a3f">CiteScore${p.pctYear ? " " + p.pctYear : ""}: %${p.pct}</b>` : ""}${p.entry ? "" : (p.cites ? " · " + p.cites + " atıf" : "") + "</span>"}</td><td colspan="2" class="num">${pubSelect(p, i)}<br>${["A.1", "A.2"].includes(c) ? `<label class="note"><input type="checkbox" data-basl="${i}" ${p.basl ? "checked" : ""}> Başlıca eser</label> ` : ""}${fileBtn("pub:" + p.eid, "PDF")}</td></tr>`;
               });
             }
           }
@@ -264,17 +264,19 @@
         }
         $("#sections").innerHTML = html;
         $("#extra").innerHTML = `
-          <tr><td>Başlıca eser sayısı (A1/A2; tek yazarlı, kendi tezinden/projesinden ilk veya sorumlu yazar, ya da yönettiği tezden)</td><td class="num">${inputCell("basl")}</td></tr>
-          <tr><td>— bunlardan doçentlik sonrası olanlar (Profesörlük için)</td><td class="num">${inputCell("baslPost")}</td></tr>
+          <tr><td>ÜAK doçentlik unvanı tarihi</td><td class="num"><input type="date" data-k="docDate" value="${data.docDate || ""}"></td></tr>
+          <tr><td>Başlıca eser sayısı <span class="note">— A.1/A.2 yayınlarında "Başlıca eser" kutusunu işaretleyin (tek yazarlı; kendi tezinden/projesinden ilk veya sorumlu yazar; ya da yönettiği tezden)</span></td><td class="num"><b>${baslCount().all}</b></td></tr>
+          <tr><td>— bunlardan doçentlik tarihinden sonra yayımlananlar</td><td class="num"><b>${data.docDate ? baslCount().post : "tarih girin"}</b></td></tr>
           <tr><td>Yabancı dil puanı (YDS/YÖKDİL/eşdeğer; Dr. Öğr. Üyesi için 65)</td><td class="num">${inputCell("lang")}</td></tr>
           <tr><td>Yurt dışı deneyimi (Dr. Öğr. Üyesi ilk atama)</td><td class="num"><select data-k="abroad"><option value="">—</option><option value="1" ${data.abroad === "1" ? "selected" : ""}>Var</option><option value="0" ${data.abroad === "0" ? "selected" : ""}>Yok</option></select></td></tr>
           <tr><td>R2 niyet beyanı (Profesörlük için zorunlu, 1500–2000 kelime) hazır</td><td class="num"><select data-k="r2"><option value="">—</option><option value="1" ${data.r2 === "1" ? "selected" : ""}>Evet</option><option value="0" ${data.r2 === "0" ? "selected" : ""}>Hayır</option></select></td></tr>`;
-        document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener("input", () => { data[el.dataset.k] = el.value; calc(); save(); }));
+        document.querySelectorAll("[data-k]").forEach((el) => el.addEventListener(el.dataset.k === "docDate" ? "change" : "input", () => { data[el.dataset.k] = el.value; if (el.dataset.k === "docDate") build(); calc(); save(); }));
         bindPubSelects();
         document.querySelectorAll("[data-add]").forEach((b) => b.onclick = () => {
           data.pubs.push({ eid: "m" + Date.now(), cls: b.dataset.add, title: "", src: "", year: "", entry: true, manual: true });
           build(); calc(); save();
         });
+        document.querySelectorAll("[data-basl]").forEach((el) => el.onchange = () => { data.pubs[el.dataset.basl].basl = el.checked; build(); calc(); save(); });
         document.querySelectorAll("[data-edit]").forEach((el) => el.oninput = () => { data.pubs[el.dataset.edit][el.dataset.f] = el.value; save(); });
         document.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => { const p = data.pubs[b.dataset.del]; data.pubs.splice(b.dataset.del, 1); fileDel("pub:" + p.eid); build(); calc(); save(); });
         renderDocs(); bindFiles();
@@ -319,10 +321,10 @@
         const checks = [
           ["Toplam puan", total, r.total],
           ["Eser puanı (A1–A3)", eser, eserReq],
-          ["Başlıca eser", num("basl"), baslReq],
+          ["Başlıca eser", baslCount().all, baslReq],
         ];
         if (data.target === "prof") {
-          checks.push(["Doçentlik sonrası başlıca eser", num("baslPost"), 3]);
+          checks.push(["Doçentlik sonrası başlıca eser", baslCount().post, 3]);
           checks.push(["Proje (yürütücü / uluslararası)", projLead, r.proj]);
           checks.push(["Tamamlanmış tez", thesis, r.thesis]);
           checks.push(["TR Dizin makale", trCount, r.tr, "soft"]);
@@ -469,9 +471,10 @@
         const out = mine.map((r) => {
           const year = parseInt(r.Year), type = r["Document Type"] || "", src = r["Source title"] || "";
           let cls = "-", pct = null;
-          if (/^(Article|Review)$/.test(type) && !/conference|proceedings/i.test(src)) {
+          const confLike = /conference|proceedings|symposium|congress|workshop|meeting|colloquium|eurock|summit/i.test(src);
+          if (/^(Article|Review)$/.test(type) && !confLike && r.ISSN) {
             cls = "A.4";
-          } else if (/Conference/.test(type)) cls = "B.1";
+          } else if (/Conference/.test(type) || (/^(Article|Review)$/.test(type) && confLike)) cls = "B.1";
           else if (/Book chapter/i.test(type)) cls = "C.3";
           const eid = r.EID || r.DOI || r.Title;
           return { eid, year, title: r.Title, src, type, issn: r.ISSN || "", pct, cls, cites: parseInt(r["Cited by"]) || 0, guess: cls === "A.4" };
@@ -492,6 +495,12 @@
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
       const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
       // Yayın listesinden gelen adet + elle girilen ek adet
+      // Başlıca eser: işaretli A.1/A.2 yayınları; doçentlik sonrası = yayın yılı > doçentlik yılı (aynı yıl: tarih bilinmediği için sayılır, kontrol edin)
+      function baslCount() {
+        const list = (data.pubs || []).filter((p) => p.basl && ["A.1", "A.2"].includes(p.cls));
+        const y = data.docDate ? +data.docDate.slice(0, 4) : null;
+        return { all: list.length, post: y ? list.filter((p) => +p.year >= y).length : 0 };
+      }
       function cnt(c) { return data.pubs && PUB_CODES.includes(c) ? data.pubs.filter((p) => p.cls === c).length : num(c); }
       const pubSelect = (p, i) => `<select data-pub="${i}">${CLASSES.map(([v, l]) => `<option value="${v}" ${p.cls === v ? "selected" : ""}>${l}</option>`).join("")}</select>`;
       function applyPubs() { if (data.pubs) renderPubs(); }
