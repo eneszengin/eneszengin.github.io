@@ -1,7 +1,4 @@
----
-permalink: /robots.txt
----
 User-agent: *
-Disallow:
+Disallow: /atama/
 
-Sitemap: {{ site.baseurl | prepend: site.url }}/sitemap.xml
+Sitemap: https://eneszengin.com/sitemap.xml

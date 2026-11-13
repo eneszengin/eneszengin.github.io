@@ -1,41 +1,29 @@
 # eneszengin.com
 
-Doç. Dr. Enes Zengin'in kişisel akademik web sitesinin kaynak deposu. İstanbul Teknik Üniversitesi, Maden Fakültesi, Jeoloji Mühendisliği Bölümü.
+Doç. Dr. Enes Zengin'in kişisel akademik web sitesi. İstanbul Teknik Üniversitesi, Maden Fakültesi, Jeoloji Mühendisliği Bölümü.
 
-Source repository of the personal academic website of Assoc. Prof. Dr. Enes Zengin, Department of Geological Engineering, Faculty of Mines, Istanbul Technical University.
+Personal academic website of Assoc. Prof. Dr. Enes Zengin, Department of Geological Engineering, Faculty of Mines, Istanbul Technical University.
 
-**Site:** [eneszengin.com](https://eneszengin.com) · Türkçe (varsayılan) ve İngilizce (`/en/`)
+**Site:** [eneszengin.com](https://eneszengin.com) · Türkçe (`/`) ve İngilizce (`/en/`)
 
-## İçerik nerede? / Where is the content?
+## Yapı / Structure
 
-| İçerik / Content | Dosya / File |
+Düz HTML; derleme adımı yok. `main` dalına yapılan her değişiklik GitHub Actions ile `gh-pages` dalına kopyalanır ve GitHub Pages üzerinden yayınlanır.
+
+Plain HTML, no build step. Every push to `main` is copied to the `gh-pages` branch by GitHub Actions and served by GitHub Pages.
+
+| Dosya / File | İçerik / Content |
 | --- | --- |
-| Yayınlar / Publications | `_bibliography/papers.bib` |
-| Projeler / Projects | `_data/projects.yml` (iki dil tek dosyada / both languages in one file) |
-| Özgeçmiş / CV | `_data/tr/cv.yml`, `_data/en/cv.yml` |
-| Dersler / Teaching | `_pages/tr/teaching.md`, `_pages/en/teaching.md` |
-| Hakkımda / About | `_pages/tr/about.md`, `_pages/en/about.md` |
-| Sosyal ve akademik profiller / Profiles | `_data/socials.yml` |
-| Arayüz metinleri / Interface strings | `_data/tr/strings.yml`, `_data/en/strings.yml` |
-| Profil fotoğrafı / Profile photo | `assets/img/prof_pic.jpg` |
-| Site ayarları / Site settings | `_config.yml` |
+| `index.html` | Türkçe ana sayfa (tüm içerik tek sayfada) / Turkish home page |
+| `en/index.html` | İngilizce sayfa / English page |
+| `atama/` | İTÜ atama kriterleri aracı / ITU appointment criteria tool (arama motorlarına kapalı) |
+| `publications/`, `projects/`, `teaching/`, `cv/` ve `en/…` | Eski adreslerden ana sayfadaki bölümlere yönlendirme / redirects from old URLs |
+| `data/` | Yayın ve proje kaynak verileri (papers.bib, projects.yml); sitede doğrudan kullanılmıyor / source data, not used by the site directly |
+| `assets/img/prof_pic.jpg` | Profil fotoğrafı / profile photo |
+| `googlecf423349834dbe9a.html` | Google Search Console doğrulaması — silinmemeli / do not delete |
 
-Türkçe sayfalar `_pages/tr/`, İngilizce karşılıkları aynı adla `_pages/en/` altındadır.
+Bing ve Yandex doğrulama etiketleri ile Google Analytics kodu `index.html` ve `en/index.html` içindedir.
 
-Turkish pages live in `_pages/tr/` and their English counterparts, with the same file names, in `_pages/en/`.
+## Güncelleme / Updating
 
-## Yayına alma / Deployment
-
-`main` dalına yapılan her değişiklik GitHub Actions ile derlenir ve `gh-pages` dalına yayınlanır. Site GitHub Pages üzerinde `eneszengin.com` alan adıyla sunulur.
-
-Every change on `main` is built with GitHub Actions and published to the `gh-pages` branch, served by GitHub Pages at `eneszengin.com`.
-
-## Tema ve lisans / Theme and license
-
-Site, [multi-language-al-folio](https://github.com/george-gca/multi-language-al-folio) temasıyla hazırlanmıştır. Tema, [al-folio](https://github.com/alshedivat/al-folio) temelinde geliştirilmiştir ve [MIT Lisansı](LICENSE) ile dağıtılmaktadır. Temanın kurulum ve özelleştirme belgeleri bu depodaki `INSTALL.md`, `CUSTOMIZE.md` ve `FAQ.md` dosyalarındadır.
-
-Built with the [multi-language-al-folio](https://github.com/george-gca/multi-language-al-folio) theme, based on [al-folio](https://github.com/alshedivat/al-folio) and distributed under the [MIT License](LICENSE). The theme's installation and customization guides are kept in `INSTALL.md`, `CUSTOMIZE.md` and `FAQ.md`.
-
-Sitenin içeriği (metinler, yayın listesi, fotoğraflar) Enes Zengin'e aittir ve tema lisansının kapsamında değildir.
-
-The site's content (text, publication list, photographs) belongs to Enes Zengin and is not covered by the theme's license.
+Yeni yayın, proje veya ders: `index.html` ve `en/index.html` içindeki ilgili bölüme satır eklenir. `data/papers.bib` de güncel tutulur.
