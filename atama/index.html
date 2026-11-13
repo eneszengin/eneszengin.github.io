@@ -219,7 +219,7 @@
           ["J.4", "Yüksek lisans – eş danışman", 5, "count", { thesis: true }],
         ]},
         { id: "K", title: "K. Eğitim-öğretim", items: [
-          ["K.1", "Son 2 yılda verilen ders kredisi toplamı", 1, "raw"],
+          ["K.1", "Son 2 yılda verilen lisans ve lisansüstü derslerin kredi toplamı", 1, "raw"],
           ["K.2", "MOOC geliştirme", 10, "count"],
           ["K.3", "Uluslararası yaz okulu vb. program", 10, "count"],
           ["K.4", "MF: ders ürünlerini İTÜ dışında sergileme/yayımlama", 0, "count", { na: true }],
@@ -311,12 +311,12 @@
             html += `<tr class="item"><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
           } else {
             for (const [c, label, pts, type, opt] of s.items) {
-              const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
+              const unit = type === "year" ? "yıl" : type === "raw" ? "kredi" : "adet";
               const isPub = type !== "raw";
               const isPaper = PUB_CODES.includes(c);
               const mine = isPub ? data.pubs.map((p, i) => [p, i]).filter(([p]) => p.cls === c) : [];
               const inp = isPub ? (type === "year" ? `<b>${cnt(c)}</b> yıl` : `<b>${mine.length}</b> adet`) : `${inputCell(c, type === "year" ? 0.5 : 1)} <span class="note">${unit}</span>`;
-              html += `<tr class="item"><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${type === "raw" || opt?.na ? "—" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
+              html += `<tr class="item"><td class="code">${c.replace(/[a-d]$/, "")}</td><td>${label}</td><td class="num">${opt?.na ? "—" : type === "raw" ? pts + " / kredi" : pts}</td><td class="num">${inp}</td><td class="num" id="t-${c}"></td></tr>`;
               mine.forEach(([p, i], k) => {
                 const head = p.entry
                   ? `<input type="text" data-edit="${i}" data-f="title" value="${esc(p.title)}" placeholder="Başlık" style="width:100%"><br><input type="text" data-edit="${i}" data-f="src" value="${esc(p.src)}" placeholder="${isPaper ? "Dergi / kitap / toplantı" : "Kurum / kuruluş / açıklama"}" style="width:60%"> <input type="number" data-edit="${i}" data-f="year" value="${p.year || ""}" placeholder="Yıl" style="width:70px">${type === "year" ? ` <input type="number" min="0" step="0.5" data-edit="${i}" data-f="yrs" value="${p.yrs || ""}" placeholder="Süre (yıl)" style="width:100px">` : ""}${isPaper ? ` <input type="text" data-edit="${i}" data-f="doi" value="${esc(p.doi || "")}" placeholder="DOI" style="width:200px">` : ""} <button type="button" class="ghost" style="padding:2px 8px;color:var(--bad);border-color:var(--bad)" data-del="${i}">Sil</button>`
