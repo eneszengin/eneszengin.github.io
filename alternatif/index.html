@@ -51,7 +51,6 @@
   h2:first-of-type{margin-top:0}
   h2 .n{color:var(--muted);font-weight:400;font-size:18px;margin-left:6px}
   h3{color:#444;font-size:16px;font-weight:700;margin:22px 0 8px}
-  .yr{color:var(--muted);font-weight:600;margin:14px 0 6px}
 
   .bio{color:var(--muted);font-size:15px;line-height:1.55;margin:0 0 12px}
   .tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
@@ -60,6 +59,8 @@
   table{border-collapse:collapse;width:100%}
   td{vertical-align:top;padding:6px 8px 6px 0;font-size:15px}
   td:first-child{color:var(--muted);white-space:nowrap;width:95px}
+  td .l strong{color:var(--text)}
+  #dersler + table td:first-child{width:130px}
   td strong{color:var(--text)}
   td .l{display:block;color:var(--muted2)}
 
@@ -89,9 +90,6 @@
   .toclabel{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:6px}
   .toc a{font-size:13px;font-weight:600;color:var(--navy);background:#EEF2F7;padding:4px 10px}
   .toc a:hover{text-decoration:none;background:#E2E9F3}
-  ul.ders{list-style:none;padding:0;margin:0 0 6px}
-  ul.ders li{margin:0 0 6px;font-size:15px}
-  ul.ders strong{display:inline-block;min-width:86px;color:var(--navy)}
   table.contact td:first-child{width:130px;white-space:normal}
   h2[id]{scroll-margin-top:84px}
   /* geniş ekranda sol sabit menü */
@@ -119,6 +117,7 @@
     .profile img{width:120px;height:120px;flex-basis:120px}
     h2{font-size:22px}
     td:first-child{width:78px}
+    #dersler + table td:first-child{width:110px}
     .b{white-space:normal}
   }
 </style>
@@ -353,42 +352,23 @@
   </table>
 
   <h2 id="dersler">Dersler</h2>
-  <h3>2026–2027 Güz</h3>
-  <ul class="ders">
-    <li><strong>JEO 455</strong> Mühendislik Tasarımında Bilgisayar Uygulamaları</li>
-    <li><strong>JEO 459</strong> Yer Bilimlerinde CAD Uygulamaları</li>
-    <li><strong>JEO 603</strong> Mühendislik Jeolojisinde Seçme Konular</li>
-    <li><strong>CIE 112</strong> <span lang="en">Earth Sciences for Civil Engineers</span></li>
-    <li><strong>JEO 377E</strong> <span lang="en">Individual Studies</span></li>
-  </ul>
-  <h3>2025–2026 Bahar</h3>
-  <ul class="ders">
-    <li><strong>INS 112</strong> İnşaat Mühendisleri İçin Yer Bilimi</li>
-  </ul>
-  <h3>2025–2026 Güz</h3>
-  <ul class="ders">
-    <li><strong>JEO 455</strong> Mühendislik Tasarımında Bilgisayar Uygulamaları</li>
-    <li><strong>JEO 459</strong> Yer Bilimlerinde CAD Uygulamaları</li>
-  </ul>
-  <h3>2024–2025 Yaz</h3>
-  <ul class="ders">
-    <li><strong>JEO 473</strong> Mühendislik Jeolojisi</li>
-  </ul>
+  <table>
+    <tr><td>2026–2027 Güz</td><td><strong>JEO 455</strong> Mühendislik Tasarımında Bilgisayar Uygulamaları<span class="l"><strong>JEO 603</strong> Mühendislik Jeolojisinde Seçme Konular</span><span class="l"><strong>CIE 112</strong> <span lang="en">Earth Sciences for Civil Engineers</span></span></td></tr>
+    <tr><td>2025–2026 Bahar</td><td><strong>INS 112</strong> İnşaat Mühendisleri İçin Yer Bilimi</td></tr>
+    <tr><td>2025–2026 Güz</td><td><strong>JEO 455</strong> Mühendislik Tasarımında Bilgisayar Uygulamaları<span class="l"><strong>JEO 459</strong> Yer Bilimlerinde CAD Uygulamaları</span></td></tr>
+    <tr><td>2024–2025 Yaz</td><td><strong>JEO 473</strong> Mühendislik Jeolojisi</td></tr>
+  </table>
 
   <h2 id="tez-danismanliklari">Tez Danışmanlıkları</h2>
   <h3>Lisans</h3>
-  <p class="yr">2026–2027</p>
-  <ol>
-    <li>Elif Yaren Cürul, Zehra Betül Akbal: <em>İstanbul İli İçin Haber Tabanlı, Dinamik ve İnteraktif Kütle Hareketleri Envanter Sisteminin Tasarımı</em></li>
-    <li>Batuhan Aktemur, Hasan Basri Arıca: <em>İstanbul İli İçin Katı Atık Düzenli Depolama Tesisi Yer Seçimine Yönelik CBS ve AHP Tabanlı Bir Karar Destek Sisteminin Tasarımı</em></li>
-    <li>Elif Yaren Cürul: <em>İstanbul İlinde Kütle Hareketlerinin Meydana Geldiği Alanların Jeolojik Özelliklerinin İncelenmesi</em></li>
-    <li>İbrahim Kaya</li>
-    <li>Nisanur Sevinç</li>
-  </ol>
-  <p class="yr">2025–2026</p>
-  <ol>
-    <li>Kübra Beste Karaca, Eda Karanfil: <em>Küçükçekmece Gölü (İstanbul) Güney Doğusundaki Bölgenin Üç Boyutlu Jeolojik Model Tasarımı ve Duraylılık Koşullarının Değerlendirilmesi</em></li>
-  </ol>
+  <table>
+    <tr><td>2026–2027</td><td><strong>Elif Yaren Cürul, Zehra Betül Akbal</strong><span class="l">İstanbul İli İçin Haber Tabanlı, Dinamik ve İnteraktif Kütle Hareketleri Envanter Sisteminin Tasarımı</span></td></tr>
+    <tr><td></td><td><strong>Batuhan Aktemur, Hasan Basri Arıca</strong><span class="l">İstanbul İli İçin Katı Atık Düzenli Depolama Tesisi Yer Seçimine Yönelik CBS ve AHP Tabanlı Bir Karar Destek Sisteminin Tasarımı</span></td></tr>
+    <tr><td></td><td><strong>Elif Yaren Cürul</strong><span class="l">İstanbul İlinde Kütle Hareketlerinin Meydana Geldiği Alanların Jeolojik Özelliklerinin İncelenmesi</span></td></tr>
+    <tr><td></td><td><strong>İbrahim Kaya</strong></td></tr>
+    <tr><td></td><td><strong>Nisanur Sevinç</strong></td></tr>
+    <tr><td>2025–2026</td><td><strong>Kübra Beste Karaca, Eda Karanfil</strong><span class="l">Küçükçekmece Gölü (İstanbul) Güney Doğusundaki Bölgenin Üç Boyutlu Jeolojik Model Tasarımı ve Duraylılık Koşullarının Değerlendirilmesi</span></td></tr>
+  </table>
 
   <h2 id="iletisim">İletişim</h2>
   <table class="contact">
