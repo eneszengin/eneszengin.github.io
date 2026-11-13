@@ -1,0 +1,110 @@
+- title: Akademik Deneyim
+  type: time_table
+  contents:
+    - title: Doç. Dr.
+      institution: İstanbul Teknik Üniversitesi (İstanbul, Türkiye)
+      department: Maden Fakültesi, Jeoloji Mühendisliği Bölümü
+      year: 2025 –
+    - title: Doç. Dr.
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Mimarlık Fakültesi, Şehir ve Bölge Planlama Bölümü
+      year: 2024 – 2025
+    - title: Dr. Öğr. Üyesi
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Mimarlık Fakültesi, Şehir ve Bölge Planlama Bölümü
+      year: 2022 – 2024
+    - title: Doktora Sonrası Araştırmacı
+      institution: The University of British Columbia (Vancouver, Kanada)
+      department: Earth, Ocean and Atmospheric Sciences
+      year: 2021 – 2022
+      description:
+        - "Danışman: Prof. Dr. Erik Eberhardt"
+    - title: Arş. Gör. Dr.
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Mühendislik Fakültesi, Jeoloji Mühendisliği Bölümü
+      year: 2019 – 2022
+    - title: Doktora Sırası Araştırmacı
+      institution: University of Aberdeen (Aberdeen, Birleşik Krallık)
+      department: Geology and Geophysics
+      year: 2017 – 2018
+      description:
+        - "Danışman: Prof. Dr. David Healy"
+    - title: Arş. Gör.
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Mühendislik Fakültesi, Jeoloji Mühendisliği Bölümü
+      year: 2010 – 2019
+      description:
+        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
+
+- title: Eğitim
+  type: time_table
+  contents:
+    - title: Doktora
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Jeoloji Mühendisliği
+      year: 2013 – 2019
+      description:
+        - "Tez: Boşluklu Kaya Malzemelerinin Dayanım ve Deformasyon Özelliklerinin Deneysel ve Nümerik Yaklaşımlar Kullanılarak Araştırılması"
+        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: Yüksek Lisans
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Jeoloji Mühendisliği
+      year: 2010 – 2013
+      description:
+        - "Tez: Kütahya Yerleşim Alanı Zeminlerinin Fiziksel ve Mekanik Özelliklerinin Araştırılması"
+        - "Danışman: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: Lisans
+      institution: Kocaeli Üniversitesi (Kocaeli, Türkiye)
+      department: Jeoloji Mühendisliği
+      year: 2004 – 2009
+
+- title: İdari Deneyim
+  type: time_table
+  contents:
+    - title: Koordinatör
+      institution: İstanbul Teknik Üniversitesi (İstanbul, Türkiye)
+      department: Maden Fakültesi, Araştırma-Geliştirme
+      year: 2026 –
+    - title: Üye
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Kalite Komisyonu
+      year: 2023 – 2025
+    - title: Koordinatör
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Bilimsel Araştırma Projeleri Koordinasyon Birimi
+      year: 2023 – 2024
+    - title: Koordinatör Yardımcısı
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Bilimsel Araştırma Projeleri Koordinasyon Birimi
+      year: 2019 – 2023
+    - title: Üye
+      institution: Kütahya Dumlupınar Üniversitesi (Kütahya, Türkiye)
+      department: Kalite Komisyonu, Araştırma-Geliştirme Alt Çalışma Grubu
+      year: 2019 – 2025
+
+- title: Burs ve Ödüller
+  type: time_table
+  contents:
+    - title: TÜBİTAK 2219 – Yurt Dışı Doktora Sonrası Araştırma Burs Programı
+      institution: The University of British Columbia (Vancouver, Kanada)
+      department: Faculty of Science, Department of Earth, Ocean and Atmospheric Sciences
+      year: 2021 – 2022
+
+- title: Eğitimler, Kurslar ve Uluslararası Hareketlilikler
+  type: time_table
+  contents:
+    - title: Data Science and Machine Learning Bootcamp
+      institution: Miuul (İstanbul, Türkiye)
+      year: 2022 – 2023
+    - title: "EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials"
+      institution: University of Liège (Liège, Belçika)
+      year: 2020
+    - title: Erasmus Personel Hareketliliği
+      institution: Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Fas)
+      year: 2019
+    - title: PFC Introductory Training
+      institution: ITASCA Consulting Group (Écully, Fransa)
+      year: 2016
+    - title: Erasmus Personel Hareketliliği
+      institution: Comenius University, Faculty of Natural Sciences (Bratislava, Slovakya)
+      year: 2014

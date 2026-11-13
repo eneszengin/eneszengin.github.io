@@ -1,0 +1,110 @@
+- title: Academic Experience
+  type: time_table
+  contents:
+    - title: Assoc. Prof. Dr.
+      institution: Istanbul Technical University (Istanbul, Türkiye)
+      department: Faculty of Mines, Department of Geological Engineering
+      year: 2025 –
+    - title: Assoc. Prof. Dr.
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Faculty of Architecture, Department of City and Regional Planning
+      year: 2024 – 2025
+    - title: Assist. Prof. Dr.
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Faculty of Architecture, Department of City and Regional Planning
+      year: 2022 – 2024
+    - title: Postdoctoral Researcher
+      institution: The University of British Columbia (Vancouver, Canada)
+      department: Earth, Ocean and Atmospheric Sciences
+      year: 2021 – 2022
+      description:
+        - "Supervisor: Prof. Dr. Erik Eberhardt"
+    - title: Res. Assist. Dr.
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Faculty of Engineering, Department of Geological Engineering
+      year: 2019 – 2022
+    - title: Visiting PhD Researcher
+      institution: University of Aberdeen (Aberdeen, United Kingdom)
+      department: Geology and Geophysics
+      year: 2017 – 2018
+      description:
+        - "Supervisor: Prof. Dr. David Healy"
+    - title: Res. Assist.
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Faculty of Engineering, Department of Geological Engineering
+      year: 2010 – 2019
+      description:
+        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
+
+- title: Education
+  type: time_table
+  contents:
+    - title: PhD
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Geological Engineering
+      year: 2013 – 2019
+      description:
+        - "Thesis: Investigation of the Strength and Deformation Properties of Porous Rock Materials Using Experimental and Numerical Approaches (in Turkish)"
+        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: MSc
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Geological Engineering
+      year: 2010 – 2013
+      description:
+        - "Thesis: Investigation of the Physical and Mechanical Properties of the Soils of the Kütahya Settlement Area (in Turkish)"
+        - "Supervisor: Prof. Dr. Zeynal Abiddin Ergüler"
+    - title: BSc
+      institution: Kocaeli University (Kocaeli, Türkiye)
+      department: Geological Engineering
+      year: 2004 – 2009
+
+- title: Administrative Experience
+  type: time_table
+  contents:
+    - title: Coordinator
+      institution: Istanbul Technical University (Istanbul, Türkiye)
+      department: Faculty of Mines, Research and Development
+      year: 2026 –
+    - title: Member
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Quality Commission
+      year: 2023 – 2025
+    - title: Coordinator
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Scientific Research Projects Coordination Unit
+      year: 2023 – 2024
+    - title: Deputy Coordinator
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Scientific Research Projects Coordination Unit
+      year: 2019 – 2023
+    - title: Member
+      institution: Kütahya Dumlupınar University (Kütahya, Türkiye)
+      department: Quality Commission, Research and Development Sub-Working Group
+      year: 2019 – 2025
+
+- title: Fellowships and Awards
+  type: time_table
+  contents:
+    - title: TÜBİTAK 2219 – International Postdoctoral Research Fellowship Program
+      institution: The University of British Columbia (Vancouver, Canada)
+      department: Faculty of Science, Department of Earth, Ocean and Atmospheric Sciences
+      year: 2021 – 2022
+
+- title: Training, Courses and International Mobility
+  type: time_table
+  contents:
+    - title: Data Science and Machine Learning Bootcamp
+      institution: Miuul (Istanbul, Türkiye)
+      year: 2022 – 2023
+    - title: "EURAD School for Radioactive Waste Management – Multiphysical couplings in geomechanics: a focus on thermal effect and gas transfer impact on the behaviour of geomaterials"
+      institution: University of Liège (Liège, Belgium)
+      year: 2020
+    - title: Erasmus Staff Mobility
+      institution: Ibn Zohr University, Faculty Polydisciplinaire of Ouarzazate (Ouarzazate, Morocco)
+      year: 2019
+    - title: PFC Introductory Training
+      institution: ITASCA Consulting Group (Écully, France)
+      year: 2016
+    - title: Erasmus Staff Mobility
+      institution: Comenius University, Faculty of Natural Sciences (Bratislava, Slovakia)
+      year: 2014
