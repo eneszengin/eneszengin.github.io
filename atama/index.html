@@ -26,7 +26,7 @@
       button.ghost { background: #fff; color: var(--accent); }
       table { width: 100%; border-collapse: collapse; }
       td, th { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
-      th { font-weight: 600; color: var(--muted); font-size: .85rem; }
+      th { font-weight: 600; color: var(--muted); font-size: 1em; }
       td.num, th.num { text-align: right; white-space: nowrap; }
       .code { color: var(--muted); font-size: .85rem; width: 48px; }
       .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
@@ -39,9 +39,10 @@
       .note { font-size: .85rem; color: var(--muted); }
       .hidden { display: none; }
       details summary { cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+      tr.item td { font-weight: 700; color: var(--ink); }
       tr.item td { background: #eaf1fb; border-top: 2px solid #c9dbf2; }
       tr.item td.code, tr.item td:nth-child(2) { font-weight: 700; text-transform: uppercase; color: var(--ink); }
-      details summary .note { text-transform: none; letter-spacing: 0; font-weight: 400; }
+      details summary .note { text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--ink); }
     </style>
   </head>
   <body>
@@ -300,8 +301,8 @@
         for (const s of SECTIONS) {
           html += `<details class="card" ${["A", "B", "C", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
           if (s.special === "D") {
-            html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − Eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
-            html += `<tr><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
+            html += `<tr class="item"><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − Eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
+            html += `<tr class="item"><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
           } else {
             for (const [c, label, pts, type, opt] of s.items) {
               const unit = type === "year" ? "yıl" : type === "raw" ? "puan" : "adet";
