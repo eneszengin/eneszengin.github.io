@@ -232,7 +232,7 @@
         for (const s of SECTIONS) {
           html += `<details class="card" ${["A", "B", "C", "D", "F", "J"].includes(s.id) ? "open" : ""}><summary>${s.title} <span class="note" id="sum-${s.id}"></span></summary><table style="margin-top:8px"><thead><tr><th class="code">Kod</th><th>Faaliyet</th><th class="num">Puan</th><th class="num">Girdi</th><th class="num">Toplam</th></tr></thead><tbody>`;
           if (s.special === "D") {
-            html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
+            html += `<tr><td class="code">D.1</td><td>h-indeksi (öz atıflar hariç) → (h − Eşik) × 25</td><td class="num" id="hthr"></td><td class="num">${inputCell("h")}</td><td class="num" id="t-D1"></td></tr>`;
             html += `<tr><td class="code">D.2</td><td>Son 5 yıl FWCI → (FWCI − 1) × yayın sayısı</td><td class="num">FWCI ${inputCell("fwci", 0.01)}</td><td class="num">yayın ${inputCell("fwciN")}</td><td class="num" id="t-D2"></td></tr>`;
           } else {
             for (const [c, label, pts, type] of s.items) {
@@ -270,7 +270,7 @@
           if (s.special === "D") {
             const d1 = Math.max(0, num("h") - r.hThr) * 25;
             const d2 = Math.max(0, (num("fwci") - 1) * num("fwciN"));
-            $("#hthr").textContent = "eşik " + r.hThr;
+            $("#hthr").textContent = "Eşik " + r.hThr;
             $("#t-D1").textContent = fmt(d1); $("#t-D2").textContent = fmt(d2);
             sub = d1 + d2;
           } else {
