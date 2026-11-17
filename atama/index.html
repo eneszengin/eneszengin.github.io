@@ -42,6 +42,31 @@
         .pill { padding: 6px 8px; }
         .pill b { font-size: 1rem; }
       }
+      a { overflow-wrap: anywhere; }
+      @media (max-width: 760px) {
+        main { padding: 14px 10px 60px; }
+        .card { padding: 12px; }
+        h1 { font-size: 1.25rem; }
+        details table, details tbody, details tr, details td,
+        #pubWrap table, #pubWrap tbody, #pubWrap tr, #pubWrap td,
+        #docs, #docs tr, #docs td { display: block; width: 100%; box-sizing: border-box; }
+        details thead, #pubWrap thead { display: none; }
+        details td, #pubWrap td, #docs td { border-bottom: none; padding: 3px 6px; text-align: left !important; }
+        details tr, #pubWrap tr, #docs tr { border-bottom: 1px solid var(--line); padding: 6px 0; }
+        tr.item { display: flex !important; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; background: #eaf1fb; }
+        tr.item td { display: inline-block; width: auto; background: none; border-top: none; }
+        tr.item td:nth-child(2) { flex: 1 1 70%; }
+        tr.item td:nth-child(3)::before { content: "Puan: "; font-weight: 400; color: var(--muted); }
+        tr.item td:nth-child(5)::before { content: "Toplam: "; font-weight: 400; color: var(--muted); }
+        tr.item td:nth-child(5):empty, tr.item td:nth-child(3):empty { display: none; }
+        td.code { width: auto; }
+        tr.pubrow td.code { padding-bottom: 0; }
+        tr.pubrow select, #pubWrap select { max-width: 100%; }
+        tr.pubrow input[type=text] { width: 100% !important; margin: 2px 0; }
+        .fields { grid-template-columns: 1fr 1fr; }
+        .summary { grid-template-columns: 1fr 1fr !important; }
+        .pill .note { font-size: .78rem; }
+      }
       .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
       .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; text-align: center; }
       .pill .note { font-weight: 700; color: var(--ink); }
