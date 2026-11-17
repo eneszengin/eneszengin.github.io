@@ -8,6 +8,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐝</text></svg>" />
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
       :root {
         --bg: #f7f7f5; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e3e0;
@@ -129,6 +130,16 @@
           <div class="row" style="margin-top:10px">
             <button id="zipBtn" type="button">Başvuru dosyasını indir (ZIP)</button>
             <span id="zipStatus" class="note"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Google Drive'a kaydet</h2>
+          <p class="note">Verileriniz ve yüklediğiniz PDF'ler kendi Google Drive'ınızda, yalnızca bu sayfanın erişebildiği gizli bir uygulama klasörüne kaydedilir (Drive'daki diğer dosyalarınızı göremez). Başka bir bilgisayarda aynı Google hesabıyla girip "Drive'dan geri yükle" deyin.</p>
+          <div class="row">
+            <button id="driveSave" type="button">Drive'a kaydet</button>
+            <button id="driveLoad" type="button" class="ghost">Drive'dan geri yükle</button>
+            <span id="driveStatus" class="note"></span>
           </div>
         </div>
 
@@ -824,6 +835,91 @@
         set("I41", data.name || "");
         return wb.xlsx.writeBuffer();
       }
+      // ---- Google Drive (appDataFolder) ----
+      const GOOGLE_CLIENT_ID = ""; // ← Google Cloud OAuth istemci kimliği (…apps.googleusercontent.com)
+      let gToken = null, gExp = 0;
+      const dStat = (t) => { $("#driveStatus").textContent = t; };
+      function gAuth() {
+        return new Promise((res, rej) => {
+          if (gToken && Date.now() < gExp) return res(gToken);
+          if (!GOOGLE_CLIENT_ID) return rej(new Error("Google girişi henüz yapılandırılmadı"));
+          if (!window.google?.accounts?.oauth2) return rej(new Error("Google kütüphanesi yüklenemedi; sayfayı yenileyin"));
+          const tc = google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID, scope: "https://www.googleapis.com/auth/drive.appdata",
+            callback: (r) => { if (r.error) return rej(new Error(r.error)); gToken = r.access_token; gExp = Date.now() + (r.expires_in - 60) * 1000; res(gToken); },
+            error_callback: (e) => rej(new Error(e.message || e.type || "giriş iptal edildi")),
+          });
+          tc.requestAccessToken();
+        });
+      }
+      async function gApi(url, opt = {}) {
+        const t = await gAuth();
+        const r = await fetch(url, { ...opt, headers: { ...(opt.headers || {}), Authorization: "Bearer " + t } });
+        if (!r.ok) throw new Error("Drive " + r.status);
+        return r;
+      }
+      async function gList(prefix) {
+        const q = encodeURIComponent(`name contains '${prefix}' and trashed = false`);
+        const j = await (await gApi(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,name,modifiedTime)&pageSize=1000`)).json();
+        return j.files || [];
+      }
+      async function gPut(name, blob, existingId) {
+        if (existingId) return gApi(`https://www.googleapis.com/upload/drive/v3/files/${existingId}?uploadType=media`, { method: "PATCH", body: blob });
+        const fd = new FormData();
+        fd.append("metadata", new Blob([JSON.stringify({ name, parents: ["appDataFolder"] })], { type: "application/json" }));
+        fd.append("file", blob);
+        return gApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", { method: "POST", body: fd });
+      }
+      const gName = (k) => `atama-${id}-${k.replace(/[^\w.-]/g, "_")}.pdf`;
+      async function driveSave() {
+        try {
+          dStat("Google hesabı bekleniyor…");
+          const existing = Object.fromEntries((await gList(`atama-${id}`)).map((f) => [f.name, f.id]));
+          const keys = Object.keys(data.files || {});
+          let n = 0;
+          for (const k of keys) {
+            const name = gName(k);
+            prog(++n, keys.length + 1, "Drive'a kaydediliyor");
+            if (existing[name] && data.files[k] === data.driveSynced?.[k]) continue; // değişmemiş dosyayı tekrar gönderme
+            const f = await fileGet(k); if (!f) continue;
+            await gPut(name, f.blob, existing[name]);
+          }
+          data.driveSynced = { ...(data.files || {}) };
+          const json = new Blob([JSON.stringify({ scopusId: id, savedAt: new Date().toISOString(), ...data })], { type: "application/json" });
+          await gPut(`atama-${id}.json`, json, existing[`atama-${id}.json`]);
+          prog(null); save();
+          dStat(`Drive'a kaydedildi · ${new Date().toLocaleString("tr-TR")} · ${keys.length} dosya`);
+        } catch (e) { prog(null); dStat("Kaydedilemedi: " + e.message); }
+      }
+      async function driveLoad() {
+        try {
+          dStat("Google hesabı bekleniyor…");
+          const files = await gList(`atama-${id}`);
+          const meta = files.find((f) => f.name === `atama-${id}.json`);
+          if (!meta) { dStat("Drive'da bu Scopus ID için kayıt bulunamadı."); return; }
+          const obj = await (await gApi(`https://www.googleapis.com/drive/v3/files/${meta.id}?alt=media`)).json();
+          const { scopusId, savedAt, ...rest } = obj;
+          const byName = Object.fromEntries(files.map((f) => [f.name, f.id]));
+          const keys = Object.keys(rest.files || {});
+          let n = 0;
+          for (const k of keys) {
+            prog(++n, keys.length, "Drive'dan geri yükleniyor");
+            const fid = byName[gName(k)]; if (!fid) continue;
+            const b = await (await gApi(`https://www.googleapis.com/drive/v3/files/${fid}?alt=media`)).blob();
+            await filePut(k, new File([b], rest.files[k].replace(/ \(.*\)$/, ""), { type: "application/pdf" }));
+          }
+          prog(null);
+          data = rest; data.pubs ||= [];
+          if (data.target) $("#target").value = data.target;
+          if (data.dept) $("#dept").value = data.dept;
+          $("#docDate").value = data.docDate || ""; $("#phdDate").value = data.phdDate || "";
+          showName(); renderPubs(); build(); calc(); save();
+          dStat(`Drive'dan geri yüklendi · kayıt tarihi ${new Date(savedAt).toLocaleString("tr-TR")} · ${keys.length} dosya`);
+        } catch (e) { prog(null); dStat("Geri yüklenemedi: " + e.message); }
+      }
+      $("#driveSave").addEventListener("click", driveSave);
+      $("#driveLoad").addEventListener("click", driveLoad);
+
       $("#zipBtn").addEventListener("click", () => buildZip().catch((e) => alertBox("Hata: " + e.message)));
 
       // URL'de ?id= varsa doğrudan aç; yoksa bu tarayıcıdaki kayıtlı ID'leri göster
