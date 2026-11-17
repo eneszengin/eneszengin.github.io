@@ -35,7 +35,7 @@
       .fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 14px; }
       .fields label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
       .fields input, .fields select { width: 100% !important; box-sizing: border-box; }
-      .sticky { position: sticky; top: 0; z-index: 5; }
+      .sticky { position: static; }
       @media (max-width: 760px), (max-height: 600px) {
         .sticky { position: static; }
         .summary { grid-template-columns: repeat(2, 1fr); gap: 6px; }
