@@ -36,6 +36,12 @@
       .fields label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
       .fields input, .fields select { width: 100% !important; box-sizing: border-box; }
       .sticky { position: sticky; top: 0; z-index: 5; }
+      @media (max-width: 760px), (max-height: 600px) {
+        .sticky { position: static; }
+        .summary { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .pill { padding: 6px 8px; }
+        .pill b { font-size: 1rem; }
+      }
       .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
       .pill { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; text-align: center; }
       .pill .note { font-weight: 700; color: var(--ink); }
