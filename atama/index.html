@@ -96,10 +96,11 @@
 
         <div class="card" id="scopusCard">
           <h2>Scopus yayınlarınız</h2>
-          <p class="note">Scopus'ta yazar profilinize gidin → <b>Export all</b> (veya Documents → Export) → <b>CSV</b>, tüm alanları seçerek indirin ve dosyayı buraya yükleyin. Ad soyad, yayınlar ve atıf sayılarından h-indeksi dosyadan alınır. Her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
+          <p class="note">İTÜ ağında veya VPN'deyseniz yayınlarınız Scopus ID'nizle <b>otomatik çekilir</b>. Kampüs dışındaysanız Scopus'ta yazar profilinize gidip <b>Export all → CSV</b> ile indirdiğiniz dosyayı yükleyin. Ad soyad, yayınlar ve atıf sayılarından h-indeksi buradan alınır. Her yayının sınıfını aşağıdan düzeltebilirsiniz; A.1–A.4, B.1 ve C.3 adetleri bu listeden hesaplanır.</p>
           <div class="row">
             <label class="ghost" style="cursor:pointer"><button type="button" onclick="document.getElementById('csvFile').click()">Scopus CSV yükle</button>
               <input id="csvFile" type="file" accept=".csv,text/csv" class="hidden" /></label>
+            <button type="button" class="ghost" id="scopusBtn">Scopus'tan otomatik çek</button>
             <span id="fetchStatus" class="note"></span>
           </div>
           <div id="progWrap" class="hidden" style="margin-top:10px">
@@ -449,6 +450,7 @@
         history.replaceState(null, "", "?id=" + x);
         renderPubs(); build(); calc();
         showName();
+        if (!data.pubs.some((p) => !p.entry)) setTimeout(fetchScopus, 0);
       }
       $("#loginForm").addEventListener("submit", (e) => { e.preventDefault(); open($("#scopusInput").value.trim()); });
       $("#target").addEventListener("change", () => { data.target = $("#target").value; build(); calc(); save(); });
@@ -551,6 +553,45 @@
         let recs;
         try { recs = parseCSV(text); } catch { st.textContent = "CSV okunamadı."; return; }
         if (!recs.length || !("Title" in recs[0])) { st.textContent = "Bu bir Scopus CSV dosyası gibi görünmüyor."; return; }
+        importRecords(recs, "CSV");
+      }
+      // Scopus Search API'den doğrudan çek (kurum ağı / VPN gerekir); kayıtları CSV biçimine çevirip aynı yoldan işle
+      async function fetchScopus() {
+        const st = $("#fetchStatus");
+        if (!ELS_KEY) return false;
+        const get = async (url) => { const r = await fetch("https://api.elsevier.com/content/" + url, { headers: { "X-ELS-APIKey": ELS_KEY, Accept: "application/json" } }); if (!r.ok) throw new Error(r.status); return r.json(); };
+        const recs = []; let start = 0, total = 1, view = "COMPLETE";
+        try {
+          while (start < total && start < 2000) {
+            prog(start, total > 1 ? total : 0, "Yayınlar Scopus'tan çekiliyor");
+            let j;
+            try { j = await get(`search/scopus?query=AU-ID(${id})&count=25&start=${start}&view=${view}&sort=-coverDate`); }
+            catch (e) { if (view === "COMPLETE") { view = "STANDARD"; continue; } throw e; }
+            const sr = j["search-results"]; total = +sr["opensearch:totalResults"] || 0;
+            for (const e of sr.entry || []) {
+              if (e.error) continue;
+              const au = e.author || [];
+              recs.push({
+                Title: e["dc:title"] || "", Year: (e["prism:coverDate"] || "").slice(0, 4), "Source title": e["prism:publicationName"] || "",
+                "Document Type": e.subtypeDescription || "", ISSN: e["prism:issn"] || e["prism:eIssn"] || "", DOI: e["prism:doi"] || "",
+                "Cited by": e["citedby-count"] || "0", EID: e.eid || "",
+                "Author(s) ID": au.length ? au.map((a) => a.authid).join("; ") : id,
+                "Author full names": au.map((a) => `${a.surname || ""}, ${a["given-name"] || ""} (${a.authid})`).join("; "),
+              });
+            }
+            start += 25;
+          }
+        } catch (e) { prog(null); st.textContent = `Scopus'tan otomatik çekilemedi (${e.message}). İTÜ ağında veya VPN'de değilseniz bağlanıp sayfayı yenileyin ya da CSV yükleyin.`; return false; }
+        prog(null);
+        if (!recs.length) { st.textContent = "Scopus bu ID için yayın döndürmedi. ID'yi kontrol edin ya da CSV yükleyin."; return false; }
+        if (!recs.some((r) => r["Author full names"])) {
+          try { const a = await get(`author/author_id/${id}?view=LIGHT`); const pn = a["author-retrieval-response"]?.[0]?.["preferred-name"]; if (pn) data.name = `${pn.surname}, ${pn["given-name"]}`; } catch {}
+        }
+        importRecords(recs, "Scopus");
+        return true;
+      }
+      function importRecords(recs, srcLabel) {
+        const st = $("#fetchStatus");
         // Ad soyad: "Author full names" içinde bu ID
         for (const r of recs) {
           const m = (r["Author full names"] || "").split(";").map((x) => x.trim()).find((x) => x.includes("(" + id + ")"));
@@ -581,16 +622,18 @@
         // h-indeksi (öz atıflar dahil)
         const c = out.map((p) => p.cites).sort((a, b) => b - a);
         let h = 0; while (h < c.length && c[h] >= h + 1) h++;
-        data.h = String(h); data.hNote = "CSV'den, öz atıflar dahil";
+        data.h = String(h); data.hNote = srcLabel + "'den, öz atıflar dahil";
         const prev = Object.fromEntries((data.pubs || []).filter((p) => p.manual).map((p) => [p.eid, p]));
-        data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, manual: true } : p);
+        const keep = (data.pubs || []).filter((p) => p.entry);
+        data.pubs = out.map((p) => prev[p.eid] ? { ...p, cls: prev[p.eid].cls, basl: prev[p.eid].basl, basis: prev[p.eid].basis, manual: true } : p).concat(keep);
         data.csvWarn = warn;
         const unk = data.pubs.filter((p) => p.guess && !p.manual).length;
-        st.textContent = `CSV: ${recs.length} satır · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "") + warn;
+        st.textContent = `${srcLabel}: ${recs.length} kayıt · ${out.length} yayın yüklendi · h-indeksi ${h}` + (unk ? ` · ${unk} makalenin çeyreği bulunamadı, sarı satırları kontrol edin` : "") + warn;
         showName(); applyPubs(); build(); calc(); save();
         checkQuartiles();
       }
       function showName() { $("#idLabel").textContent = id + (data.name ? " · " + data.name : ""); }
+      $("#scopusBtn").addEventListener("click", () => fetchScopus());
       $("#csvFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (f) importCSV(await f.text()); e.target.value = ""; });
       const BASIS = [["", "Dayanak seçin"], ["tek", "Tek yazarlı"], ["kendi", "Kendi tezi / doktora sonrası (ilk/sorumlu yazar)"], ["danis", "Yönettiği tezden"], ["proje", "Projeden (ilk/sorumlu yazar)"]];
       const PUB_CODES = ["A.1", "A.2", "A.3", "A.4", "A.11", "B.1", "B.2", "C.3", "C.4"];
