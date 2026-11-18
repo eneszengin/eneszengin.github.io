@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /atama/
+
+Sitemap: https://eneszengin.com/sitemap.xml
